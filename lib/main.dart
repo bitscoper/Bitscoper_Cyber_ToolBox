@@ -2,9 +2,14 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:tcp_scanner/tcp_scanner.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_traceroute/flutter_traceroute.dart';
 import 'package:flutter_traceroute/flutter_traceroute_platform_interface.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:html/dom.dart' as dom;
+import 'package:html/parser.dart' as parser;
+import 'package:http/http.dart' as http;
+import 'package:tcp_scanner/tcp_scanner.dart';
 
 void main() {
   runApp(const MainApp());
@@ -56,11 +61,21 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('Tool 3'),
+              title: const Text('Series URI Crawler'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Tool3Page()),
+                  MaterialPageRoute(
+                      builder: (context) => const SeriesURICrawlerPage()),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Tool 4'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Tool4Page()),
                 );
               },
             ),
@@ -98,9 +113,9 @@ class TCPPortScannerBody extends StatefulWidget {
 
 class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
   final TextEditingController hostController = TextEditingController();
-  final List<int> portList = List.generate(65536, (i) => i);
   final Stopwatch stopwatch = Stopwatch();
 
+  final List<int> portList = List.generate(65536, (i) => i);
   bool isScanning = false;
   double scanProgress = 0.0;
   String scanResult = '';
@@ -113,6 +128,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
 
   Future<void> scanTCPPorts() async {
     final String host = hostController.text.trim();
+
     if (host.isEmpty) {
       setState(() {
         scanResult = 'Enter a valid host or IP address!';
@@ -169,9 +185,9 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
           TextField(
             controller: hostController,
             decoration: const InputDecoration(
-              hintText: 'Enter a Host or IP Address',
-              labelText: 'Enter a Host or IP Address',
               border: OutlineInputBorder(),
+              hintText: 'bitscoper.live',
+              labelText: 'Enter a Host or IP Address',
             ),
           ),
           const SizedBox(height: 16),
@@ -207,10 +223,12 @@ class RouteTracerPage extends StatefulWidget {
 }
 
 class RouteTracerPageState extends State<RouteTracerPage> {
-  List<TracerouteStep> traceResults = [];
-
   late final FlutterTraceroute routeTracer;
   late final TextEditingController hostController;
+  StreamSubscription? traceSubscription;
+
+  bool isTracing = false;
+  List<TracerouteStep> traceResults = [];
 
   @override
   void initState() {
@@ -223,13 +241,13 @@ class RouteTracerPageState extends State<RouteTracerPage> {
   void onTrace() {
     setState(() {
       traceResults = <TracerouteStep>[];
+      isTracing = true;
     });
 
     final host = hostController.text;
-
     final arguments = TracerouteArgs(host: host);
 
-    routeTracer.trace(arguments).listen((event) {
+    traceSubscription = routeTracer.trace(arguments).listen((event) {
       setState(() {
         traceResults = List<TracerouteStep>.from(traceResults)..add(event);
       });
@@ -238,9 +256,10 @@ class RouteTracerPageState extends State<RouteTracerPage> {
 
   void onStop() {
     routeTracer.stopTrace();
+    traceSubscription?.cancel();
 
     setState(() {
-      traceResults = <TracerouteStep>[];
+      isTracing = false;
     });
   }
 
@@ -259,7 +278,7 @@ class RouteTracerPageState extends State<RouteTracerPage> {
             TextField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                hintText: 'Enter Host or IP Address',
+                hintText: 'bitscoper.live',
                 labelText: 'Enter Host or IP Address',
               ),
               controller: hostController,
@@ -268,12 +287,12 @@ class RouteTracerPageState extends State<RouteTracerPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                OutlinedButton(
-                  onPressed: onTrace,
+                ElevatedButton(
+                  onPressed: isTracing ? null : onTrace,
                   child: const Text('Trace'),
                 ),
-                OutlinedButton(
-                  onPressed: onStop,
+                ElevatedButton(
+                  onPressed: isTracing ? onStop : null,
                   child: const Text('Stop'),
                 ),
               ],
@@ -291,6 +310,10 @@ class RouteTracerPageState extends State<RouteTracerPage> {
                           : FontWeight.normal,
                     ),
                   ),
+                if (isTracing)
+                  const Center(
+                    child: CircularProgressIndicator(),
+                  ),
               ],
             ),
           ],
@@ -300,18 +323,174 @@ class RouteTracerPageState extends State<RouteTracerPage> {
   }
 }
 
-class Tool3Page extends StatelessWidget {
-  const Tool3Page({super.key});
+class SeriesURICrawlerPage extends StatefulWidget {
+  const SeriesURICrawlerPage({super.key});
+
+  @override
+  SeriesURICrawlerPageState createState() => SeriesURICrawlerPageState();
+}
+
+class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  String uriPrefix = '', uriSuffix = '';
+  int lowerLimit = 1, upperLimit = 100;
+  bool isCrawling = false;
+  Map<String, String> titles = {};
+
+  Future<void> crawl() async {
+    setState(() {
+      isCrawling = true;
+      titles.clear();
+    });
+
+    for (var i = lowerLimit; i <= upperLimit; i++) {
+      if (!isCrawling) return;
+
+      var uri = '$uriPrefix$i$uriSuffix';
+      var response = await http.get(Uri.parse(uri));
+      dom.Document document = parser.parse(response.body);
+
+      dom.Element? titleElement = document.querySelector('title');
+      String title = titleElement != null ? titleElement.text : 'NO TITLE';
+
+      setState(() {
+        titles[uri] = title;
+      });
+    }
+
+    setState(() {
+      isCrawling = false;
+    });
+  }
+
+  void stop() {
+    setState(() {
+      isCrawling = false;
+    });
+  }
+
+  void copyToClipboard(String uri) {
+    Clipboard.setData(ClipboardData(text: uri));
+
+    Fluttertoast.showToast(
+      msg: "Link copied to clipboard",
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tool 3'),
+        title: const Text('Series URI Crawler'),
+        centerTitle: true,
+      ),
+      body: ListView(
+        children: [
+          Form(
+            key: _formKey,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              hintText: 'https://dlhd.sx/stream/stream-',
+                              labelText: 'URI Prefix'),
+                          onChanged: (value) => uriPrefix = value,
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        flex: 1,
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              hintText: '.php', labelText: 'URI Suffix'),
+                          onChanged: (value) => uriSuffix = value,
+                        ),
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              hintText: '1', labelText: 'Lower Limit'),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => lowerLimit = int.parse(value),
+                        ),
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                              hintText: '100', labelText: 'Upper Limit'),
+                          keyboardType: TextInputType.number,
+                          onChanged: (value) => upperLimit = int.parse(value),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: isCrawling
+                            ? null
+                            : () {
+                                if (_formKey.currentState!.validate()) {
+                                  crawl();
+                                }
+                              },
+                        child: const Text('Crawl'),
+                      ),
+                      ElevatedButton(
+                        onPressed: isCrawling ? stop : null,
+                        child: const Text('Stop'),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          Column(
+            children: <Widget>[
+              for (var entry in titles.entries)
+                ListTile(
+                  title: Text(entry.value),
+                  onTap: () => copyToClipboard(entry.key),
+                ),
+              if (isCrawling) const CircularProgressIndicator(),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class Tool4Page extends StatelessWidget {
+  const Tool4Page({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tool 4'),
         centerTitle: true,
       ),
       body: const Center(
-        child: Text('This is the page for Tool 3.'),
+        child: Text('This is the page for Tool 4.'),
       ),
     );
   }
