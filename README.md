@@ -1,2 +1,3 @@
-# Bitscoper Cyber ToolBox
-A Flutter project consisting of security and privacy tools.
+# bitscoper_cyber_toolbox
+
+A new Flutter project.
