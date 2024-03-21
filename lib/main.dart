@@ -1,6 +1,9 @@
 /* By Abdullah As-Sadeed */
 
 import 'dart:async';
+import 'dart:io';
+import 'package:crypto/crypto.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_traceroute/flutter_traceroute.dart';
@@ -39,7 +42,7 @@ class HomePage extends StatelessWidget {
       ),
       drawer: Drawer(
         child: ListView(
-          children: <Widget>[
+          children: [
             ListTile(
               title: const Text('TCP Port Scanner'),
               onTap: () {
@@ -61,21 +64,22 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
+              title: const Text('File Hash Calculator'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const FileHashCalculatorPage()),
+                );
+              },
+            ),
+            ListTile(
               title: const Text('Series URI Crawler'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
                       builder: (context) => const SeriesURICrawlerPage()),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text('Tool 4'),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Tool4Page()),
                 );
               },
             ),
@@ -204,7 +208,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
 
                       await scanTCPPorts();
                     },
-                    child: const Text('Scan TCP Ports'),
+                    child: const Text('Scan'),
                   ),
                 ),
           const SizedBox(height: 16),
@@ -323,6 +327,103 @@ class RouteTracerPageState extends State<RouteTracerPage> {
   }
 }
 
+class FileHashCalculatorPage extends StatelessWidget {
+  const FileHashCalculatorPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('File Hash Calculator'),
+        centerTitle: true,
+      ),
+      body: const FileHashCalculatorBody(),
+    );
+  }
+}
+
+class FileHashCalculatorBody extends StatefulWidget {
+  const FileHashCalculatorBody({super.key});
+
+  @override
+  FileHashCalculatorBodyState createState() => FileHashCalculatorBodyState();
+}
+
+class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
+  List<Map<String, dynamic>> hashValues = [];
+
+  void calculateHashes(List<File> files) {
+    setState(() {
+      hashValues = files.map((file) {
+        var bytes = file.readAsBytesSync();
+        var md5Hash = md5.convert(bytes);
+        var sha1Hash = sha1.convert(bytes);
+        var sha224Hash = sha224.convert(bytes);
+        var sha256Hash = sha256.convert(bytes);
+        var sha384Hash = sha384.convert(bytes);
+        var sha512Hash = sha512.convert(bytes);
+
+        return {
+          'File Name': file.path.split('/').last,
+          'MD5': md5Hash.toString(),
+          'SHA1': sha1Hash.toString(),
+          'SHA224': sha224Hash.toString(),
+          'SHA256': sha256Hash.toString(),
+          'SHA384': sha384Hash.toString(),
+          'SHA512': sha512Hash.toString(),
+        };
+      }).toList();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Center(
+            child: ElevatedButton(
+              child: const Text('Select Files'),
+              onPressed: () async {
+                List<Uint8List> files = [];
+
+                var result =
+                    await FilePicker.platform.pickFiles(allowMultiple: true);
+
+                if (result != null) {
+                  List<File> selectedFiles = result.paths
+                      .where((path) => path != null)
+                      .map((path) => File(path!))
+                      .toList();
+
+                  for (var file in selectedFiles) {
+                    files.add(file.readAsBytesSync());
+                  }
+
+                  calculateHashes(selectedFiles);
+                }
+              },
+            ),
+          ),
+          const SizedBox(height: 16),
+          ...hashValues.map((hash) => Card(
+                child: Column(
+                  children: hash.entries.map((entry) {
+                    return ListTile(
+                      title: Text(entry.key),
+                      subtitle: Text(entry.value),
+                    );
+                  }).toList(),
+                ),
+              )),
+        ],
+      ),
+    );
+  }
+}
+
 class SeriesURICrawlerPage extends StatefulWidget {
   const SeriesURICrawlerPage({super.key});
 
@@ -395,9 +496,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
-                children: <Widget>[
+                children: [
                   Row(
-                    children: <Widget>[
+                    children: [
                       Expanded(
                         flex: 2,
                         child: TextFormField(
@@ -419,7 +520,7 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
                     ],
                   ),
                   Row(
-                    children: <Widget>[
+                    children: [
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
@@ -464,7 +565,7 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
             ),
           ),
           Column(
-            children: <Widget>[
+            children: [
               for (var entry in titles.entries)
                 ListTile(
                   title: Text(entry.value),
@@ -474,23 +575,6 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
             ],
           )
         ],
-      ),
-    );
-  }
-}
-
-class Tool4Page extends StatelessWidget {
-  const Tool4Page({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Tool 4'),
-        centerTitle: true,
-      ),
-      body: const Center(
-        child: Text('This is the page for Tool 4.'),
       ),
     );
   }
