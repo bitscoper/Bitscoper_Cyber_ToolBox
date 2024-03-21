@@ -1,6 +1,10 @@
+/* By Abdullah As-Sadeed */
+
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:tcp_scanner/tcp_scanner.dart';
+import 'package:flutter_traceroute/flutter_traceroute.dart';
+import 'package:flutter_traceroute/flutter_traceroute_platform_interface.dart';
 
 void main() {
   runApp(const MainApp());
@@ -32,25 +36,34 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             ListTile(
-              title: const Text('Port Scanner'),
+              title: const Text('TCP Port Scanner'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const PortScannerPage()),
+                      builder: (context) => const TCPPortScannerPage()),
                 );
               },
             ),
             ListTile(
-              title: const Text('Tool 2'),
+              title: const Text('Route Tracer'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Tool2Page()),
+                  MaterialPageRoute(
+                      builder: (context) => const RouteTracerPage()),
                 );
               },
             ),
-            // Add more ListTiles for each tool
+            ListTile(
+              title: const Text('Tool 3'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const Tool3Page()),
+                );
+              },
+            ),
           ],
         ),
       ),
@@ -61,32 +74,33 @@ class HomePage extends StatelessWidget {
   }
 }
 
-class PortScannerPage extends StatelessWidget {
-  const PortScannerPage({super.key});
+class TCPPortScannerPage extends StatelessWidget {
+  const TCPPortScannerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Port Scanner'),
+        title: const Text('TCP Port Scanner'),
         centerTitle: true,
       ),
-      body: const PortScannerBody(),
+      body: const TCPPortScannerBody(),
     );
   }
 }
 
-class PortScannerBody extends StatefulWidget {
-  const PortScannerBody({super.key});
+class TCPPortScannerBody extends StatefulWidget {
+  const TCPPortScannerBody({super.key});
 
   @override
-  PortScannerBodyState createState() => PortScannerBodyState();
+  TCPPortScannerBodyState createState() => TCPPortScannerBodyState();
 }
 
-class PortScannerBodyState extends State<PortScannerBody> {
+class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
   final TextEditingController hostController = TextEditingController();
   final List<int> portList = List.generate(65536, (i) => i);
   final Stopwatch stopwatch = Stopwatch();
+
   bool isScanning = false;
   double scanProgress = 0.0;
   String scanResult = '';
@@ -97,17 +111,18 @@ class PortScannerBodyState extends State<PortScannerBody> {
     super.dispose();
   }
 
-  Future<void> scanPorts() async {
+  Future<void> scanTCPPorts() async {
     final String host = hostController.text.trim();
     if (host.isEmpty) {
       setState(() {
         scanResult = 'Enter a valid host or IP address!';
       });
+
       return;
     }
 
-    stopwatch.start();
     isScanning = true;
+    stopwatch.start();
 
     try {
       await TcpScannerTask(host, portList, shuffle: true, parallelism: 64)
@@ -115,18 +130,23 @@ class PortScannerBodyState extends State<PortScannerBody> {
           .asStream()
           .transform(StreamTransformer.fromHandlers(handleData: (report, sink) {
             scanProgress = 1.0;
+
             scanResult = 'Scanned ports:\t${report.ports.length}\n'
                 'Open ports:\t${report.openPorts}\n'
                 'Elapsed:\t${stopwatch.elapsed}\n';
+
             setState(() {});
+
             sink.add(report);
           }, handleError: (error, stackTrace, sink) {
             setState(() {
               scanResult = 'Error: $error';
             });
+
             sink.addError(error, stackTrace);
           }, handleDone: (sink) {
             sink.close();
+
             isScanning = false;
           }))
           .toList();
@@ -134,6 +154,7 @@ class PortScannerBodyState extends State<PortScannerBody> {
       setState(() {
         scanResult = 'Error: $error';
       });
+
       isScanning = false;
     }
   }
@@ -148,6 +169,7 @@ class PortScannerBodyState extends State<PortScannerBody> {
           TextField(
             controller: hostController,
             decoration: const InputDecoration(
+              hintText: 'Enter a Host or IP Address',
               labelText: 'Enter a Host or IP Address',
               border: OutlineInputBorder(),
             ),
@@ -164,9 +186,9 @@ class PortScannerBodyState extends State<PortScannerBody> {
                       scanProgress = 0.0;
                       setState(() {});
 
-                      await scanPorts();
+                      await scanTCPPorts();
                     },
-                    child: const Text('Scan Ports'),
+                    child: const Text('Scan TCP Ports'),
                   ),
                 ),
           const SizedBox(height: 16),
@@ -177,18 +199,119 @@ class PortScannerBodyState extends State<PortScannerBody> {
   }
 }
 
-class Tool2Page extends StatelessWidget {
-  const Tool2Page({super.key});
+class RouteTracerPage extends StatefulWidget {
+  const RouteTracerPage({super.key});
+
+  @override
+  State<RouteTracerPage> createState() => RouteTracerPageState();
+}
+
+class RouteTracerPageState extends State<RouteTracerPage> {
+  List<TracerouteStep> traceResults = [];
+
+  late final FlutterTraceroute routeTracer;
+  late final TextEditingController hostController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    routeTracer = FlutterTraceroute();
+    hostController = TextEditingController();
+  }
+
+  void onTrace() {
+    setState(() {
+      traceResults = <TracerouteStep>[];
+    });
+
+    final host = hostController.text;
+
+    final arguments = TracerouteArgs(host: host);
+
+    routeTracer.trace(arguments).listen((event) {
+      setState(() {
+        traceResults = List<TracerouteStep>.from(traceResults)..add(event);
+      });
+    });
+  }
+
+  void onStop() {
+    routeTracer.stopTrace();
+
+    setState(() {
+      traceResults = <TracerouteStep>[];
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tool 2'),
+        title: const Text('Route Tracer'),
+        centerTitle: true,
+      ),
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TextField(
+              decoration: const InputDecoration(
+                border: OutlineInputBorder(),
+                hintText: 'Enter Host or IP Address',
+                labelText: 'Enter Host or IP Address',
+              ),
+              controller: hostController,
+            ),
+            const SizedBox(height: 16),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                OutlinedButton(
+                  onPressed: onTrace,
+                  child: const Text('Trace'),
+                ),
+                OutlinedButton(
+                  onPressed: onStop,
+                  child: const Text('Stop'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                for (final result in traceResults)
+                  Text(
+                    result.toString(),
+                    style: TextStyle(
+                      fontWeight: result is TracerouteStepFinished
+                          ? FontWeight.bold
+                          : FontWeight.normal,
+                    ),
+                  ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class Tool3Page extends StatelessWidget {
+  const Tool3Page({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Tool 3'),
         centerTitle: true,
       ),
       body: const Center(
-        child: Text('This is the page for Tool 2.'),
+        child: Text('This is the page for Tool 3.'),
       ),
     );
   }
