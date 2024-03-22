@@ -26,6 +26,7 @@ class MainApp extends StatelessWidget {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      // theme: ThemeData.dark(),
     );
   }
 }
@@ -43,13 +44,17 @@ class HomePage extends StatelessWidget {
       drawer: Drawer(
         child: ListView(
           children: [
+            const DrawerHeader(
+              child: Text('Bitscoper Cyber WorkBench'),
+            ),
             ListTile(
               title: const Text('TCP Port Scanner'),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const TCPPortScannerPage()),
+                  MaterialPageRoute(builder: (context) {
+                    return const TCPPortScannerPage();
+                  }),
                 );
               },
             ),
@@ -58,8 +63,9 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const RouteTracerPage()),
+                  MaterialPageRoute(builder: (context) {
+                    return const RouteTracerPage();
+                  }),
                 );
               },
             ),
@@ -68,8 +74,9 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const FileHashCalculatorPage()),
+                  MaterialPageRoute(builder: (context) {
+                    return const FileHashCalculatorPage();
+                  }),
                 );
               },
             ),
@@ -78,8 +85,9 @@ class HomePage extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(
-                      builder: (context) => const SeriesURICrawlerPage()),
+                  MaterialPageRoute(builder: (context) {
+                    return const SeriesURICrawlerPage();
+                  }),
                 );
               },
             ),
@@ -219,14 +227,29 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
   }
 }
 
-class RouteTracerPage extends StatefulWidget {
+class RouteTracerPage extends StatelessWidget {
   const RouteTracerPage({super.key});
 
   @override
-  State<RouteTracerPage> createState() => RouteTracerPageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Route Tracer'),
+        centerTitle: true,
+      ),
+      body: const RouteTracerBody(),
+    );
+  }
 }
 
-class RouteTracerPageState extends State<RouteTracerPage> {
+class RouteTracerBody extends StatefulWidget {
+  const RouteTracerBody({super.key});
+
+  @override
+  RouteTracerBodyState createState() => RouteTracerBodyState();
+}
+
+class RouteTracerBodyState extends State<RouteTracerBody> {
   late final FlutterTraceroute routeTracer;
   late final TextEditingController hostController;
   StreamSubscription? traceSubscription;
@@ -269,59 +292,53 @@ class RouteTracerPageState extends State<RouteTracerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Route Tracer'),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TextField(
-              decoration: const InputDecoration(
-                border: OutlineInputBorder(),
-                hintText: 'bitscoper.live',
-                labelText: 'Enter Host or IP Address',
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'bitscoper.live',
+              labelText: 'Enter Host or IP Address',
+            ),
+            controller: hostController,
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              ElevatedButton(
+                onPressed: isTracing ? null : onTrace,
+                child: const Text('Trace'),
               ),
-              controller: hostController,
-            ),
-            const SizedBox(height: 16),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                ElevatedButton(
-                  onPressed: isTracing ? null : onTrace,
-                  child: const Text('Trace'),
-                ),
-                ElevatedButton(
-                  onPressed: isTracing ? onStop : null,
-                  child: const Text('Stop'),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                for (final result in traceResults)
-                  Text(
-                    result.toString(),
-                    style: TextStyle(
-                      fontWeight: result is TracerouteStepFinished
-                          ? FontWeight.bold
-                          : FontWeight.normal,
-                    ),
+              ElevatedButton(
+                onPressed: isTracing ? onStop : null,
+                child: const Text('Stop'),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              for (final result in traceResults)
+                Text(
+                  result.toString(),
+                  style: TextStyle(
+                    fontWeight: result is TracerouteStepFinished
+                        ? FontWeight.bold
+                        : FontWeight.normal,
                   ),
-                if (isTracing)
-                  const Center(
-                    child: CircularProgressIndicator(),
-                  ),
-              ],
-            ),
-          ],
-        ),
+                ),
+              if (isTracing)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
+            ],
+          ),
+        ],
       ),
     );
   }
@@ -393,10 +410,10 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                     await FilePicker.platform.pickFiles(allowMultiple: true);
 
                 if (result != null) {
-                  List<File> selectedFiles = result.paths
-                      .where((path) => path != null)
-                      .map((path) => File(path!))
-                      .toList();
+                  List<File> selectedFiles =
+                      result.paths.where((path) => path != null).map((path) {
+                    return File(path!);
+                  }).toList();
 
                   for (var file in selectedFiles) {
                     files.add(file.readAsBytesSync());
@@ -408,30 +425,47 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
             ),
           ),
           const SizedBox(height: 16),
-          ...hashValues.map((hash) => Card(
-                child: Column(
-                  children: hash.entries.map((entry) {
-                    return ListTile(
-                      title: Text(entry.key),
-                      subtitle: Text(entry.value),
-                    );
-                  }).toList(),
-                ),
-              )),
+          ...hashValues.map((hash) {
+            return Card(
+              child: Column(
+                children: hash.entries.map((entry) {
+                  return ListTile(
+                    title: Text(entry.key),
+                    subtitle: Text(entry.value),
+                  );
+                }).toList(),
+              ),
+            );
+          }),
         ],
       ),
     );
   }
 }
 
-class SeriesURICrawlerPage extends StatefulWidget {
+class SeriesURICrawlerPage extends StatelessWidget {
   const SeriesURICrawlerPage({super.key});
 
   @override
-  SeriesURICrawlerPageState createState() => SeriesURICrawlerPageState();
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Series URI Crawler'),
+        centerTitle: true,
+      ),
+      body: const SeriesURICrawlerBody(),
+    );
+  }
 }
 
-class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
+class SeriesURICrawlerBody extends StatefulWidget {
+  const SeriesURICrawlerBody({super.key});
+
+  @override
+  SeriesURICrawlerBodyState createState() => SeriesURICrawlerBodyState();
+}
+
+class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
   final _formKey = GlobalKey<FormState>();
 
   String uriPrefix = '', uriSuffix = '';
@@ -484,12 +518,10 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Series URI Crawler'),
-        centerTitle: true,
-      ),
-      body: ListView(
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Form(
             key: _formKey,
@@ -505,7 +537,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
                           decoration: const InputDecoration(
                               hintText: 'https://dlhd.sx/stream/stream-',
                               labelText: 'URI Prefix'),
-                          onChanged: (value) => uriPrefix = value,
+                          onChanged: (value) {
+                            uriPrefix = value;
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -514,7 +548,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
                         child: TextFormField(
                           decoration: const InputDecoration(
                               hintText: '.php', labelText: 'URI Suffix'),
-                          onChanged: (value) => uriSuffix = value,
+                          onChanged: (value) {
+                            uriSuffix = value;
+                          },
                         ),
                       ),
                     ],
@@ -526,7 +562,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
                           decoration: const InputDecoration(
                               hintText: '1', labelText: 'Lower Limit'),
                           keyboardType: TextInputType.number,
-                          onChanged: (value) => lowerLimit = int.parse(value),
+                          onChanged: (value) {
+                            lowerLimit = int.parse(value);
+                          },
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -535,7 +573,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
                           decoration: const InputDecoration(
                               hintText: '100', labelText: 'Upper Limit'),
                           keyboardType: TextInputType.number,
-                          onChanged: (value) => upperLimit = int.parse(value),
+                          onChanged: (value) {
+                            upperLimit = int.parse(value);
+                          },
                         ),
                       ),
                     ],
@@ -569,7 +609,9 @@ class SeriesURICrawlerPageState extends State<SeriesURICrawlerPage> {
               for (var entry in titles.entries)
                 ListTile(
                   title: Text(entry.value),
-                  onTap: () => copyToClipboard(entry.key),
+                  onTap: () {
+                    copyToClipboard(entry.key);
+                  },
                 ),
               if (isCrawling) const CircularProgressIndicator(),
             ],
