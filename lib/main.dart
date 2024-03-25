@@ -13,6 +13,7 @@ import 'package:html/dom.dart' as dom;
 import 'package:html/parser.dart' as parser;
 import 'package:http/http.dart' as http;
 import 'package:tcp_scanner/tcp_scanner.dart';
+import 'package:whois/whois.dart';
 
 void main() {
   runApp(const MainApp());
@@ -87,6 +88,17 @@ class HomePage extends StatelessWidget {
                   context,
                   MaterialPageRoute(builder: (context) {
                     return const SeriesURICrawlerPage();
+                  }),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('WHOIS Retriever'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) {
+                    return const WHOISRetrieverPage();
                   }),
                 );
               },
@@ -301,7 +313,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'bitscoper.live',
-              labelText: 'Enter Host or IP Address',
+              labelText: 'Enter a Host or IP Address',
             ),
             controller: hostController,
           ),
@@ -475,8 +487,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
   Future<void> crawl() async {
     setState(() {
-      isCrawling = true;
       titles.clear();
+      isCrawling = true;
     });
 
     for (var i = lowerLimit; i <= upperLimit; i++) {
@@ -616,6 +628,104 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
               if (isCrawling) const CircularProgressIndicator(),
             ],
           )
+        ],
+      ),
+    );
+  }
+}
+
+class WHOISRetrieverPage extends StatelessWidget {
+  const WHOISRetrieverPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('WHOIS Retriever'),
+        centerTitle: true,
+      ),
+      body: const WHOISRetrieverBody(),
+    );
+  }
+}
+
+class WHOISRetrieverBody extends StatefulWidget {
+  const WHOISRetrieverBody({super.key});
+
+  @override
+  SWHOISRetrieverBodyState createState() => SWHOISRetrieverBodyState();
+}
+
+class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
+  String domainName = '';
+  bool isLoading = false;
+  Map<String, String> whoisInformation = {};
+
+  void retrieveWHOIS() async {
+    setState(() {
+      whoisInformation.clear();
+      isLoading = true;
+    });
+
+    var options = const LookupOptions(
+      timeout: Duration(milliseconds: 10000),
+      port: 43,
+    );
+
+    try {
+      final whoisResponse = await Whois.lookup(domainName, options);
+      final parsedResponse = Whois.formatLookup(whoisResponse);
+
+      setState(() {
+        whoisInformation = Map<String, String>.from(parsedResponse);
+        isLoading = false;
+      });
+    } catch (error) {
+      setState(() {
+        whoisInformation = {'Error': error.toString()};
+        isLoading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          TextField(
+            onChanged: (value) {
+              domainName = value;
+            },
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              hintText: 'bitscoper.live',
+              labelText: 'Enter a Domain Name',
+            ),
+          ),
+          const SizedBox(height: 16),
+          Center(
+            child: ElevatedButton(
+              onPressed: retrieveWHOIS,
+              child: const Text('Lookup'),
+            ),
+          ),
+          const SizedBox(height: 16),
+          if (isLoading)
+            const Center(child: CircularProgressIndicator())
+          else
+            Card(
+              child: Column(
+                children: whoisInformation.entries.map((entry) {
+                  return ListTile(
+                    title: Text(entry.key),
+                    subtitle: Text(entry.value),
+                  );
+                }).toList(),
+              ),
+            ),
         ],
       ),
     );
