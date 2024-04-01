@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
       ),
       drawer: Drawer(
         child: ListView(
-          children: [
+          children: <Widget>[
             const DrawerHeader(
               child: Text(
                 'Bitscoper Cyber WorkBench',
@@ -206,7 +206,8 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
   final List<int> portList = List.generate(65536, (i) => i);
   bool isScanning = false;
   double scanProgress = 0.0;
-  String scanResult = '';
+  late List<int> openPorts;
+  String scanInformation = '';
 
   @override
   void dispose() {
@@ -220,7 +221,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
     if (host.isEmpty) {
       setState(
         () {
-          scanResult = 'Enter a valid host or IP address!';
+          scanInformation = 'Enter a valid host or IP address!';
         },
       );
 
@@ -247,9 +248,12 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
               ) {
                 scanProgress = 1.0;
 
-                scanResult = 'Scanned ports:\t${report.ports.length}\n'
-                    'Open ports:\t${report.openPorts}\n'
-                    'Elapsed:\t${stopwatch.elapsed}\n';
+                openPorts = report.openPorts;
+                openPorts = openPorts.cast<int>();
+                openPorts.sort();
+
+                scanInformation = 'Scanned ports:\t${report.ports.length}\n'
+                    'Elapsed:\t${stopwatch.elapsed}';
 
                 setState(
                   () {},
@@ -266,7 +270,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
               ) {
                 setState(
                   () {
-                    scanResult = 'Error: $error';
+                    scanInformation = 'Error: $error';
                   },
                 );
 
@@ -288,7 +292,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
     } catch (error) {
       setState(
         () {
-          scanResult = 'Error: $error';
+          scanInformation = 'Error: $error';
         },
       );
 
@@ -306,7 +310,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           TextField(
             controller: hostController,
             decoration: const InputDecoration(
@@ -342,10 +346,36 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
             height: 16,
           ),
           if (scanProgress == 1.0) ...[
-            Text(
-              scanResult,
-            )
+            Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: <Widget>[
+                for (var port in openPorts)
+                  Container(
+                    padding: const EdgeInsets.all(
+                      8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Colors.grey,
+                      ),
+                      borderRadius: BorderRadius.circular(
+                        4,
+                      ),
+                    ),
+                    child: Text(
+                      port.toString(),
+                    ),
+                  ),
+              ],
+            ),
           ],
+          const SizedBox(
+            height: 16,
+          ),
+          Text(
+            scanInformation,
+          ),
         ],
       ),
     );
@@ -449,7 +479,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
@@ -463,7 +493,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
+            children: <Widget>[
               ElevatedButton(
                 onPressed: isTracing ? null : onTrace,
                 child: const Text(
@@ -483,7 +513,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+            children: <Widget>[
               for (final result in traceResults)
                 Text(
                   result.toString(),
@@ -588,7 +618,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Center(
             child: ElevatedButton(
               child: const Text(
@@ -640,7 +670,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
               hash,
             ) {
               return Column(
-                children: [
+                children: <Widget>[
                   Card(
                     child: Column(
                       children: hash.entries.map(
@@ -648,7 +678,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                           entry,
                         ) {
                           return Column(
-                            children: [
+                            children: <Widget>[
                               Card(
                                 child: ListTile(
                                   title: Text(
@@ -785,7 +815,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Form(
             key: _formKey,
             child: Padding(
@@ -793,9 +823,9 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                 16,
               ),
               child: Column(
-                children: [
+                children: <Widget>[
                   Row(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         flex: 2,
                         child: TextFormField(
@@ -830,7 +860,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                     ],
                   ),
                   Row(
-                    children: [
+                    children: <Widget>[
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
@@ -873,7 +903,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                   ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
+                    children: <Widget>[
                       ElevatedButton(
                         onPressed: isCrawling
                             ? null
@@ -899,7 +929,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
             ),
           ),
           Column(
-            children: [
+            children: <Widget>[
               for (var entry in titles.entries)
                 Card(
                   child: ListTile(
@@ -1020,7 +1050,7 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           TextField(
             onChanged: (
               value,
