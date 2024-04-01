@@ -685,6 +685,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                             children: <Widget>[
                               Card(
                                 elevation: 0.0,
+                                color: Colors.transparent,
                                 child: ListTile(
                                   title: Text(
                                     entry.key,
