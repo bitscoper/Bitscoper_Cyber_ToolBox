@@ -16,7 +16,9 @@ import 'package:tcp_scanner/tcp_scanner.dart';
 import 'package:whois/whois.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(
+    const MainApp(),
+  );
 }
 
 class MainApp extends StatelessWidget {
@@ -168,27 +170,29 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
       await TcpScannerTask(host, portList, shuffle: true, parallelism: 64)
           .start()
           .asStream()
-          .transform(StreamTransformer.fromHandlers(handleData: (report, sink) {
-            scanProgress = 1.0;
+          .transform(
+            StreamTransformer.fromHandlers(handleData: (report, sink) {
+              scanProgress = 1.0;
 
-            scanResult = 'Scanned ports:\t${report.ports.length}\n'
-                'Open ports:\t${report.openPorts}\n'
-                'Elapsed:\t${stopwatch.elapsed}\n';
+              scanResult = 'Scanned ports:\t${report.ports.length}\n'
+                  'Open ports:\t${report.openPorts}\n'
+                  'Elapsed:\t${stopwatch.elapsed}\n';
 
-            setState(() {});
+              setState(() {});
 
-            sink.add(report);
-          }, handleError: (error, stackTrace, sink) {
-            setState(() {
-              scanResult = 'Error: $error';
-            });
+              sink.add(report);
+            }, handleError: (error, stackTrace, sink) {
+              setState(() {
+                scanResult = 'Error: $error';
+              });
 
-            sink.addError(error, stackTrace);
-          }, handleDone: (sink) {
-            sink.close();
+              sink.addError(error, stackTrace);
+            }, handleDone: (sink) {
+              sink.close();
 
-            isScanning = false;
-          }))
+              isScanning = false;
+            }),
+          )
           .toList();
     } catch (error) {
       setState(() {
@@ -428,7 +432,9 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                   }).toList();
 
                   for (var file in selectedFiles) {
-                    files.add(file.readAsBytesSync());
+                    files.add(
+                      file.readAsBytesSync(),
+                    );
                   }
 
                   calculateHashes(selectedFiles);
@@ -495,7 +501,9 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
       if (!isCrawling) return;
 
       var uri = '$uriPrefix$i$uriSuffix';
-      var response = await http.get(Uri.parse(uri));
+      var response = await http.get(
+        Uri.parse(uri),
+      );
       dom.Document document = parser.parse(response.body);
 
       dom.Element? titleElement = document.querySelector('title');
@@ -518,7 +526,9 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
   }
 
   void copyToClipboard(String uri) {
-    Clipboard.setData(ClipboardData(text: uri));
+    Clipboard.setData(
+      ClipboardData(text: uri),
+    );
 
     Fluttertoast.showToast(
       msg: "Link copied to clipboard",
@@ -708,13 +718,15 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
           const SizedBox(height: 16),
           Center(
             child: ElevatedButton(
-              onPressed: retrieveWHOIS,
+              onPressed: isLoading ? null : retrieveWHOIS,
               child: const Text('Lookup'),
             ),
           ),
           const SizedBox(height: 16),
           if (isLoading)
-            const Center(child: CircularProgressIndicator())
+            const Center(
+              child: CircularProgressIndicator(),
+            )
           else
             Card(
               child: Column(
