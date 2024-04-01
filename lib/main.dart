@@ -525,13 +525,13 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
     });
   }
 
-  void copyToClipboard(String uri) {
+  void copyToClipBoard(String dataType, String string) {
     Clipboard.setData(
-      ClipboardData(text: uri),
+      ClipboardData(text: string),
     );
 
     Fluttertoast.showToast(
-      msg: "Link copied to clipboard",
+      msg: "$dataType copied to clipboard",
       gravity: ToastGravity.BOTTOM,
       backgroundColor: Colors.grey,
       textColor: Colors.white,
@@ -629,13 +629,25 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
           Column(
             children: [
               for (var entry in titles.entries)
-                ListTile(
-                  title: Text(entry.value),
-                  onTap: () {
-                    copyToClipboard(entry.key);
-                  },
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.link),
+                    title: Text(
+                      entry.value,
+                      style: const TextStyle(color: Colors.blue),
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.copy),
+                      onPressed: () {
+                        copyToClipBoard("Link", entry.key);
+                      },
+                    ),
+                  ),
                 ),
-              if (isCrawling) const CircularProgressIndicator(),
+              if (isCrawling)
+                const Center(
+                  child: CircularProgressIndicator(),
+                ),
             ],
           )
         ],
