@@ -25,7 +25,9 @@ class MainApp extends StatelessWidget {
   const MainApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
@@ -38,70 +40,106 @@ class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Bitscoper Cyber ToolBox'),
+        title: const Text(
+          'Bitscoper Cyber ToolBox',
+        ),
         centerTitle: true,
       ),
       drawer: Drawer(
         child: ListView(
           children: [
             const DrawerHeader(
-              child: Text('Bitscoper Cyber WorkBench'),
+              child: Text(
+                'Bitscoper Cyber WorkBench',
+              ),
             ),
             ListTile(
-              title: const Text('TCP Port Scanner'),
+              title: const Text(
+                'TCP Port Scanner',
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return const TCPPortScannerPage();
-                  }),
+                  MaterialPageRoute(
+                    builder: (
+                      context,
+                    ) {
+                      return const TCPPortScannerPage();
+                    },
+                  ),
                 );
               },
             ),
             ListTile(
-              title: const Text('Route Tracer'),
+              title: const Text(
+                'Route Tracer',
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return const RouteTracerPage();
-                  }),
+                  MaterialPageRoute(
+                    builder: (
+                      context,
+                    ) {
+                      return const RouteTracerPage();
+                    },
+                  ),
                 );
               },
             ),
             ListTile(
-              title: const Text('File Hash Calculator'),
+              title: const Text(
+                'File Hash Calculator',
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return const FileHashCalculatorPage();
-                  }),
+                  MaterialPageRoute(
+                    builder: (
+                      context,
+                    ) {
+                      return const FileHashCalculatorPage();
+                    },
+                  ),
                 );
               },
             ),
             ListTile(
-              title: const Text('Series URI Crawler'),
+              title: const Text(
+                'Series URI Crawler',
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return const SeriesURICrawlerPage();
-                  }),
+                  MaterialPageRoute(
+                    builder: (
+                      context,
+                    ) {
+                      return const SeriesURICrawlerPage();
+                    },
+                  ),
                 );
               },
             ),
             ListTile(
-              title: const Text('WHOIS Retriever'),
+              title: const Text(
+                'WHOIS Retriever',
+              ),
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) {
-                    return const WHOISRetrieverPage();
-                  }),
+                  MaterialPageRoute(
+                    builder: (
+                      context,
+                    ) {
+                      return const WHOISRetrieverPage();
+                    },
+                  ),
                 );
               },
             ),
@@ -109,20 +147,44 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: const Center(
-        child: Text('Select a tool from the drawer.'),
+        child: Text(
+          'Select a tool from the drawer.',
+        ),
       ),
     );
   }
+}
+
+void copyToClipBoard(
+  String dataType,
+  String string,
+) {
+  Clipboard.setData(
+    ClipboardData(
+      text: string,
+    ),
+  );
+
+  Fluttertoast.showToast(
+    msg: "$dataType copied to clipboard",
+    gravity: ToastGravity.BOTTOM,
+    backgroundColor: Colors.grey,
+    textColor: Colors.white,
+  );
 }
 
 class TCPPortScannerPage extends StatelessWidget {
   const TCPPortScannerPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('TCP Port Scanner'),
+        title: const Text(
+          'TCP Port Scanner',
+        ),
         centerTitle: true,
       ),
       body: const TCPPortScannerBody(),
@@ -156,9 +218,11 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
     final String host = hostController.text.trim();
 
     if (host.isEmpty) {
-      setState(() {
-        scanResult = 'Enter a valid host or IP address!';
-      });
+      setState(
+        () {
+          scanResult = 'Enter a valid host or IP address!';
+        },
+      );
 
       return;
     }
@@ -167,46 +231,79 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
     stopwatch.start();
 
     try {
-      await TcpScannerTask(host, portList, shuffle: true, parallelism: 64)
+      await TcpScannerTask(
+        host,
+        portList,
+        shuffle: true,
+        parallelism: 64,
+      )
           .start()
           .asStream()
           .transform(
-            StreamTransformer.fromHandlers(handleData: (report, sink) {
-              scanProgress = 1.0;
+            StreamTransformer.fromHandlers(
+              handleData: (
+                report,
+                sink,
+              ) {
+                scanProgress = 1.0;
 
-              scanResult = 'Scanned ports:\t${report.ports.length}\n'
-                  'Open ports:\t${report.openPorts}\n'
-                  'Elapsed:\t${stopwatch.elapsed}\n';
+                scanResult = 'Scanned ports:\t${report.ports.length}\n'
+                    'Open ports:\t${report.openPorts}\n'
+                    'Elapsed:\t${stopwatch.elapsed}\n';
 
-              setState(() {});
+                setState(
+                  () {},
+                );
 
-              sink.add(report);
-            }, handleError: (error, stackTrace, sink) {
-              setState(() {
-                scanResult = 'Error: $error';
-              });
+                sink.add(
+                  report,
+                );
+              },
+              handleError: (
+                error,
+                stackTrace,
+                sink,
+              ) {
+                setState(
+                  () {
+                    scanResult = 'Error: $error';
+                  },
+                );
 
-              sink.addError(error, stackTrace);
-            }, handleDone: (sink) {
-              sink.close();
+                sink.addError(
+                  error,
+                  stackTrace,
+                );
+              },
+              handleDone: (
+                sink,
+              ) {
+                sink.close();
 
-              isScanning = false;
-            }),
+                isScanning = false;
+              },
+            ),
           )
           .toList();
     } catch (error) {
-      setState(() {
-        scanResult = 'Error: $error';
-      });
+      setState(
+        () {
+          scanResult = 'Error: $error';
+        },
+      );
 
       isScanning = false;
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(
+        16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -218,7 +315,9 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
               labelText: 'Enter a Host or IP Address',
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           isScanning
               ? const Center(
                   child: CircularProgressIndicator(),
@@ -228,15 +327,25 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                     onPressed: () async {
                       stopwatch.reset();
                       scanProgress = 0.0;
-                      setState(() {});
+                      setState(
+                        () {},
+                      );
 
                       await scanTCPPorts();
                     },
-                    child: const Text('Scan'),
+                    child: const Text(
+                      'Scan',
+                    ),
                   ),
                 ),
-          const SizedBox(height: 16),
-          if (scanProgress == 1.0) ...[Text(scanResult)],
+          const SizedBox(
+            height: 16,
+          ),
+          if (scanProgress == 1.0) ...[
+            Text(
+              scanResult,
+            )
+          ],
         ],
       ),
     );
@@ -247,10 +356,14 @@ class RouteTracerPage extends StatelessWidget {
   const RouteTracerPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Route Tracer'),
+        title: const Text(
+          'Route Tracer',
+        ),
         centerTitle: true,
       ),
       body: const RouteTracerBody(),
@@ -282,34 +395,58 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
   }
 
   void onTrace() {
-    setState(() {
-      traceResults = <TracerouteStep>[];
-      isTracing = true;
-    });
+    setState(
+      () {
+        traceResults = <TracerouteStep>[];
+        isTracing = true;
+      },
+    );
 
     final host = hostController.text;
-    final arguments = TracerouteArgs(host: host);
+    final arguments = TracerouteArgs(
+      host: host,
+    );
 
-    traceSubscription = routeTracer.trace(arguments).listen((event) {
-      setState(() {
-        traceResults = List<TracerouteStep>.from(traceResults)..add(event);
-      });
-    });
+    traceSubscription = routeTracer
+        .trace(
+      arguments,
+    )
+        .listen(
+      (
+        event,
+      ) {
+        setState(
+          () {
+            traceResults = List<TracerouteStep>.from(
+              traceResults,
+            )..add(
+                event,
+              );
+          },
+        );
+      },
+    );
   }
 
   void onStop() {
     routeTracer.stopTrace();
     traceSubscription?.cancel();
 
-    setState(() {
-      isTracing = false;
-    });
+    setState(
+      () {
+        isTracing = false;
+      },
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(
+        16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -321,21 +458,29 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
             ),
             controller: hostController,
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               ElevatedButton(
                 onPressed: isTracing ? null : onTrace,
-                child: const Text('Trace'),
+                child: const Text(
+                  'Trace',
+                ),
               ),
               ElevatedButton(
                 onPressed: isTracing ? onStop : null,
-                child: const Text('Stop'),
+                child: const Text(
+                  'Stop',
+                ),
               ),
             ],
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -364,10 +509,14 @@ class FileHashCalculatorPage extends StatelessWidget {
   const FileHashCalculatorPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('File Hash Calculator'),
+        title: const Text(
+          'File Hash Calculator',
+        ),
         centerTitle: true,
       ),
       body: const FileHashCalculatorBody(),
@@ -385,51 +534,90 @@ class FileHashCalculatorBody extends StatefulWidget {
 class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
   List<Map<String, dynamic>> hashValues = [];
 
-  void calculateHashes(List<File> files) {
-    setState(() {
-      hashValues = files.map((file) {
-        var bytes = file.readAsBytesSync();
-        var md5Hash = md5.convert(bytes);
-        var sha1Hash = sha1.convert(bytes);
-        var sha224Hash = sha224.convert(bytes);
-        var sha256Hash = sha256.convert(bytes);
-        var sha384Hash = sha384.convert(bytes);
-        var sha512Hash = sha512.convert(bytes);
+  void calculateHashes(
+    List<File> files,
+  ) {
+    setState(
+      () {
+        hashValues = files.map(
+          (
+            file,
+          ) {
+            var bytes = file.readAsBytesSync();
+            var md5Hash = md5.convert(
+              bytes,
+            );
+            var sha1Hash = sha1.convert(
+              bytes,
+            );
+            var sha224Hash = sha224.convert(
+              bytes,
+            );
+            var sha256Hash = sha256.convert(
+              bytes,
+            );
+            var sha384Hash = sha384.convert(
+              bytes,
+            );
+            var sha512Hash = sha512.convert(
+              bytes,
+            );
 
-        return {
-          'File Name': file.path.split('/').last,
-          'MD5': md5Hash.toString(),
-          'SHA1': sha1Hash.toString(),
-          'SHA224': sha224Hash.toString(),
-          'SHA256': sha256Hash.toString(),
-          'SHA384': sha384Hash.toString(),
-          'SHA512': sha512Hash.toString(),
-        };
-      }).toList();
-    });
+            return {
+              'File Name': file.path.split('/').last,
+              'MD5': md5Hash.toString(),
+              'SHA1': sha1Hash.toString(),
+              'SHA224': sha224Hash.toString(),
+              'SHA256': sha256Hash.toString(),
+              'SHA384': sha384Hash.toString(),
+              'SHA512': sha512Hash.toString(),
+            };
+          },
+        ).toList();
+      },
+    );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(
+        16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
             child: ElevatedButton(
-              child: const Text('Select Files'),
+              child: const Text(
+                'Select Files',
+              ),
               onPressed: () async {
                 List<Uint8List> files = [];
 
-                var result =
-                    await FilePicker.platform.pickFiles(allowMultiple: true);
+                var result = await FilePicker.platform.pickFiles(
+                  allowMultiple: true,
+                );
 
                 if (result != null) {
-                  List<File> selectedFiles =
-                      result.paths.where((path) => path != null).map((path) {
-                    return File(path!);
-                  }).toList();
+                  List<File> selectedFiles = result.paths
+                      .where(
+                    (
+                      path,
+                    ) =>
+                        path != null,
+                  )
+                      .map(
+                    (
+                      path,
+                    ) {
+                      return File(
+                        path!,
+                      );
+                    },
+                  ).toList();
 
                   for (var file in selectedFiles) {
                     files.add(
@@ -437,24 +625,68 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                     );
                   }
 
-                  calculateHashes(selectedFiles);
+                  calculateHashes(
+                    selectedFiles,
+                  );
                 }
               },
             ),
           ),
-          const SizedBox(height: 16),
-          ...hashValues.map((hash) {
-            return Card(
-              child: Column(
-                children: hash.entries.map((entry) {
-                  return ListTile(
-                    title: Text(entry.key),
-                    subtitle: Text(entry.value),
-                  );
-                }).toList(),
-              ),
-            );
-          }),
+          const SizedBox(
+            height: 16,
+          ),
+          ...hashValues.map(
+            (
+              hash,
+            ) {
+              return Column(
+                children: [
+                  Card(
+                    child: Column(
+                      children: hash.entries.map(
+                        (
+                          entry,
+                        ) {
+                          return Column(
+                            children: [
+                              Card(
+                                child: ListTile(
+                                  title: Text(
+                                    entry.key,
+                                  ),
+                                  subtitle: Text(
+                                    entry.value,
+                                  ),
+                                  trailing: IconButton(
+                                    icon: const Icon(
+                                      Icons.copy,
+                                    ),
+                                    onPressed: () {
+                                      copyToClipBoard(
+                                        "Hash",
+                                        entry.value,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                              if (hash.entries.last != entry)
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                            ],
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                ],
+              );
+            },
+          ),
         ],
       ),
     );
@@ -465,10 +697,14 @@ class SeriesURICrawlerPage extends StatelessWidget {
   const SeriesURICrawlerPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Series URI Crawler'),
+        title: const Text(
+          'Series URI Crawler',
+        ),
         centerTitle: true,
       ),
       body: const SeriesURICrawlerBody(),
@@ -492,63 +728,70 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
   Map<String, String> titles = {};
 
   Future<void> crawl() async {
-    setState(() {
-      titles.clear();
-      isCrawling = true;
-    });
+    setState(
+      () {
+        titles.clear();
+        isCrawling = true;
+      },
+    );
 
     for (var i = lowerLimit; i <= upperLimit; i++) {
       if (!isCrawling) return;
 
       var uri = '$uriPrefix$i$uriSuffix';
       var response = await http.get(
-        Uri.parse(uri),
+        Uri.parse(
+          uri,
+        ),
       );
-      dom.Document document = parser.parse(response.body);
+      dom.Document document = parser.parse(
+        response.body,
+      );
 
-      dom.Element? titleElement = document.querySelector('title');
+      dom.Element? titleElement = document.querySelector(
+        'title',
+      );
       String title = titleElement != null ? titleElement.text : 'NO TITLE';
 
-      setState(() {
-        titles[uri] = title;
-      });
+      setState(
+        () {
+          titles[uri] = title;
+        },
+      );
     }
 
-    setState(() {
-      isCrawling = false;
-    });
+    setState(
+      () {
+        isCrawling = false;
+      },
+    );
   }
 
   void stop() {
-    setState(() {
-      isCrawling = false;
-    });
-  }
-
-  void copyToClipBoard(String dataType, String string) {
-    Clipboard.setData(
-      ClipboardData(text: string),
-    );
-
-    Fluttertoast.showToast(
-      msg: "$dataType copied to clipboard",
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.grey,
-      textColor: Colors.white,
+    setState(
+      () {
+        isCrawling = false;
+      },
     );
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(
+        16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(
+                16,
+              ),
               child: Column(
                 children: [
                   Row(
@@ -557,20 +800,29 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         flex: 2,
                         child: TextFormField(
                           decoration: const InputDecoration(
-                              hintText: 'https://dlhd.sx/stream/stream-',
-                              labelText: 'URI Prefix'),
-                          onChanged: (value) {
+                            hintText: 'https://dlhd.sx/stream/stream-',
+                            labelText: 'URI Prefix',
+                          ),
+                          onChanged: (
+                            value,
+                          ) {
                             uriPrefix = value;
                           },
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(
+                        width: 16,
+                      ),
                       Expanded(
                         flex: 1,
                         child: TextFormField(
                           decoration: const InputDecoration(
-                              hintText: '.php', labelText: 'URI Suffix'),
-                          onChanged: (value) {
+                            hintText: '.php',
+                            labelText: 'URI Suffix',
+                          ),
+                          onChanged: (
+                            value,
+                          ) {
                             uriSuffix = value;
                           },
                         ),
@@ -582,27 +834,43 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
-                              hintText: '1', labelText: 'Lower Limit'),
+                            hintText: '1',
+                            labelText: 'Lower Limit',
+                          ),
                           keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            lowerLimit = int.parse(value);
+                          onChanged: (
+                            value,
+                          ) {
+                            lowerLimit = int.parse(
+                              value,
+                            );
                           },
                         ),
                       ),
-                      const SizedBox(width: 16),
+                      const SizedBox(
+                        width: 16,
+                      ),
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
-                              hintText: '100', labelText: 'Upper Limit'),
+                            hintText: '100',
+                            labelText: 'Upper Limit',
+                          ),
                           keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            upperLimit = int.parse(value);
+                          onChanged: (
+                            value,
+                          ) {
+                            upperLimit = int.parse(
+                              value,
+                            );
                           },
                         ),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(
+                    height: 16,
+                  ),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -614,11 +882,15 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                                   crawl();
                                 }
                               },
-                        child: const Text('Crawl'),
+                        child: const Text(
+                          'Crawl',
+                        ),
                       ),
                       ElevatedButton(
                         onPressed: isCrawling ? stop : null,
-                        child: const Text('Stop'),
+                        child: const Text(
+                          'Stop',
+                        ),
                       ),
                     ],
                   ),
@@ -631,15 +903,24 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
               for (var entry in titles.entries)
                 Card(
                   child: ListTile(
-                    leading: const Icon(Icons.link),
+                    leading: const Icon(
+                      Icons.link,
+                    ),
                     title: Text(
                       entry.value,
-                      style: const TextStyle(color: Colors.blue),
+                      style: const TextStyle(
+                        color: Colors.blue,
+                      ),
                     ),
                     trailing: IconButton(
-                      icon: const Icon(Icons.copy),
+                      icon: const Icon(
+                        Icons.copy,
+                      ),
                       onPressed: () {
-                        copyToClipBoard("Link", entry.key);
+                        copyToClipBoard(
+                          "Link",
+                          entry.key,
+                        );
                       },
                     ),
                   ),
@@ -660,10 +941,14 @@ class WHOISRetrieverPage extends StatelessWidget {
   const WHOISRetrieverPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('WHOIS Retriever'),
+        title: const Text(
+          'WHOIS Retriever',
+        ),
         centerTitle: true,
       ),
       body: const WHOISRetrieverBody(),
@@ -684,41 +969,62 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
   Map<String, String> whoisInformation = {};
 
   void retrieveWHOIS() async {
-    setState(() {
-      whoisInformation.clear();
-      isLoading = true;
-    });
+    setState(
+      () {
+        whoisInformation.clear();
+        isLoading = true;
+      },
+    );
 
     var options = const LookupOptions(
-      timeout: Duration(milliseconds: 10000),
+      timeout: Duration(
+        milliseconds: 10000,
+      ),
       port: 43,
     );
 
     try {
-      final whoisResponse = await Whois.lookup(domainName, options);
-      final parsedResponse = Whois.formatLookup(whoisResponse);
+      final whoisResponse = await Whois.lookup(
+        domainName,
+        options,
+      );
+      final parsedResponse = Whois.formatLookup(
+        whoisResponse,
+      );
 
-      setState(() {
-        whoisInformation = Map<String, String>.from(parsedResponse);
-        isLoading = false;
-      });
+      setState(
+        () {
+          whoisInformation = Map<String, String>.from(
+            parsedResponse,
+          );
+          isLoading = false;
+        },
+      );
     } catch (error) {
-      setState(() {
-        whoisInformation = {'Error': error.toString()};
-        isLoading = false;
-      });
+      setState(
+        () {
+          whoisInformation = {'Error': error.toString()};
+          isLoading = false;
+        },
+      );
     }
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(
+        16,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           TextField(
-            onChanged: (value) {
+            onChanged: (
+              value,
+            ) {
               domainName = value;
             },
             decoration: const InputDecoration(
@@ -727,14 +1033,20 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
               labelText: 'Enter a Domain Name',
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           Center(
             child: ElevatedButton(
               onPressed: isLoading ? null : retrieveWHOIS,
-              child: const Text('Lookup'),
+              child: const Text(
+                'Lookup',
+              ),
             ),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(
+            height: 16,
+          ),
           if (isLoading)
             const Center(
               child: CircularProgressIndicator(),
@@ -742,12 +1054,20 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
           else
             Card(
               child: Column(
-                children: whoisInformation.entries.map((entry) {
-                  return ListTile(
-                    title: Text(entry.key),
-                    subtitle: Text(entry.value),
-                  );
-                }).toList(),
+                children: whoisInformation.entries.map(
+                  (
+                    entry,
+                  ) {
+                    return ListTile(
+                      title: Text(
+                        entry.key,
+                      ),
+                      subtitle: Text(
+                        entry.value,
+                      ),
+                    );
+                  },
+                ).toList(),
               ),
             ),
         ],
