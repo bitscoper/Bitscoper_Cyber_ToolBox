@@ -523,10 +523,14 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
                         : FontWeight.normal,
                   ),
                 ),
-              if (isTracing)
+              if (isTracing) ...[
+                const SizedBox(
+                  height: 16,
+                ),
                 const Center(
                   child: CircularProgressIndicator(),
                 ),
+              ],
             ],
           ),
         ],
@@ -680,6 +684,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                           return Column(
                             children: <Widget>[
                               Card(
+                                elevation: 0.0,
                                 child: ListTile(
                                   title: Text(
                                     entry.key,
@@ -955,10 +960,14 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                     ),
                   ),
                 ),
-              if (isCrawling)
+              if (isCrawling) ...[
+                const SizedBox(
+                  height: 16,
+                ),
                 const Center(
                   child: CircularProgressIndicator(),
                 ),
+              ],
             ],
           )
         ],
