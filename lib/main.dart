@@ -21,28 +21,87 @@ void main() {
   );
 }
 
-class MainApp extends StatelessWidget {
+class MainApp extends StatefulWidget {
   const MainApp({super.key});
+
+  @override
+  MainAppState createState() => MainAppState();
+}
+
+class MainAppState extends State<MainApp> {
+  bool isDarkMode = false;
+
+  void toggleTheme() {
+    setState(
+      () {
+        isDarkMode = !isDarkMode;
+      },
+    );
+  }
 
   @override
   Widget build(
     BuildContext context,
   ) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
-      // theme: ThemeData.dark(),
+      theme: isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      home: HomePage(
+        toggleTheme: toggleTheme,
+      ),
     );
   }
 }
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final Function toggleTheme;
+
+  const HomePage({super.key, required this.toggleTheme});
 
   @override
   Widget build(
     BuildContext context,
   ) {
+    Widget buildToolCard(
+      String title,
+      IconData icon,
+      Widget page,
+    ) {
+      return Card(
+        child: InkWell(
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (
+                  context,
+                ) {
+                  return page;
+                },
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(
+              16.0,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  icon,
+                ),
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text(
@@ -60,95 +119,69 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'TCP Port Scanner',
+                'Toggle Dark Mode',
+              ),
+              leading: const Icon(
+                Icons.brightness_6,
               ),
               onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (
-                      context,
-                    ) {
-                      return const TCPPortScannerPage();
-                    },
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'Route Tracer',
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (
-                      context,
-                    ) {
-                      return const RouteTracerPage();
-                    },
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'File Hash Calculator',
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (
-                      context,
-                    ) {
-                      return const FileHashCalculatorPage();
-                    },
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'Series URI Crawler',
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (
-                      context,
-                    ) {
-                      return const SeriesURICrawlerPage();
-                    },
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: const Text(
-                'WHOIS Retriever',
-              ),
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (
-                      context,
-                    ) {
-                      return const WHOISRetrieverPage();
-                    },
-                  ),
-                );
+                toggleTheme();
               },
             ),
           ],
         ),
       ),
-      body: const Center(
-        child: Text(
-          'Select a tool from the drawer.',
+      body: Padding(
+        padding: const EdgeInsets.all(
+          16.0,
+        ),
+        child: GridView.builder(
+          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 160,
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+          ),
+          itemBuilder: (
+            BuildContext context,
+            int index,
+          ) {
+            switch (index) {
+              case 0:
+                return buildToolCard(
+                  'TCP Port Scanner',
+                  Icons.network_check,
+                  const TCPPortScannerPage(),
+                );
+              case 1:
+                return buildToolCard(
+                  'Route Tracer',
+                  Icons.track_changes,
+                  const RouteTracerPage(),
+                );
+              case 2:
+                return buildToolCard(
+                  'File Hash Calculator',
+                  Icons.backup_table,
+                  const FileHashCalculatorPage(),
+                );
+              case 3:
+                return buildToolCard(
+                  'Series URI Crawler',
+                  Icons.web,
+                  const SeriesURICrawlerPage(),
+                );
+              case 4:
+                return buildToolCard(
+                  'WHOIS Retriever',
+                  Icons.search,
+                  const WHOISRetrieverPage(),
+                );
+              default:
+                return null;
+            }
+          },
+          itemCount: 5, // total number of cards
         ),
       ),
     );
@@ -200,7 +233,7 @@ class TCPPortScannerBody extends StatefulWidget {
 }
 
 class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
-  final TextEditingController hostController = TextEditingController();
+  late String host;
   final Stopwatch stopwatch = Stopwatch();
 
   final List<int> portList = List.generate(65536, (i) => i);
@@ -209,15 +242,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
   late List<int> openPorts;
   String scanInformation = '';
 
-  @override
-  void dispose() {
-    hostController.dispose();
-    super.dispose();
-  }
-
   Future<void> scanTCPPorts() async {
-    final String host = hostController.text.trim();
-
     if (host.isEmpty) {
       setState(
         () {
@@ -312,12 +337,16 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
-            controller: hostController,
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
             ),
+            onChanged: (
+              value,
+            ) {
+              host = value.trim();
+            },
           ),
           const SizedBox(
             height: 16,
@@ -409,8 +438,8 @@ class RouteTracerBody extends StatefulWidget {
 }
 
 class RouteTracerBodyState extends State<RouteTracerBody> {
+  late String host;
   late final FlutterTraceroute routeTracer;
-  late final TextEditingController hostController;
   StreamSubscription? traceSubscription;
 
   bool isTracing = false;
@@ -421,7 +450,6 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
     super.initState();
 
     routeTracer = FlutterTraceroute();
-    hostController = TextEditingController();
   }
 
   void onTrace() {
@@ -432,7 +460,6 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
       },
     );
 
-    final host = hostController.text;
     final arguments = TracerouteArgs(
       host: host,
     );
@@ -486,7 +513,11 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
               hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
             ),
-            controller: hostController,
+            onChanged: (
+              value,
+            ) {
+              host = value.trim();
+            },
           ),
           const SizedBox(
             height: 16,
@@ -758,8 +789,8 @@ class SeriesURICrawlerBody extends StatefulWidget {
 class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
   final _formKey = GlobalKey<FormState>();
 
-  String uriPrefix = '', uriSuffix = '';
-  int lowerLimit = 1, upperLimit = 100;
+  late String uriPrefix, uriSuffix;
+  late int lowerLimit, upperLimit;
   bool isCrawling = false;
   Map<String, String> titles = {};
 
@@ -842,7 +873,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           onChanged: (
                             value,
                           ) {
-                            uriPrefix = value;
+                            uriPrefix = value.trim();
                           },
                         ),
                       ),
@@ -859,7 +890,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           onChanged: (
                             value,
                           ) {
-                            uriSuffix = value;
+                            uriSuffix = value.trim();
                           },
                         ),
                       ),
@@ -1004,7 +1035,7 @@ class WHOISRetrieverBody extends StatefulWidget {
 }
 
 class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
-  String domainName = '';
+  late String domainName;
   bool isLoading = false;
   Map<String, String> whoisInformation = {};
 
@@ -1062,16 +1093,16 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           TextField(
-            onChanged: (
-              value,
-            ) {
-              domainName = value;
-            },
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
               hintText: 'bitscoper.live',
               labelText: 'Enter a Domain Name',
             ),
+            onChanged: (
+              value,
+            ) {
+              domainName = value.trim();
+            },
           ),
           const SizedBox(
             height: 16,
