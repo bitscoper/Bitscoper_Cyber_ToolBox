@@ -29,12 +29,12 @@ class MainApp extends StatefulWidget {
 }
 
 class MainAppState extends State<MainApp> {
-  bool isDarkMode = false;
+  bool isDarkTheme = false;
 
   void toggleTheme() {
     setState(
       () {
-        isDarkMode = !isDarkMode;
+        isDarkTheme = !isDarkTheme;
       },
     );
   }
@@ -45,7 +45,7 @@ class MainAppState extends State<MainApp> {
   ) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: isDarkMode ? ThemeData.dark() : ThemeData.light(),
+      theme: isDarkTheme ? ThemeData.dark() : ThemeData.light(),
       home: HomePage(
         toggleTheme: toggleTheme,
       ),
@@ -119,7 +119,7 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text(
-                'Toggle Dark Mode',
+                'Toggle Dark Theme',
               ),
               leading: const Icon(
                 Icons.brightness_6,
