@@ -1,0 +1,236 @@
+# By Abdullah As-Sadeed
+
+name: Build and Release
+on:
+  push:
+    branches: ["main"]
+jobs:
+  for-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build for Linux
+        run: flutter build linux --release
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/linux/x64/release/bundle/*"
+          tag: Linux_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Linux Application
+          path: build/linux/x64/release/bundle/*
+
+  for-android:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build APKs
+        run: flutter build apk --split-per-abi --release
+
+      - name: Build appbundle
+        run: flutter build appbundle
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/app/outputs/flutter-apk/*, build/app/outputs/bundle/release/*.aab"
+          tag: Android_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Android APKs and appbundle
+          path: |
+            build/app/outputs/flutter-apk/*
+            build/app/outputs/bundle/release/*.aab
+
+  for-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build for macOS
+        run: flutter build macos --release
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/macos/Build/Products/Release/*.app"
+          tag: macOS_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: macOS Application
+          path: build/macos/Build/Products/Release/*.app
+
+  for-ios:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build for iOS
+        run: flutter build ios --release
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/ios/iphoneos/*.ipa"
+          tag: iOS_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: iOS Application
+          path: build/ios/iphoneos/*.ipa
+
+  for-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Build for Windows
+        run: flutter build windows --release
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(Get-Date -Format 'yyyyMMddHHmmss')" | Out-File -Append -FilePath $env:GITHUB_ENV -Encoding utf8
+        shell: powershell
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/windows/runner/Release/*.exe"
+          tag: Windows_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Windows Application
+          path: build/windows/runner/Release/*.exe
+
+  for-web:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4.1.1
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: "stable"
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+
+      - name: Get Dependencies
+        run: flutter pub get
+
+      - name: Build for Web
+        run: flutter build web --release
+
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.14.0
+        with:
+          artifacts: "build/web/*"
+          tag: Web_${{ env.TIMESTAMP }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v4.3.1
+        with:
+          name: Web Application
+          path: build/web/*
