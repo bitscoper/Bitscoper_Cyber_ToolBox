@@ -8,6 +8,8 @@ jobs:
   build-for-linux:
     name: Build for Linux
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -41,7 +43,7 @@ jobs:
     name: Build for Android
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -78,6 +80,8 @@ jobs:
   build-for-macos:
     name: Build for macOS
     runs-on: macos-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -105,6 +109,8 @@ jobs:
   # build-for-ios:
   #   name: Build for iOS
   #   runs-on: macos-latest
+  #   permissions:
+  #       contents: read
   #   steps:
   #     - name: Checkout Repository
   #       uses: actions/checkout@v4
@@ -136,6 +142,8 @@ jobs:
   build-for-windows:
     name: Build for Windows
     runs-on: windows-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -163,6 +171,8 @@ jobs:
   build-for-web:
     name: Build for Web
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
@@ -198,6 +208,8 @@ jobs:
         build-for-web,
       ]
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
