@@ -19,7 +19,7 @@ dependencies:
   tcp_scanner: ^2.0.5
   url_launcher: ^6.2.5
   whois: ^1.0.0
-  
+
 dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
