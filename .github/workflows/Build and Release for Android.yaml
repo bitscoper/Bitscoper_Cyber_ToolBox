@@ -1,0 +1,42 @@
+# By Abdullah As-Sadeed
+
+name: Build and Release for Android
+on:
+  push:
+    branches: ["main"]
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Run flutter doctor
+        uses: subosito/flutter-action@v1
+        with:
+          channel: "stable"
+      - run: flutter doctor -v
+
+      - name: Checkout
+        uses: actions/checkout@v3
+      - run: flutter pub get
+
+      - name: Build APKs
+        run: flutter build apk --split-per-abi --release
+
+      - name: Build appbundle
+        run: flutter build appbundle
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1.10.0
+        with:
+          artifacts: "build/app/outputs/apk/release/*.apk, build/app/outputs/bundle/release/*.aab"
+
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: Release APKs and appbundle
+          path: |
+            build/app/outputs/apk/release/*.apk
+            build/app/outputs/bundle/release/*.aab
