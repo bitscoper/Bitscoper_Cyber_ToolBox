@@ -69,7 +69,7 @@ jobs:
           name: Android APKs and appbundle
           path: |
             build/app/outputs/flutter-apk/*
-            build/app/outputs/bundle/release/*.aab
+            build/app/outputs/bundle/release/*
 
   build-for-macos:
     name: Build for macOS
@@ -96,7 +96,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macOS Application
-          path: build/macos/Build/Products/Release/*.app
+          path: build/macos/Build/Products/Release/*
 
   # build-for-ios:
   #   name: Build for iOS
@@ -127,7 +127,7 @@ jobs:
   #       uses: actions/upload-artifact@v4
   #       with:
   #         name: iOS Application
-  #         path: build/ios/iphoneos/*.ipa
+  #         path: build/ios/iphoneos/*
 
   build-for-windows:
     name: Build for Windows
@@ -154,7 +154,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: Windows Application
-          path: build/windows/runner/Release/*.exe
+          path: build\windows\x64\runner\Release\*
 
   build-for-web:
     name: Build for Web
