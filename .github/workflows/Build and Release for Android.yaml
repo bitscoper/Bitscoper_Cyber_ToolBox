@@ -28,16 +28,21 @@ jobs:
       - name: Build appbundle
         run: flutter build appbundle
 
+      - name: Get Timestamp
+        id: timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"
+
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         with:
           artifacts: "build/app/outputs/apk/release/*.apk, build/app/outputs/bundle/release/*.aab"
-          tag: ${{ github.sha }}
+          tag: v${{ steps.timestamp.outputs.timestamp }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v3.1.0
         with:
           name: Release APKs and appbundle
           path: |
-            build/app/outputs/apk/release/*.apk
+            build/app/outputs/flutter-apk/*
             build/app/outputs/bundle/release/*.aab
