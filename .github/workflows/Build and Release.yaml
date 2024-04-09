@@ -105,6 +105,10 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
+      - name: Install Pods
+        run: |
+          cd ios && pod install
+
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
