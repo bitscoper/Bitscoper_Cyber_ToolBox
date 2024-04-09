@@ -3,7 +3,8 @@
 name: Build and Release
 on:
   push:
-    branches: ["main"]
+    branches:
+      - "main"
 jobs:
   build-for-linux:
     name: Build for Linux
@@ -59,11 +60,11 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
-      - name: Build APKs
-        run: flutter build apk --split-per-abi --release
-
       - name: Build appbundle
         run: flutter build appbundle --release
+
+      - name: Build APKs
+        run: flutter build apk --split-per-abi --release
 
       - name: Upload Build Artifacts (appbundle)
         uses: actions/upload-artifact@v4
@@ -218,9 +219,18 @@ jobs:
         id: timestamp
         run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
+      - name: Archive Artifacts
+        run: |
+          zip -r Linux_Application.zip ./Linux\ Application/*
+          zip -r Android_appbundle.zip ./Android\ appbundle/*
+          zip -r Android_APKs.zip ./Android\ APKs/*
+          zip -r macOS_Application.zip ./macOS\ Application/*
+          zip -r Windows_Application.zip ./Windows\ Application/*
+          zip -r Web_Application.zip ./Web\ Application/*
+
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: "./**/*"
+          artifacts: "./*.zip"
           tag: v${{ env.TIMESTAMP }}
           token: ${{ secrets.GITHUB_TOKEN }}
