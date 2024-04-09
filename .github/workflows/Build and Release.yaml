@@ -98,36 +98,36 @@ jobs:
           name: macOS Application
           path: build/macos/Build/Products/Release/*.app
 
-  build-for-ios:
-    name: Build for iOS
-    runs-on: macos-latest
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+  # build-for-ios:
+  #   name: Build for iOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
-      - name: Install Pods
-        run: |
-          cd ios && pod install
+  #     - name: Install Pods
+  #       run: |
+  #         cd ios && pod install
 
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: "stable"
+  #     - name: Setup Flutter
+  #       uses: subosito/flutter-action@v2
+  #       with:
+  #         channel: "stable"
 
-      - name: Run flutter doctor
-        run: flutter doctor -v
+  #     - name: Run flutter doctor
+  #       run: flutter doctor -v
 
-      - name: Get Dependencies
-        run: flutter pub get
+  #     - name: Get Dependencies
+  #       run: flutter pub get
 
-      - name: Build for iOS
-        run: flutter build ios --no-codesign --release
+  #     - name: Build for iOS
+  #       run: flutter build ios --no-codesign --release
 
-      - name: Upload Build Artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: iOS Application
-          path: build/ios/iphoneos/*.ipa
+  #     - name: Upload Build Artifacts
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: iOS Application
+  #         path: build/ios/iphoneos/*.ipa
 
   build-for-windows:
     name: Build for Windows
@@ -185,12 +185,11 @@ jobs:
 
   upload-release:
     name: Upload Release
-    needs:
-      [
+    needs: [
         build-for-linux,
         build-for-android,
         build-for-macos,
-        build-for-ios,
+        # build-for-ios,
         build-for-windows,
         build-for-web,
       ]
