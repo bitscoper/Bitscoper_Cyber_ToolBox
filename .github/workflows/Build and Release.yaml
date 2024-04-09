@@ -63,13 +63,17 @@ jobs:
       - name: Build appbundle
         run: flutter build appbundle --release
 
-      - name: Upload Build Artifacts
+      - name: Upload Build Artifacts (appbundle)
         uses: actions/upload-artifact@v4
         with:
-          name: Android APKs and appbundle
-          path: |
-            build/app/outputs/flutter-apk/*
-            build/app/outputs/bundle/release/*
+          name: Android appbundle
+          path: build/app/outputs/bundle/release/*
+
+      - name: Upload Build Artifacts (APKs)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android APKs
+          path: build/app/outputs/flutter-apk/*
 
   build-for-macos:
     name: Build for macOS
@@ -96,7 +100,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: macOS Application
-          path: build/macos/Build/Products/Release/*
+          path: build/macos/Build/Products/Release/*.app
 
   # build-for-ios:
   #   name: Build for iOS
