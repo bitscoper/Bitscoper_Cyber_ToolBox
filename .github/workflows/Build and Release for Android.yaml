@@ -30,13 +30,13 @@ jobs:
 
       - name: Get Timestamp
         id: timestamp
-        run: echo "::set-output name=timestamp::$(date +'%Y%m%d%H%M%S')"
+        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
 
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         with:
-          artifacts: "build/app/outputs/apk/release/*.apk, build/app/outputs/bundle/release/*.aab"
-          tag: v${{ steps.timestamp.outputs.timestamp }}
+          artifacts: "build/app/outputs/flutter-apk/*, build/app/outputs/bundle/release/*.aab"
+          tag: v${{ env.TIMESTAMP }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload Build Artifacts
