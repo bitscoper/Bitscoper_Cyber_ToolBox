@@ -1,5 +1,9 @@
 # By Abdullah As-Sadeed
 
+# flutter pub run rename setAppName --targets linux,android,macos,ios,windows,web --value "Bitscoper Cyber ToolBox"
+
+# flutter pub run rename setBundleId --targets linux,android,macos,ios,windows,web --value "bitscoper.bitsoper_cyber_toolbox"
+
 name: bitscoper_cyber_toolbox
 description: "Bitscoper Cyber ToolBox"
 publish_to: "none"
