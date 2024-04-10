@@ -221,11 +221,11 @@ jobs:
 
       - name: Archive Artifacts
         run: |
-          zip -r Linux_Application.zip ./Linux\ Application/*
+          zip -r Linux_x64_Application.zip ./Linux\ x64\ Application/*
           zip -r Android_appbundle.zip ./Android\ appbundle/*
           zip -r Android_APKs.zip ./Android\ APKs/*
           zip -r macOS_Application.zip ./macOS\ Application/*
-          zip -r Windows_Application.zip ./Windows\ Application/*
+          zip -r Windows_x64_Application.zip ./Windows\ x64\ Application/*
           zip -r Web_Application.zip ./Web\ Application/*
 
       - name: Create Release
