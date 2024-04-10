@@ -69,7 +69,7 @@ jobs:
 
       - name: Create keystore
         run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./app/android/KeyStore.jks
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/app/KeyStore.jks
 
       - name: Build appbundle
         run: flutter build appbundle --release
