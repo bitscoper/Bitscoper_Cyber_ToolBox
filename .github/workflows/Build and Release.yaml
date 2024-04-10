@@ -65,11 +65,11 @@ jobs:
           echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> ./android/key.properties
           echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> ./android/key.properties
           echo "keyAlias=Bitscoper_Cyber_ToolBox" >> ./android/key.properties
-          echo "storeFile=./android/app/KeyStore.jks" >> ./android/key.properties
+          echo "storeFile=./KeyStore.jks" >> ./android/key.properties
 
       - name: Create keystore
         run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/app/KeyStore.jks
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/KeyStore.jks
 
       - name: Build appbundle
         run: flutter build appbundle --release
