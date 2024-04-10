@@ -60,6 +60,17 @@ jobs:
       - name: Get Dependencies
         run: flutter pub get
 
+      - name: Create key.properties
+        run: |
+          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> ./android/key.properties
+          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> ./android/key.properties
+          echo "keyAlias=Bitscoper_Cyber_ToolBox" >> ./android/key.properties
+          echo "storeFile=./android/KeyStore.jks" >> ./android/key.properties
+
+      - name: Create keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/KeyStore.jks
+
       - name: Build appbundle
         run: flutter build appbundle --release
 
