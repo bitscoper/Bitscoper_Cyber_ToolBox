@@ -37,7 +37,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Linux Application
+          name: Linux x64 Application
           path: build/linux/x64/release/bundle/*
 
   build-for-android:
@@ -166,7 +166,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Windows Application
+          name: Windows x64 Application
           path: build\windows\x64\runner\Release\*
 
   build-for-web:
