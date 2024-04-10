@@ -73,24 +73,18 @@ class HomePage extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (
-                  context,
-                ) {
+                builder: (context) {
                   return page;
                 },
               ),
             );
           },
           child: Padding(
-            padding: const EdgeInsets.all(
-              16.0,
-            ),
+            padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  icon,
-                ),
+                Icon(icon),
                 Text(
                   title,
                   textAlign: TextAlign.center,
@@ -104,26 +98,18 @@ class HomePage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Bitscoper Cyber ToolBox',
-        ),
+        title: const Text('Bitscoper Cyber ToolBox'),
         centerTitle: true,
       ),
       drawer: Drawer(
         child: ListView(
           children: <Widget>[
             const DrawerHeader(
-              child: Text(
-                'Bitscoper Cyber WorkBench',
-              ),
+              child: Text('Bitscoper Cyber WorkBench'),
             ),
             ListTile(
-              title: const Text(
-                'Toggle Dark Theme',
-              ),
-              leading: const Icon(
-                Icons.brightness_6,
-              ),
+              title: const Text('Toggle Dark Theme'),
+              leading: const Icon(Icons.brightness_6),
               onTap: () {
                 toggleTheme();
               },
@@ -132,9 +118,7 @@ class HomePage extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(
-          16.0,
-        ),
+        padding: const EdgeInsets.all(16.0),
         child: GridView.builder(
           gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
             maxCrossAxisExtent: 160,
@@ -215,9 +199,7 @@ class TCPPortScannerPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'TCP Port Scanner',
-        ),
+        title: const Text('TCP Port Scanner'),
         centerTitle: true,
       ),
       body: const TCPPortScannerBody(),
@@ -284,9 +266,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                   () {},
                 );
 
-                sink.add(
-                  report,
-                );
+                sink.add(report);
               },
               handleError: (
                 error,
@@ -304,9 +284,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                   stackTrace,
                 );
               },
-              handleDone: (
-                sink,
-              ) {
+              handleDone: (sink) {
                 sink.close();
 
                 isScanning = false;
@@ -330,9 +308,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
     BuildContext context,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -342,9 +318,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
               hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
             ),
-            onChanged: (
-              value,
-            ) {
+            onChanged: (value) {
               host = value.trim();
             },
           ),
@@ -366,9 +340,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
 
                       await scanTCPPorts();
                     },
-                    child: const Text(
-                      'Scan',
-                    ),
+                    child: const Text('Scan'),
                   ),
                 ),
           const SizedBox(
@@ -381,16 +353,12 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
               children: <Widget>[
                 for (var port in openPorts)
                   Container(
-                    padding: const EdgeInsets.all(
-                      8,
-                    ),
+                    padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
                       border: Border.all(
                         color: Colors.grey,
                       ),
-                      borderRadius: BorderRadius.circular(
-                        4,
-                      ),
+                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       port.toString(),
@@ -402,9 +370,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
           const SizedBox(
             height: 16,
           ),
-          Text(
-            scanInformation,
-          ),
+          Text(scanInformation),
         ],
       ),
     );
@@ -420,9 +386,7 @@ class RouteTracerPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Route Tracer',
-        ),
+        title: const Text('Route Tracer'),
         centerTitle: true,
       ),
       body: const RouteTracerBody(),
@@ -464,21 +428,11 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
       host: host,
     );
 
-    traceSubscription = routeTracer
-        .trace(
-      arguments,
-    )
-        .listen(
-      (
-        event,
-      ) {
+    traceSubscription = routeTracer.trace(arguments).listen(
+      (event) {
         setState(
           () {
-            traceResults = List<TracerouteStep>.from(
-              traceResults,
-            )..add(
-                event,
-              );
+            traceResults = List<TracerouteStep>.from(traceResults)..add(event);
           },
         );
       },
@@ -501,9 +455,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
     BuildContext context,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -513,9 +465,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
               hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
             ),
-            onChanged: (
-              value,
-            ) {
+            onChanged: (value) {
               host = value.trim();
             },
           ),
@@ -527,15 +477,11 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
             children: <Widget>[
               ElevatedButton(
                 onPressed: isTracing ? null : onTrace,
-                child: const Text(
-                  'Trace',
-                ),
+                child: const Text('Trace'),
               ),
               ElevatedButton(
                 onPressed: isTracing ? onStop : null,
-                child: const Text(
-                  'Stop',
-                ),
+                child: const Text('Stop'),
               ),
             ],
           ),
@@ -579,9 +525,7 @@ class FileHashCalculatorPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'File Hash Calculator',
-        ),
+        title: const Text('File Hash Calculator'),
         centerTitle: true,
       ),
       body: const FileHashCalculatorBody(),
@@ -605,28 +549,14 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
     setState(
       () {
         hashValues = files.map(
-          (
-            file,
-          ) {
+          (file) {
             var bytes = file.readAsBytesSync();
-            var md5Hash = md5.convert(
-              bytes,
-            );
-            var sha1Hash = sha1.convert(
-              bytes,
-            );
-            var sha224Hash = sha224.convert(
-              bytes,
-            );
-            var sha256Hash = sha256.convert(
-              bytes,
-            );
-            var sha384Hash = sha384.convert(
-              bytes,
-            );
-            var sha512Hash = sha512.convert(
-              bytes,
-            );
+            var md5Hash = md5.convert(bytes);
+            var sha1Hash = sha1.convert(bytes);
+            var sha224Hash = sha224.convert(bytes);
+            var sha256Hash = sha256.convert(bytes);
+            var sha384Hash = sha384.convert(bytes);
+            var sha512Hash = sha512.convert(bytes);
 
             return {
               'File Name': file.path.split('/').last,
@@ -648,17 +578,13 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
     BuildContext context,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Center(
             child: ElevatedButton(
-              child: const Text(
-                'Select Files',
-              ),
+              child: const Text('Select Files'),
               onPressed: () async {
                 List<Uint8List> files = [];
 
@@ -669,18 +595,11 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                 if (result != null) {
                   List<File> selectedFiles = result.paths
                       .where(
-                    (
-                      path,
-                    ) =>
-                        path != null,
+                    (path) => path != null,
                   )
                       .map(
-                    (
-                      path,
-                    ) {
-                      return File(
-                        path!,
-                      );
+                    (path) {
+                      return File(path!);
                     },
                   ).toList();
 
@@ -690,9 +609,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                     );
                   }
 
-                  calculateHashes(
-                    selectedFiles,
-                  );
+                  calculateHashes(selectedFiles);
                 }
               },
             ),
@@ -701,33 +618,23 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
             height: 16,
           ),
           ...hashValues.map(
-            (
-              hash,
-            ) {
+            (hash) {
               return Column(
                 children: <Widget>[
                   Card(
                     child: Column(
                       children: hash.entries.map(
-                        (
-                          entry,
-                        ) {
+                        (entry) {
                           return Column(
                             children: <Widget>[
                               Card(
                                 elevation: 0.0,
                                 color: Colors.transparent,
                                 child: ListTile(
-                                  title: Text(
-                                    entry.key,
-                                  ),
-                                  subtitle: Text(
-                                    entry.value,
-                                  ),
+                                  title: Text(entry.key),
+                                  subtitle: Text(entry.value),
                                   trailing: IconButton(
-                                    icon: const Icon(
-                                      Icons.copy,
-                                    ),
+                                    icon: const Icon(Icons.copy),
                                     onPressed: () {
                                       copyToClipBoard(
                                         "Hash",
@@ -769,9 +676,7 @@ class SeriesURICrawlerPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'Series URI Crawler',
-        ),
+        title: const Text('Series URI Crawler'),
         centerTitle: true,
       ),
       body: const SeriesURICrawlerBody(),
@@ -807,17 +712,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
       var uri = '$uriPrefix$i$uriSuffix';
       var response = await http.get(
-        Uri.parse(
-          uri,
-        ),
+        Uri.parse(uri),
       );
-      dom.Document document = parser.parse(
-        response.body,
-      );
+      dom.Document document = parser.parse(response.body);
 
-      dom.Element? titleElement = document.querySelector(
-        'title',
-      );
+      dom.Element? titleElement = document.querySelector('title');
       String title = titleElement != null ? titleElement.text : 'NO TITLE';
 
       setState(
@@ -847,18 +746,14 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
     BuildContext context,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Form(
             key: _formKey,
             child: Padding(
-              padding: const EdgeInsets.all(
-                16,
-              ),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -870,9 +765,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                             hintText: 'https://dlhd.sx/stream/stream-',
                             labelText: 'URI Prefix',
                           ),
-                          onChanged: (
-                            value,
-                          ) {
+                          onChanged: (value) {
                             uriPrefix = value.trim();
                           },
                         ),
@@ -887,9 +780,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                             hintText: '.php',
                             labelText: 'URI Suffix',
                           ),
-                          onChanged: (
-                            value,
-                          ) {
+                          onChanged: (value) {
                             uriSuffix = value.trim();
                           },
                         ),
@@ -905,12 +796,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                             labelText: 'Lower Limit',
                           ),
                           keyboardType: TextInputType.number,
-                          onChanged: (
-                            value,
-                          ) {
-                            lowerLimit = int.parse(
-                              value,
-                            );
+                          onChanged: (value) {
+                            lowerLimit = int.parse(value);
                           },
                         ),
                       ),
@@ -924,12 +811,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                             labelText: 'Upper Limit',
                           ),
                           keyboardType: TextInputType.number,
-                          onChanged: (
-                            value,
-                          ) {
-                            upperLimit = int.parse(
-                              value,
-                            );
+                          onChanged: (value) {
+                            upperLimit = int.parse(value);
                           },
                         ),
                       ),
@@ -949,15 +832,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                                   crawl();
                                 }
                               },
-                        child: const Text(
-                          'Crawl',
-                        ),
+                        child: const Text('Crawl'),
                       ),
                       ElevatedButton(
                         onPressed: isCrawling ? stop : null,
-                        child: const Text(
-                          'Stop',
-                        ),
+                        child: const Text('Stop'),
                       ),
                     ],
                   ),
@@ -970,9 +849,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
               for (var entry in titles.entries)
                 Card(
                   child: ListTile(
-                    leading: const Icon(
-                      Icons.link,
-                    ),
+                    leading: const Icon(Icons.link),
                     title: Text(
                       entry.value,
                       style: const TextStyle(
@@ -980,9 +857,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       ),
                     ),
                     trailing: IconButton(
-                      icon: const Icon(
-                        Icons.copy,
-                      ),
+                      icon: const Icon(Icons.copy),
                       onPressed: () {
                         copyToClipBoard(
                           "Link",
@@ -1017,9 +892,7 @@ class WHOISRetrieverPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text(
-          'WHOIS Retriever',
-        ),
+        title: const Text('WHOIS Retriever'),
         centerTitle: true,
       ),
       body: const WHOISRetrieverBody(),
@@ -1059,15 +932,11 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
         domainName,
         options,
       );
-      final parsedResponse = Whois.formatLookup(
-        whoisResponse,
-      );
+      final parsedResponse = Whois.formatLookup(whoisResponse);
 
       setState(
         () {
-          whoisInformation = Map<String, String>.from(
-            parsedResponse,
-          );
+          whoisInformation = Map<String, String>.from(parsedResponse);
           isLoading = false;
         },
       );
@@ -1086,9 +955,7 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
     BuildContext context,
   ) {
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(
-        16,
-      ),
+      padding: const EdgeInsets.all(16),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
@@ -1098,9 +965,7 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
               hintText: 'bitscoper.live',
               labelText: 'Enter a Domain Name',
             ),
-            onChanged: (
-              value,
-            ) {
+            onChanged: (value) {
               domainName = value.trim();
             },
           ),
@@ -1110,9 +975,7 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
           Center(
             child: ElevatedButton(
               onPressed: isLoading ? null : retrieveWHOIS,
-              child: const Text(
-                'Lookup',
-              ),
+              child: const Text('Lookup'),
             ),
           ),
           const SizedBox(
@@ -1126,16 +989,10 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
             Card(
               child: Column(
                 children: whoisInformation.entries.map(
-                  (
-                    entry,
-                  ) {
+                  (entry) {
                     return ListTile(
-                      title: Text(
-                        entry.key,
-                      ),
-                      subtitle: Text(
-                        entry.value,
-                      ),
+                      title: Text(entry.key),
+                      subtitle: Text(entry.value),
                     );
                   },
                 ).toList(),
