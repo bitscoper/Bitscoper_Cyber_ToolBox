@@ -72,10 +72,10 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/app/KeyStore.jks
 
       - name: Build appbundle
-        run: flutter build appbundle --release
+        run: flutter build appbundle --release --obfuscate --split-debug-info=./build/Android_appbundle_Symbols
 
       - name: Build APKs
-        run: flutter build apk --split-per-abi --release
+        run: flutter build apk --split-per-abi --release --obfuscate --split-debug-info=./build/Android_APK_Symbols
 
       - name: Upload Build Artifacts (appbundle)
         uses: actions/upload-artifact@v4
