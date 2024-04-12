@@ -14,6 +14,7 @@ dependencies:
   file_picker: ^8.0.0+1
   flutter:
     sdk: flutter
+  flutter_native_splash: ^2.4.0
   flutter_traceroute: ^0.0.1+2
   fluttertoast: ^8.2.4
   html: ^0.15.4
@@ -33,22 +34,34 @@ flutter:
   uses-material-design: true
 
 flutter_launcher_icons:
-  image_path: "assets/icon/icon.png"
+  image_path: "assets/icon/maskable_icon_x512.png"
   android: true
   min_sdk_android: 21
-  adaptive_icon_background: "#ffffff"
-  adaptive_icon_foreground: "assets/icon/icon.png"
+  # adaptive_icon_background: "#F0F8FF"
+  # adaptive_icon_foreground: "assets/icon/maskable_icon_x512.png"
   macos:
     generate: true
-    image_path: "assets/icon/icon.png"
+    image_path: "assets/icon/maskable_icon_x512.png"
   ios: true
   remove_alpha_ios: true
   windows:
     generate: true
-    image_path: "assets/icon/icon.png"
+    image_path: "assets/icon/maskable_icon_x512.png"
     icon_size: 192
   web:
     generate: true
-    image_path: "assets/icon/icon.png"
-    background_color: "#ffffff"
+    image_path: "assets/icon/maskable_icon_x512.png"
+    background_color: "#F0F8FF"
     theme_color: "#424242"
+
+flutter_native_splash:
+  color: "#F0F8FF"
+  image: "assets/icon/icon.png"
+  branding: "assets/branding.png"
+  branding_mode: bottom
+  color_dark: "#F0F8FF"
+  image_dark: "assets/icon/icon.png"
+  branding_dark: "assets/branding.png"
+  android_gravity: center
+  ios_content_mode: center
+  web_image_mode: center
