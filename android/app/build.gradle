@@ -47,7 +47,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "bitscoper.bitsoper_cyber_toolbox"
+        applicationId "bitscoper.bitscoper_cyber_toolbox"
 
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()

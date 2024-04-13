@@ -2,7 +2,7 @@
 
 `dart run rename setAppName --targets android,macos,ios,windows,web --value "Bitscoper Cyber ToolBox"`
 
-`dart run rename setBundleId --targets linux,android,macos,ios,windows,web --value "bitscoper.bitsoper_cyber_toolbox"`
+`dart run rename setBundleId --targets linux,android,macos,ios,windows,web --value "bitscoper.bitscoper_cyber_toolbox"`
 
 `dart run flutter_launcher_icons`
 
