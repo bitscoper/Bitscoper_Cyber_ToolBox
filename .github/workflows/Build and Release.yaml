@@ -173,6 +173,8 @@ jobs:
 
       - name: Build for Windows
         run: flutter build windows --release --obfuscate --split-debug-info=./build/Splitted_Debug_Information/Windows/
+      - run: dart run msix:create
+      - run: tree build
 
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4

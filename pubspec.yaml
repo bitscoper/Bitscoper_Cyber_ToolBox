@@ -1,8 +1,8 @@
 # By Abdullah As-Sadeed
 
 name: bitscoper_cyber_toolbox
-description: "Bitscoper Cyber ToolBox"
-publish_to: "none"
+description: Bitscoper Cyber ToolBox
+publish_to: none
 version: 3.0.0+3
 
 environment:
@@ -28,40 +28,61 @@ dev_dependencies:
   flutter_lints: ^3.0.0
   flutter_test:
     sdk: flutter
+  msix: ^3.16.7
   rename: ^3.0.2
 
 flutter:
   uses-material-design: true
 
 flutter_launcher_icons:
-  image_path: "assets/icon/maskable_icon_x512.png"
+  image_path: assets/icon/maskable_icon_x512.png
   android: true
   min_sdk_android: 21
   # adaptive_icon_background: "#F0F8FF"
-  # adaptive_icon_foreground: "assets/icon/maskable_icon_x512.png"
+  # adaptive_icon_foreground: assets/icon/maskable_icon_x512.png
   macos:
     generate: true
-    image_path: "assets/icon/maskable_icon_x512.png"
+    image_path: assets/icon/maskable_icon_x512.png
   ios: true
   remove_alpha_ios: true
   windows:
     generate: true
-    image_path: "assets/icon/maskable_icon_x512.png"
+    image_path: assets/icon/maskable_icon_x512.png
     icon_size: 192
   web:
     generate: true
-    image_path: "assets/icon/maskable_icon_x512.png"
+    image_path: assets/icon/maskable_icon_x512.png
     background_color: "#F0F8FF"
     theme_color: "#424242"
 
 flutter_native_splash:
   color: "#F0F8FF"
-  image: "assets/icon/icon.png"
-  branding: "assets/branding.png"
+  image: assets/icon/icon.png
+  branding: assets/branding.png
   branding_mode: bottom
   color_dark: "#F0F8FF"
-  image_dark: "assets/icon/icon.png"
-  branding_dark: "assets/branding.png"
+  image_dark: assets/icon/icon.png
+  branding_dark: assets/branding.png
   android_gravity: center
   ios_content_mode: center
   web_image_mode: center
+
+msix_config:
+  display_name: Bitscoper Cyber ToolBox
+  identity_name: 18862TeleChirkut.BitscoperCyberToolBox
+  publisher_display_name: Bitscoper
+  publisher: CN=37755377-8C56-44E3-8D7A-0F1AD45034D2
+  logo_path: assets/icon/maskable_icon_x512.png
+  trim_logo: true
+  languages: en-US
+  execution_alias: Bitscoper_Cyber_ToolBox
+  enable_at_startup: false
+  capabilities: internetClient, wiFiControl
+  architecture: x64
+  store: true
+  build_windows: true
+  windows_build_args: --release --obfuscate
+    --split-debug-info=./build/Splitted_Debug_Information/Windows/
+  debug: false
+  msix_version: 3.0.0.0
+  output_name: Bitscoper_Cyber_ToolBox
