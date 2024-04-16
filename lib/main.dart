@@ -688,6 +688,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
   late String uriPrefix, uriSuffix;
   late int lowerLimit, upperLimit;
+
   bool isCrawling = false;
   Map<String, String> titles = {};
 
@@ -744,97 +745,97 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
         children: <Widget>[
           Form(
             key: formKey,
-            child: Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 2,
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'URI Prefix',
-                            hintText: 'https://dlhd.sx/stream/stream-',
-                          ),
-                          onChanged: (value) {
-                            uriPrefix = value.trim();
-                          },
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 2,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'URI Prefix',
+                          hintText: 'https://dlhd.sx/stream/stream-',
                         ),
+                        onChanged: (value) {
+                          uriPrefix = value.trim();
+                        },
                       ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        flex: 1,
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'URI Suffix',
-                            hintText: '.php',
-                          ),
-                          onChanged: (value) {
-                            uriSuffix = value.trim();
-                          },
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'URI Suffix',
+                          hintText: '.php',
                         ),
+                        onChanged: (value) {
+                          uriSuffix = value.trim();
+                        },
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Lower Limit',
-                            hintText: '1',
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            lowerLimit = int.parse(value);
-                          },
+                    ),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Lower Limit',
+                          hintText: '1',
                         ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          lowerLimit = int.parse(value);
+                        },
                       ),
-                      const SizedBox(
-                        width: 16,
-                      ),
-                      Expanded(
-                        child: TextFormField(
-                          decoration: const InputDecoration(
-                            labelText: 'Upper Limit',
-                            hintText: '100',
-                          ),
-                          keyboardType: TextInputType.number,
-                          onChanged: (value) {
-                            upperLimit = int.parse(value);
-                          },
+                    ),
+                    const SizedBox(
+                      width: 16,
+                    ),
+                    Expanded(
+                      child: TextFormField(
+                        decoration: const InputDecoration(
+                          labelText: 'Upper Limit',
+                          hintText: '100',
                         ),
+                        keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          upperLimit = int.parse(value);
+                        },
                       ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: <Widget>[
-                      ElevatedButton(
-                        onPressed: isCrawling
-                            ? null
-                            : () {
-                                if (formKey.currentState!.validate()) {
-                                  crawl();
-                                }
-                              },
-                        child: const Text('Crawl'),
-                      ),
-                      ElevatedButton(
-                        onPressed: isCrawling ? stop : null,
-                        child: const Text('Stop'),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
+                    ),
+                  ],
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: isCrawling
+                          ? null
+                          : () {
+                              if (formKey.currentState!.validate()) {
+                                crawl();
+                              }
+                            },
+                      child: const Text('Crawl'),
+                    ),
+                    ElevatedButton(
+                      onPressed: isCrawling ? stop : null,
+                      child: const Text('Stop'),
+                    ),
+                  ],
+                ),
+              ],
             ),
+          ),
+          const SizedBox(
+            height: 16,
           ),
           Column(
             children: <Widget>[
