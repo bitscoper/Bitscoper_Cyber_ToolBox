@@ -117,55 +117,41 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: GridView.builder(
-          gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-            maxCrossAxisExtent: 160,
-            childAspectRatio: 3 / 2,
-            crossAxisSpacing: 16,
-            mainAxisSpacing: 16,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.all(16),
+        child: Center(
+          child: Wrap(
+            alignment: WrapAlignment.center,
+            spacing: 16.0,
+            runSpacing: 16.0,
+            children: <Widget>[
+              buildToolCard(
+                'TCP Port Scanner',
+                Icons.network_check,
+                const TCPPortScannerPage(),
+              ),
+              buildToolCard(
+                'Route Tracer',
+                Icons.track_changes,
+                const RouteTracerPage(),
+              ),
+              buildToolCard(
+                'File Hash Calculator',
+                Icons.backup_table,
+                const FileHashCalculatorPage(),
+              ),
+              buildToolCard(
+                'Series URI Crawler',
+                Icons.web,
+                const SeriesURICrawlerPage(),
+              ),
+              buildToolCard(
+                'WHOIS Retriever',
+                Icons.search,
+                const WHOISRetrieverPage(),
+              ),
+            ],
           ),
-          itemBuilder: (
-            BuildContext context,
-            int index,
-          ) {
-            switch (index) {
-              case 0:
-                return buildToolCard(
-                  'TCP Port Scanner',
-                  Icons.network_check,
-                  const TCPPortScannerPage(),
-                );
-              case 1:
-                return buildToolCard(
-                  'Route Tracer',
-                  Icons.track_changes,
-                  const RouteTracerPage(),
-                );
-              case 2:
-                return buildToolCard(
-                  'File Hash Calculator',
-                  Icons.backup_table,
-                  const FileHashCalculatorPage(),
-                );
-              case 3:
-                return buildToolCard(
-                  'Series URI Crawler',
-                  Icons.web,
-                  const SeriesURICrawlerPage(),
-                );
-              case 4:
-                return buildToolCard(
-                  'WHOIS Retriever',
-                  Icons.search,
-                  const WHOISRetrieverPage(),
-                );
-              default:
-                return null;
-            }
-          },
-          itemCount: 5, // total number of cards
         ),
       ),
     );

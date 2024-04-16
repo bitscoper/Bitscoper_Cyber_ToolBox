@@ -41,7 +41,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Linux x64 Application
+          name: Linux x64 Executable
           path: build/linux/x64/release/bundle/*
 
       - name: Upload Debug Symbols
@@ -143,7 +143,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macOS Application
+          name: macOS Executable
           path: build/macos/Build/Products/Release/*.app
 
       - name: Upload Debug Symbols
@@ -220,10 +220,10 @@ jobs:
           Move-Item -Path build\windows\x64\runner\Release\*.msix -Destination build\windows\x64\runner\Release_MSIX
         shell: powershell
 
-      - name: Upload Build Artifacts (Application)
+      - name: Upload Build Artifacts (Executable)
         uses: actions/upload-artifact@v4
         with:
-          name: Windows x64 Application
+          name: Windows x64 Executable
           path: build\windows\x64\runner\Release\*
 
       - name: Upload Build Artifacts (MSIX Package)
@@ -294,12 +294,12 @@ jobs:
 
       - name: Archive Artifacts
         run: |
-          zip -r Linux_x64_Application.zip ./Linux\ x64\ Application/*
+          zip -r Linux_x64_Executable.zip ./Linux\ x64\ Executable/*
           zip -r Android_appbundle.zip ./Android\ appbundle/*
           zip -r Android_APKs.zip ./Android\ APKs/*
-          zip -r macOS_Application.zip ./macOS\ Application/*
+          zip -r macOS_Executable.zip ./macOS\ Executable/*
           # zip -r iOS_Application.zip ./iOS\ Application/*
-          zip -r Windows_x64_Application.zip ./Windows\ x64\ Application/*
+          zip -r Windows_x64_Executable.zip ./Windows\ x64\ Executable/*
           zip -r Windows_x64_MSIX_Package.zip ./Windows\ x64\ MSIX\ Package/*
           zip -r Web_Application.zip ./Web\ Application/*
           zip -r Linux_x64_Debug_Symbols.zip ./Linux\ x64\ Debug\ Symbols/*
