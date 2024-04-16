@@ -1,6 +1,6 @@
 # Bitscoper Cyber ToolBox
 
-A Flutter project consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, Series URI Crawler, and WHOIS Retriever.
+A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
 
 ### TCP Port Scanner
 
