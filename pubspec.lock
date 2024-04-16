@@ -121,6 +121,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.0"
+  dnsolve:
+    dependency: "direct main"
+    description:
+      name: dnsolve
+      sha256: "773146c310d2c38ab257b7705fd149708164f1c9432acb1b4c8e8b3ce995a2d6"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   equatable:
     dependency: transitive
     description:

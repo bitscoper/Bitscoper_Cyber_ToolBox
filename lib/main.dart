@@ -3,6 +3,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:crypto/crypto.dart';
+import 'package:dnsolve/dnsolve.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -80,7 +81,7 @@ class HomePage extends StatelessWidget {
             );
           },
           child: Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.all(16),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
@@ -122,8 +123,8 @@ class HomePage extends StatelessWidget {
         child: Center(
           child: Wrap(
             alignment: WrapAlignment.center,
-            spacing: 16.0,
-            runSpacing: 16.0,
+            spacing: 16,
+            runSpacing: 16,
             children: <Widget>[
               buildToolCard(
                 'TCP Port Scanner',
@@ -144,6 +145,11 @@ class HomePage extends StatelessWidget {
                 'Series URI Crawler',
                 Icons.web,
                 const SeriesURICrawlerPage(),
+              ),
+              buildToolCard(
+                'DNS Retriever',
+                Icons.dns,
+                const DNSRetrieverPage(),
               ),
               buildToolCard(
                 'WHOIS Retriever',
@@ -301,8 +307,8 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
           TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
+              hintText: 'bitscoper.live',
             ),
             onChanged: (value) {
               host = value.trim();
@@ -334,17 +340,17 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
           ),
           if (scanProgress == 1.0) ...[
             Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
+              spacing: 8,
+              runSpacing: 8,
               children: <Widget>[
                 for (var port in openPorts)
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
                       border: Border.all(
                         color: Colors.grey,
                       ),
-                      borderRadius: BorderRadius.circular(4),
                     ),
                     child: Text(
                       port.toString(),
@@ -448,8 +454,8 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
           TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'bitscoper.live',
               labelText: 'Enter a Host or IP Address',
+              hintText: 'bitscoper.live',
             ),
             onChanged: (value) {
               host = value.trim();
@@ -678,7 +684,7 @@ class SeriesURICrawlerBody extends StatefulWidget {
 }
 
 class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
-  final _formKey = GlobalKey<FormState>();
+  final formKey = GlobalKey<FormState>();
 
   late String uriPrefix, uriSuffix;
   late int lowerLimit, upperLimit;
@@ -737,7 +743,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Form(
-            key: _formKey,
+            key: formKey,
             child: Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -748,8 +754,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         flex: 2,
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            hintText: 'https://dlhd.sx/stream/stream-',
                             labelText: 'URI Prefix',
+                            hintText: 'https://dlhd.sx/stream/stream-',
                           ),
                           onChanged: (value) {
                             uriPrefix = value.trim();
@@ -763,8 +769,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         flex: 1,
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            hintText: '.php',
                             labelText: 'URI Suffix',
+                            hintText: '.php',
                           ),
                           onChanged: (value) {
                             uriSuffix = value.trim();
@@ -778,8 +784,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            hintText: '1',
                             labelText: 'Lower Limit',
+                            hintText: '1',
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
@@ -793,8 +799,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       Expanded(
                         child: TextFormField(
                           decoration: const InputDecoration(
-                            hintText: '100',
                             labelText: 'Upper Limit',
+                            hintText: '100',
                           ),
                           keyboardType: TextInputType.number,
                           onChanged: (value) {
@@ -814,7 +820,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         onPressed: isCrawling
                             ? null
                             : () {
-                                if (_formKey.currentState!.validate()) {
+                                if (formKey.currentState!.validate()) {
                                   crawl();
                                 }
                               },
@@ -833,29 +839,32 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
           Column(
             children: <Widget>[
               for (var entry in titles.entries)
-                Card(
-                  child: ListTile(
-                    leading: const Icon(Icons.link),
-                    title: Text(
-                      entry.value,
-                      style: const TextStyle(
-                        color: Colors.blue,
+                Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 8,
+                  ),
+                  child: Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.link),
+                      title: Text(
+                        entry.value,
+                        style: Theme.of(context).textTheme.bodyMedium,
                       ),
-                    ),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.copy),
-                      onPressed: () {
-                        copyToClipBoard(
-                          "Link",
-                          entry.key,
-                        );
-                      },
+                      trailing: IconButton(
+                        icon: const Icon(Icons.copy),
+                        onPressed: () {
+                          copyToClipBoard(
+                            "URI",
+                            entry.key,
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
               if (isCrawling) ...[
                 const SizedBox(
-                  height: 16,
+                  height: 8,
                 ),
                 const Center(
                   child: CircularProgressIndicator(),
@@ -863,6 +872,202 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
               ],
             ],
           )
+        ],
+      ),
+    );
+  }
+}
+
+class DNSRetrieverPage extends StatelessWidget {
+  const DNSRetrieverPage({super.key});
+
+  @override
+  Widget build(
+    BuildContext context,
+  ) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('DNS Retriever'),
+        centerTitle: true,
+      ),
+      body: const DNSRetrieverBody(),
+    );
+  }
+}
+
+class DNSRetrieverBody extends StatefulWidget {
+  const DNSRetrieverBody({super.key});
+
+  @override
+  DNSRetrieverBodyState createState() => DNSRetrieverBodyState();
+}
+
+class DNSRetrieverBodyState extends State<DNSRetrieverBody> {
+  late String domainName;
+  RecordType recordType = RecordType.A;
+  DNSProvider recordProvider = DNSProvider.cloudflare;
+
+  bool isLoading = false;
+  List<String> results = [];
+
+  Future<void> dnsLookup() async {
+    setState(
+      () {
+        isLoading = true;
+        results = [];
+      },
+    );
+
+    final response = await DNSolve().lookup(
+      domainName,
+      dnsSec: true,
+      type: recordType,
+      provider: recordProvider,
+    );
+
+    if (response.answer!.records != null) {
+      for (final record in response.answer!.records!) {
+        results.add(record.toBind);
+      }
+    }
+
+    setState(
+      () {
+        isLoading = false;
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          TextField(
+            decoration: const InputDecoration(
+              border: OutlineInputBorder(),
+              labelText: 'Enter a Domain Name',
+              hintText: 'bitscoper.live',
+            ),
+            onChanged: (value) {
+              domainName = value.trim();
+            },
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<RecordType>(
+                      value: recordType,
+                      onChanged: (RecordType? newValue) {
+                        setState(() {
+                          recordType = newValue!;
+                        });
+                      },
+                      items:
+                          RecordType.values.map<DropdownMenuItem<RecordType>>(
+                        (RecordType value) {
+                          return DropdownMenuItem<RecordType>(
+                            value: value,
+                            child: Text(value.toString().split('.').last),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 16,
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 16,
+                  ),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    color: Theme.of(context).colorScheme.onInverseSurface,
+                  ),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton<DNSProvider>(
+                      value: recordProvider,
+                      onChanged: (DNSProvider? newValue) {
+                        setState(() {
+                          recordProvider = newValue!;
+                        });
+                      },
+                      items:
+                          DNSProvider.values.map<DropdownMenuItem<DNSProvider>>(
+                        (DNSProvider value) {
+                          return DropdownMenuItem<DNSProvider>(
+                            value: value,
+                            child: Text(value.toString().split('.').last),
+                          );
+                        },
+                      ).toList(),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          Center(
+            child: ElevatedButton(
+              onPressed: isLoading ? null : dnsLookup,
+              child: const Text('Lookup'),
+            ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Column(
+                  children: results
+                      .map((result) => Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                            ),
+                            child: Card(
+                              child: ListTile(
+                                title: Text(
+                                  result,
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.copy),
+                                  onPressed: () {
+                                    copyToClipBoard(
+                                      "DNS record",
+                                      result,
+                                    );
+                                  },
+                                ),
+                              ),
+                            ),
+                          ))
+                      .toList(),
+                ),
         ],
       ),
     );
@@ -890,10 +1095,10 @@ class WHOISRetrieverBody extends StatefulWidget {
   const WHOISRetrieverBody({super.key});
 
   @override
-  SWHOISRetrieverBodyState createState() => SWHOISRetrieverBodyState();
+  WHOISRetrieverBodyState createState() => WHOISRetrieverBodyState();
 }
 
-class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
+class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
   late String domainName;
   bool isLoading = false;
   Map<String, String> whoisInformation = {};
@@ -948,8 +1153,8 @@ class SWHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
           TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              hintText: 'bitscoper.live',
               labelText: 'Enter a Domain Name',
+              hintText: 'bitscoper.live',
             ),
             onChanged: (value) {
               domainName = value.trim();
