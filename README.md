@@ -18,6 +18,11 @@ Calculates MD5, SHA1, SHA224, SHA256, SHA384, and SHA512 hash values of files.
 
 Crawls the titles of webpages in series by number and lists the available links.
 
+### DNS Record Retriever
+
+Retrieves DNS records of a domain name or an IP address.
+
+
 ### WHOIS Retriever
 
 Retrieves WHOIS information of a domain name.
