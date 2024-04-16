@@ -147,9 +147,9 @@ class HomePage extends StatelessWidget {
                 const SeriesURICrawlerPage(),
               ),
               buildToolCard(
-                'DNS Retriever',
+                'DNS Record Retriever',
                 Icons.dns,
-                const DNSRetrieverPage(),
+                const DNSRecordRetrieverPage(),
               ),
               buildToolCard(
                 'WHOIS Retriever',
@@ -878,8 +878,8 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
   }
 }
 
-class DNSRetrieverPage extends StatelessWidget {
-  const DNSRetrieverPage({super.key});
+class DNSRecordRetrieverPage extends StatelessWidget {
+  const DNSRecordRetrieverPage({super.key});
 
   @override
   Widget build(
@@ -887,22 +887,22 @@ class DNSRetrieverPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('DNS Retriever'),
+        title: const Text('DNS Record Retriever'),
         centerTitle: true,
       ),
-      body: const DNSRetrieverBody(),
+      body: const DNSRecordRetrieverBody(),
     );
   }
 }
 
-class DNSRetrieverBody extends StatefulWidget {
-  const DNSRetrieverBody({super.key});
+class DNSRecordRetrieverBody extends StatefulWidget {
+  const DNSRecordRetrieverBody({super.key});
 
   @override
-  DNSRetrieverBodyState createState() => DNSRetrieverBodyState();
+  DNSRecordRetrieverBodyState createState() => DNSRecordRetrieverBodyState();
 }
 
-class DNSRetrieverBodyState extends State<DNSRetrieverBody> {
+class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
   late String domainName;
   RecordType recordType = RecordType.A;
   DNSProvider recordProvider = DNSProvider.cloudflare;
@@ -910,7 +910,7 @@ class DNSRetrieverBodyState extends State<DNSRetrieverBody> {
   bool isLoading = false;
   List<String> results = [];
 
-  Future<void> dnsLookup() async {
+  Future<void> retrieveDNSRecord() async {
     setState(
       () {
         isLoading = true;
@@ -1031,7 +1031,7 @@ class DNSRetrieverBodyState extends State<DNSRetrieverBody> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: isLoading ? null : dnsLookup,
+              onPressed: isLoading ? null : retrieveDNSRecord,
               child: const Text('Lookup'),
             ),
           ),
