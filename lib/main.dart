@@ -903,41 +903,53 @@ class DNSRecordRetrieverBody extends StatefulWidget {
   DNSRecordRetrieverBodyState createState() => DNSRecordRetrieverBodyState();
 }
 
+class DNSRecord {
+  final RecordType type;
+  final String record;
+
+  DNSRecord(this.type, this.record);
+}
+
 class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
-  late String domainName;
-  RecordType recordType = RecordType.A;
+  late String host;
   DNSProvider recordProvider = DNSProvider.cloudflare;
 
-  bool isLoading = false;
-  List<String> results = [];
+  bool isRetrieving = false;
+  List<DNSRecord> results = [];
 
   Future<void> retrieveDNSRecord() async {
     setState(
       () {
-        isLoading = true;
+        isRetrieving = true;
         results = [];
       },
     );
 
-    final response = await DNSolve().lookup(
-      domainName,
-      dnsSec: true,
-      type: recordType,
-      provider: recordProvider,
-    );
+    for (var recordType in RecordType.values) {
+      final response = await DNSolve().lookup(
+        host,
+        dnsSec: true,
+        type: recordType,
+        provider: recordProvider,
+      );
 
-    if (response.answer!.records != null) {
-      for (final record in response.answer!.records!) {
-        results.add(record.toBind);
+      if (response.answer!.records != null) {
+        for (final record in response.answer!.records!) {
+          results.add(
+            DNSRecord(recordType, record.toBind),
+          );
+        }
       }
     }
 
     setState(
       () {
-        isLoading = false;
+        isRetrieving = false;
       },
     );
   }
+
+  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   @override
   Widget build(BuildContext context) {
@@ -949,126 +961,82 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
           TextField(
             decoration: const InputDecoration(
               border: OutlineInputBorder(),
-              labelText: 'Enter a Domain Name',
+              labelText: 'Enter a Host or IP Address',
               hintText: 'bitscoper.live',
             ),
             onChanged: (value) {
-              domainName = value.trim();
+              host = value.trim();
             },
           ),
-          const SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
+          DropdownButtonFormField<DNSProvider>(
+            decoration: const InputDecoration(
+              labelText: "Select DNS Provider",
+            ),
+            value: recordProvider,
+            onChanged: (DNSProvider? newValue) {
+              setState(() {
+                recordProvider = newValue!;
+              });
+            },
+            items: DNSProvider.values.map<DropdownMenuItem<DNSProvider>>(
+              (DNSProvider value) {
+                return DropdownMenuItem<DNSProvider>(
+                  value: value,
+                  child: Text(
+                    capitalize(value.toString().split('.').last),
                   ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<RecordType>(
-                      value: recordType,
-                      onChanged: (RecordType? newValue) {
-                        setState(() {
-                          recordType = newValue!;
-                        });
-                      },
-                      items:
-                          RecordType.values.map<DropdownMenuItem<RecordType>>(
-                        (RecordType value) {
-                          return DropdownMenuItem<RecordType>(
-                            value: value,
-                            child: Text(value.toString().split('.').last),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Expanded(
-                child: Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Theme.of(context).colorScheme.onInverseSurface,
-                  ),
-                  child: DropdownButtonHideUnderline(
-                    child: DropdownButton<DNSProvider>(
-                      value: recordProvider,
-                      onChanged: (DNSProvider? newValue) {
-                        setState(() {
-                          recordProvider = newValue!;
-                        });
-                      },
-                      items:
-                          DNSProvider.values.map<DropdownMenuItem<DNSProvider>>(
-                        (DNSProvider value) {
-                          return DropdownMenuItem<DNSProvider>(
-                            value: value,
-                            child: Text(value.toString().split('.').last),
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                ),
-              ),
-            ],
+                );
+              },
+            ).toList(),
           ),
           const SizedBox(
             height: 16,
           ),
           Center(
             child: ElevatedButton(
-              onPressed: isLoading ? null : retrieveDNSRecord,
+              onPressed: isRetrieving ? null : retrieveDNSRecord,
               child: const Text('Lookup'),
             ),
           ),
           const SizedBox(
             height: 16,
           ),
-          isLoading
+          isRetrieving
               ? const Center(
                   child: CircularProgressIndicator(),
                 )
-              : Column(
-                  children: results
-                      .map((result) => Padding(
-                            padding: const EdgeInsets.only(
-                              bottom: 8,
-                            ),
-                            child: Card(
-                              child: ListTile(
-                                title: Text(
-                                  result,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                trailing: IconButton(
-                                  icon: const Icon(Icons.copy),
-                                  onPressed: () {
-                                    copyToClipBoard(
-                                      "DNS record",
-                                      result,
-                                    );
-                                  },
+              : (results.isEmpty
+                  ? const Text(
+                      "It will try to loop through all types of records and retrieve them, which takes time.",
+                    )
+                  : Column(
+                      children: results
+                          .map(
+                            (result) => Padding(
+                              padding: const EdgeInsets.only(
+                                bottom: 8,
+                              ),
+                              child: Card(
+                                child: ListTile(
+                                  title: Text(
+                                    result.type.toString().split('.').last,
+                                  ),
+                                  subtitle: Text(result.record),
+                                  trailing: IconButton(
+                                    icon: const Icon(Icons.copy),
+                                    onPressed: () {
+                                      copyToClipBoard(
+                                        "DNS record",
+                                        result.record,
+                                      );
+                                    },
+                                  ),
                                 ),
                               ),
                             ),
-                          ))
-                      .toList(),
-                ),
+                          )
+                          .toList(),
+                    ))
         ],
       ),
     );
@@ -1101,14 +1069,14 @@ class WHOISRetrieverBody extends StatefulWidget {
 
 class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
   late String domainName;
-  bool isLoading = false;
+  bool isRetrieving = false;
   Map<String, String> whoisInformation = {};
 
   void retrieveWHOIS() async {
     setState(
       () {
         whoisInformation.clear();
-        isLoading = true;
+        isRetrieving = true;
       },
     );
 
@@ -1129,14 +1097,14 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
       setState(
         () {
           whoisInformation = Map<String, String>.from(parsedResponse);
-          isLoading = false;
+          isRetrieving = false;
         },
       );
     } catch (error) {
       setState(
         () {
           whoisInformation = {'Error': error.toString()};
-          isLoading = false;
+          isRetrieving = false;
         },
       );
     }
@@ -1166,14 +1134,14 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
           ),
           Center(
             child: ElevatedButton(
-              onPressed: isLoading ? null : retrieveWHOIS,
+              onPressed: isRetrieving ? null : retrieveWHOIS,
               child: const Text('Lookup'),
             ),
           ),
           const SizedBox(
             height: 16,
           ),
-          if (isLoading)
+          if (isRetrieving)
             const Center(
               child: CircularProgressIndicator(),
             )
