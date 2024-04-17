@@ -306,7 +306,7 @@ jobs:
         shell: bash
 
       - name: Get Version
-        run: echo "VERSION=$(grep 'version:' pubspec.yaml | cut -d ' ' -f 2)" >> $GITHUB_ENV
+        run: echo "VERSION=$(grep 'version:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
