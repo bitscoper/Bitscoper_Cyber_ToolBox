@@ -110,7 +110,7 @@ class HomePage extends StatelessWidget {
             ),
             ListTile(
               title: const Text('Toggle Dark Theme'),
-              leading: const Icon(Icons.brightness_6),
+              leading: const Icon(Icons.dark_mode_rounded),
               onTap: () {
                 toggleTheme();
               },
@@ -128,32 +128,32 @@ class HomePage extends StatelessWidget {
             children: <Widget>[
               buildToolCard(
                 'TCP Port Scanner',
-                Icons.network_check,
+                Icons.network_ping_rounded,
                 const TCPPortScannerPage(),
               ),
               buildToolCard(
                 'Route Tracer',
-                Icons.track_changes,
+                Icons.track_changes_rounded,
                 const RouteTracerPage(),
               ),
               buildToolCard(
                 'File Hash Calculator',
-                Icons.backup_table,
+                Icons.file_present_rounded,
                 const FileHashCalculatorPage(),
               ),
               buildToolCard(
                 'Series URI Crawler',
-                Icons.web,
+                Icons.web_rounded,
                 const SeriesURICrawlerPage(),
               ),
               buildToolCard(
                 'DNS Record Retriever',
-                Icons.dns,
+                Icons.dns_rounded,
                 const DNSRecordRetrieverPage(),
               ),
               buildToolCard(
                 'WHOIS Retriever',
-                Icons.search,
+                Icons.domain_rounded,
                 const WHOISRetrieverPage(),
               ),
             ],
@@ -317,24 +317,19 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
           const SizedBox(
             height: 16,
           ),
-          isScanning
-              ? const Center(
-                  child: CircularProgressIndicator(),
-                )
-              : Center(
-                  child: ElevatedButton(
+          Center(
+            child: isScanning
+                ? const CircularProgressIndicator()
+                : ElevatedButton(
                     onPressed: () async {
                       stopwatch.reset();
                       scanProgress = 0.0;
-                      setState(
-                        () {},
-                      );
-
+                      setState(() {});
                       await scanTCPPorts();
                     },
                     child: const Text('Scan'),
                   ),
-                ),
+          ),
           const SizedBox(
             height: 16,
           ),
@@ -609,50 +604,54 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
           const SizedBox(
             height: 16,
           ),
-          ...hashValues.map(
-            (hash) {
-              return Column(
-                children: <Widget>[
-                  Card(
-                    child: Column(
-                      children: hash.entries.map(
-                        (entry) {
-                          return Column(
+          hashValues.isEmpty
+              ? const Center(
+                  child: Text(
+                    'Select files to calculate their MD5, SHA1, SHA224, SHA256, SHA384, and SHA512 hashes.',
+                    textAlign: TextAlign.center,
+                  ),
+                )
+              : Column(
+                  children: <Widget>[
+                    for (var hashValue in hashValues)
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          bottom: 8,
+                        ),
+                        child: Card(
+                          child: Column(
                             children: <Widget>[
-                              Card(
-                                elevation: 0.0,
-                                color: Colors.transparent,
-                                child: ListTile(
-                                  title: Text(entry.key),
-                                  subtitle: Text(entry.value),
-                                  trailing: IconButton(
-                                    icon: const Icon(Icons.copy),
-                                    onPressed: () {
-                                      copyToClipBoard(
-                                        "Hash",
-                                        entry.value,
-                                      );
-                                    },
-                                  ),
+                              ListTile(
+                                title: Text(
+                                  hashValue['File Name'],
+                                  style: Theme.of(context).textTheme.bodyMedium,
                                 ),
                               ),
-                              if (hash.entries.last != entry)
-                                const SizedBox(
-                                  height: 8,
-                                ),
+                              for (var entry in hashValue.entries)
+                                if (entry.key != 'File Name')
+                                  ListTile(
+                                    title: Text(
+                                      entry.key,
+                                    ),
+                                    subtitle: Text(
+                                      entry.value,
+                                    ),
+                                    trailing: IconButton(
+                                      icon: const Icon(Icons.copy_rounded),
+                                      onPressed: () {
+                                        copyToClipBoard(
+                                          entry.key,
+                                          entry.value,
+                                        );
+                                      },
+                                    ),
+                                  ),
                             ],
-                          );
-                        },
-                      ).toList(),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 16,
-                  ),
-                ],
-              );
-            },
-          ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
         ],
       ),
     );
@@ -846,16 +845,16 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                   ),
                   child: Card(
                     child: ListTile(
-                      leading: const Icon(Icons.link),
+                      leading: const Icon(Icons.link_rounded),
                       title: Text(
                         entry.value,
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       trailing: IconButton(
-                        icon: const Icon(Icons.copy),
+                        icon: const Icon(Icons.copy_rounded),
                         onPressed: () {
                           copyToClipBoard(
-                            "URI",
+                            'URI',
                             entry.key,
                           );
                         },
@@ -952,7 +951,9 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
   String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(
+    BuildContext context,
+  ) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -968,9 +969,12 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
               host = value.trim();
             },
           ),
+          const SizedBox(
+            height: 16,
+          ),
           DropdownButtonFormField<DNSProvider>(
             decoration: const InputDecoration(
-              labelText: "Select DNS Provider",
+              labelText: 'Select DNS Provider',
             ),
             value: recordProvider,
             onChanged: (DNSProvider? newValue) {
@@ -1006,8 +1010,11 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                   child: CircularProgressIndicator(),
                 )
               : (results.isEmpty
-                  ? const Text(
-                      "It will try to loop through all types of records and retrieve them, which takes time.",
+                  ? const Center(
+                      child: Text(
+                        'It tries to loop through all types of records and retrieve them, which takes time.',
+                        textAlign: TextAlign.center,
+                      ),
                     )
                   : Column(
                       children: results
@@ -1019,14 +1026,18 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                               child: Card(
                                 child: ListTile(
                                   title: Text(
-                                    result.type.toString().split('.').last,
+                                    result.type
+                                        .toString()
+                                        .split('.')
+                                        .last
+                                        .toUpperCase(),
                                   ),
                                   subtitle: Text(result.record),
                                   trailing: IconButton(
-                                    icon: const Icon(Icons.copy),
+                                    icon: const Icon(Icons.copy_rounded),
                                     onPressed: () {
                                       copyToClipBoard(
-                                        "DNS record",
+                                        'DNS record',
                                         result.record,
                                       );
                                     },
