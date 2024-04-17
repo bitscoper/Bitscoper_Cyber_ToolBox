@@ -287,11 +287,6 @@ jobs:
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
 
-      - name: Get Timestamp
-        id: timestamp
-        run: echo "TIMESTAMP=$(date +'%Y%m%d%H%M%S')" >> $GITHUB_ENV
-        shell: bash
-
       - name: Archive Artifacts
         run: |
           zip -r Linux_x64_Executable.zip ./Linux\ x64\ Executable/*
@@ -310,9 +305,23 @@ jobs:
           zip -r Windows_x64_Debug_Symbols.zip ./Windows\ x64\ Debug\ Symbols/*
         shell: bash
 
+      - name: Get Version
+        run: echo "VERSION=$(grep 'version:' pubspec.yaml | cut -d ' ' -f 2)" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Delete Existing Tag and Release (If Any)
+        run: |
+          TAG_NAME=v${{ env.VERSION }}
+          RELEASE_ID=$(curl --silent --show-error --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME | jq '.id')
+          if [ "$RELEASE_ID" != "null" ]; then
+            curl --silent --show-error --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --request DELETE https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID
+            git push --delete origin $TAG_NAME
+          fi
+        shell: bash
+
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
           artifacts: "./*.zip"
-          tag: v${{ env.TIMESTAMP }}
+          tag: v${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}

@@ -22,10 +22,12 @@ class MainAppState extends State<MainApp> {
   bool userToggledTheme = false;
 
   void toggleTheme() {
-    setState(() {
-      userToggledTheme = true;
-      isDarkTheme.value = !isDarkTheme.value;
-    });
+    setState(
+      () {
+        userToggledTheme = true;
+        isDarkTheme.value = !isDarkTheme.value;
+      },
+    );
   }
 
   @override
