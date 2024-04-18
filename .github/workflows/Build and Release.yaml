@@ -12,9 +12,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -29,6 +26,9 @@ jobs:
       - name: Run flutter doctor
         run: flutter doctor -v
         shell: bash
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Dependencies
         run: flutter pub get
@@ -56,9 +56,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -67,6 +64,9 @@ jobs:
       - name: Run flutter doctor
         run: flutter doctor -v
         shell: bash
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Dependencies
         run: flutter pub get
@@ -123,9 +123,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -133,6 +130,9 @@ jobs:
 
       - name: Run flutter doctor
         run: flutter doctor -v
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Dependencies
         run: flutter pub get
@@ -158,9 +158,6 @@ jobs:
   #   permissions:
   #       contents: read
   #   steps:
-  #     - name: Checkout Repository
-  #       uses: actions/checkout@v4
-
   #     - name: Install Pods
   #       run: |
   #         cd ios && pod install
@@ -172,6 +169,9 @@ jobs:
 
   #     - name: Run flutter doctor
   #       run: flutter doctor -v
+
+  #     - name: Checkout Repository
+  #       uses: actions/checkout@v4
 
   #     - name: Get Dependencies
   #       run: flutter pub get
@@ -197,9 +197,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -207,6 +204,9 @@ jobs:
 
       - name: Run flutter doctor
         run: flutter doctor -v
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Dependencies
         run: flutter pub get
@@ -244,9 +244,6 @@ jobs:
     permissions:
       contents: read
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
@@ -255,6 +252,9 @@ jobs:
       - name: Run flutter doctor
         run: flutter doctor -v
         shell: bash
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Dependencies
         run: flutter pub get
@@ -304,6 +304,9 @@ jobs:
           # zip -r iOS_Debug_Symbols.zip ./iOS\ Debug\ Symbols/*
           zip -r Windows_x64_Debug_Symbols.zip ./Windows\ x64\ Debug\ Symbols/*
         shell: bash
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
 
       - name: Get Version
         run: echo "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
