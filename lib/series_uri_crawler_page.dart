@@ -32,19 +32,19 @@ class SeriesURICrawlerBody extends StatefulWidget {
 }
 
 class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
-  final formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
 
   late String uriPrefix, uriSuffix;
   late int lowerLimit, upperLimit;
 
   bool isCrawling = false;
-  Map<String, String> titles = {};
+  Map<String, String> webPages = {};
 
   Future<void> crawl() async {
     setState(
       () {
-        titles.clear();
         isCrawling = true;
+        webPages.clear();
       },
     );
 
@@ -62,7 +62,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
       setState(
         () {
-          titles[uri] = title;
+          webPages[uri] = title;
         },
       );
     }
@@ -92,7 +92,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Form(
-            key: formKey,
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Row(
@@ -106,6 +106,13 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         ),
                         onChanged: (value) {
                           uriPrefix = value.trim();
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a URI prefix!';
+                          }
+
+                          return null;
                         },
                       ),
                     ),
@@ -122,6 +129,13 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         onChanged: (value) {
                           uriSuffix = value.trim();
                         },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a URI suffix!';
+                          }
+
+                          return null;
+                        },
                       ),
                     ),
                   ],
@@ -136,7 +150,21 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         ),
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          lowerLimit = int.parse(value);
+                          var parsedValue = int.tryParse(value);
+
+                          if (parsedValue != null) {
+                            upperLimit = parsedValue;
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter a lower limit!';
+                          }
+                          if (int.tryParse(value) == null) {
+                            return 'Please enter an integer!';
+                          }
+
+                          return null;
                         },
                       ),
                     ),
@@ -151,7 +179,21 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         ),
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
-                          upperLimit = int.parse(value);
+                          var parsedValue = int.tryParse(value);
+
+                          if (parsedValue != null) {
+                            upperLimit = parsedValue;
+                          }
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter an upper limit!';
+                          }
+                          if (int.tryParse(value) == null) {
+                            return 'Please enter an integer!';
+                          }
+
+                          return null;
                         },
                       ),
                     ),
@@ -167,7 +209,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       onPressed: isCrawling
                           ? null
                           : () {
-                              if (formKey.currentState!.validate()) {
+                              if (_formKey.currentState!.validate()) {
                                 crawl();
                               }
                             },
@@ -187,7 +229,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
           ),
           Column(
             children: <Widget>[
-              for (var entry in titles.entries)
+              for (var entry in webPages.entries)
                 Padding(
                   padding: const EdgeInsets.only(
                     bottom: 8,

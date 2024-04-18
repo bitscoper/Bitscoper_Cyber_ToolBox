@@ -28,6 +28,7 @@ class WHOISRetrieverBody extends StatefulWidget {
 }
 
 class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
+  final _formKey = GlobalKey<FormState>();
   late String domainName;
 
   bool isRetrieving = false;
@@ -64,7 +65,9 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
     } catch (error) {
       setState(
         () {
-          whoisInformation = {'Error': error.toString()};
+          whoisInformation = {
+            'Error': error.toString(),
+          };
           isRetrieving = false;
         },
       );
@@ -80,45 +83,64 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter a Domain Name',
-              hintText: 'bitscoper.live',
-            ),
-            onChanged: (value) {
-              domainName = value.trim();
-            },
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: isRetrieving ? null : retrieveWHOIS,
-              child: const Text('Lookup'),
-            ),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          if (isRetrieving)
-            const Center(
-              child: CircularProgressIndicator(),
-            )
-          else
-            Card(
-              child: Column(
-                children: whoisInformation.entries.map(
-                  (entry) {
-                    return ListTile(
-                      title: Text(entry.key),
-                      subtitle: Text(entry.value),
-                    );
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a Domain Name',
+                    hintText: 'bitscoper.live',
+                  ),
+                  onChanged: (value) {
+                    domainName = value.trim();
                   },
-                ).toList(),
-              ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a domain name!';
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: isRetrieving
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              retrieveWHOIS();
+                            }
+                          },
+                    child: const Text('Lookup'),
+                  ),
+                ),
+              ],
             ),
+          ),
+          const SizedBox(
+            height: 16,
+          ),
+          isRetrieving
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Card(
+                  child: Column(
+                    children: whoisInformation.entries.map(
+                      (entry) {
+                        return ListTile(
+                          title: Text(entry.key),
+                          subtitle: Text(entry.value),
+                        );
+                      },
+                    ).toList(),
+                  ),
+                ),
         ],
       ),
     );

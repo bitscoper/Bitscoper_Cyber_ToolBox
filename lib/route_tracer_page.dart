@@ -30,25 +30,20 @@ class RouteTracerBody extends StatefulWidget {
 }
 
 class RouteTracerBodyState extends State<RouteTracerBody> {
+  final _formKey = GlobalKey<FormState>();
   late String host;
-  late final FlutterTraceroute routeTracer;
+
+  final FlutterTraceroute routeTracer = FlutterTraceroute();
   StreamSubscription? traceSubscription;
 
   bool isTracing = false;
   List<TracerouteStep> traceResults = [];
 
-  @override
-  void initState() {
-    super.initState();
-
-    routeTracer = FlutterTraceroute();
-  }
-
   void onTrace() {
     setState(
       () {
-        traceResults = <TracerouteStep>[];
         isTracing = true;
+        traceResults = [];
       },
     );
 
@@ -87,31 +82,50 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter a Host or IP Address',
-              hintText: 'bitscoper.live',
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a Host or IP Address',
+                    hintText: 'bitscoper.live',
+                  ),
+                  onChanged: (value) {
+                    host = value.trim();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a host or IP address!';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: isTracing
+                          ? null
+                          : () {
+                              if (_formKey.currentState!.validate()) {
+                                onTrace();
+                              }
+                            },
+                      child: const Text('Trace'),
+                    ),
+                    ElevatedButton(
+                      onPressed: isTracing ? onStop : null,
+                      child: const Text('Stop'),
+                    ),
+                  ],
+                ),
+              ],
             ),
-            onChanged: (value) {
-              host = value.trim();
-            },
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              ElevatedButton(
-                onPressed: isTracing ? null : onTrace,
-                child: const Text('Trace'),
-              ),
-              ElevatedButton(
-                onPressed: isTracing ? onStop : null,
-                child: const Text('Stop'),
-              ),
-            ],
           ),
           const SizedBox(
             height: 16,

@@ -29,27 +29,23 @@ class TCPPortScannerBody extends StatefulWidget {
 }
 
 class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
+  final _formKey = GlobalKey<FormState>();
   late String host;
-  final Stopwatch stopwatch = Stopwatch();
 
   final List<int> portList = List.generate(65536, (i) => i);
+  final Stopwatch stopwatch = Stopwatch();
+
   bool isScanning = false;
   double scanProgress = 0.0;
   late List<int> openPorts;
   String scanInformation = '';
 
   Future<void> scanTCPPorts() async {
-    if (host.isEmpty) {
-      setState(
-        () {
-          scanInformation = 'Enter a valid host or IP address!';
-        },
-      );
-
-      return;
-    }
-
-    isScanning = true;
+    setState(
+      () {
+        isScanning = true;
+      },
+    );
     stopwatch.start();
 
     try {
@@ -73,11 +69,11 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                 openPorts = openPorts.cast<int>();
                 openPorts.sort();
 
-                scanInformation = 'Scanned ports:\t${report.ports.length}\n'
-                    'Elapsed:\t${stopwatch.elapsed}';
-
                 setState(
-                  () {},
+                  () {
+                    scanInformation = 'Scanned ports:\t${report.ports.length}\n'
+                        'Elapsed:\t${stopwatch.elapsed}';
+                  },
                 );
 
                 sink.add(report);
@@ -126,33 +122,48 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter a Host or IP Address',
-              hintText: 'bitscoper.live',
-            ),
-            onChanged: (value) {
-              host = value.trim();
-            },
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Center(
-            child: isScanning
-                ? const CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: () async {
-                      stopwatch.reset();
-                      scanProgress = 0.0;
-                      setState(
-                        () {},
-                      );
-                      await scanTCPPorts();
-                    },
-                    child: const Text('Scan'),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a Host or IP Address',
+                    hintText: 'bitscoper.live',
                   ),
+                  onChanged: (value) {
+                    host = value.trim();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a host or IP address!';
+                    }
+
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Center(
+                  child: isScanning
+                      ? const CircularProgressIndicator()
+                      : ElevatedButton(
+                          onPressed: () async {
+                            if (_formKey.currentState!.validate()) {
+                              stopwatch.reset();
+                              scanProgress = 0.0;
+                              setState(() {});
+
+                              await scanTCPPorts();
+                            }
+                          },
+                          child: const Text('Scan'),
+                        ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
             height: 16,

@@ -37,7 +37,9 @@ class DNSRecord {
 }
 
 class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
+  final _formKey = GlobalKey<FormState>();
   late String host;
+
   DNSProvider recordProvider = DNSProvider.cloudflare;
 
   bool isRetrieving = false;
@@ -86,47 +88,68 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextField(
-            decoration: const InputDecoration(
-              border: OutlineInputBorder(),
-              labelText: 'Enter a Host or IP Address',
-              hintText: 'bitscoper.live',
-            ),
-            onChanged: (value) {
-              host = value.trim();
-            },
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          DropdownButtonFormField<DNSProvider>(
-            decoration: const InputDecoration(
-              labelText: 'Select DNS Provider',
-            ),
-            value: recordProvider,
-            onChanged: (DNSProvider? newValue) {
-              setState(() {
-                recordProvider = newValue!;
-              });
-            },
-            items: DNSProvider.values.map<DropdownMenuItem<DNSProvider>>(
-              (DNSProvider value) {
-                return DropdownMenuItem<DNSProvider>(
-                  value: value,
-                  child: Text(
-                    capitalize(value.toString().split('.').last),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                TextFormField(
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a Host or IP Address',
+                    hintText: 'bitscoper.live',
                   ),
-                );
-              },
-            ).toList(),
-          ),
-          const SizedBox(
-            height: 16,
-          ),
-          Center(
-            child: ElevatedButton(
-              onPressed: isRetrieving ? null : retrieveDNSRecord,
-              child: const Text('Lookup'),
+                  onChanged: (value) {
+                    host = value.trim();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a host or IP address!';
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                DropdownButtonFormField<DNSProvider>(
+                  decoration: const InputDecoration(
+                    labelText: 'Select DNS Provider',
+                  ),
+                  value: recordProvider,
+                  onChanged: (DNSProvider? newValue) {
+                    setState(
+                      () {
+                        recordProvider = newValue!;
+                      },
+                    );
+                  },
+                  items: DNSProvider.values.map<DropdownMenuItem<DNSProvider>>(
+                    (DNSProvider value) {
+                      return DropdownMenuItem<DNSProvider>(
+                        value: value,
+                        child: Text(
+                          capitalize(value.toString().split('.').last),
+                        ),
+                      );
+                    },
+                  ).toList(),
+                ),
+                const SizedBox(
+                  height: 16,
+                ),
+                Center(
+                  child: ElevatedButton(
+                    onPressed: isRetrieving
+                        ? null
+                        : () {
+                            if (_formKey.currentState!.validate()) {
+                              retrieveDNSRecord();
+                            }
+                          },
+                    child: const Text('Lookup'),
+                  ),
+                ),
+              ],
             ),
           ),
           const SizedBox(
