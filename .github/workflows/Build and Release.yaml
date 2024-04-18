@@ -303,6 +303,7 @@ jobs:
           zip -r macOS_Debug_Symbols.zip ./macOS\ Debug\ Symbols/*
           # zip -r iOS_Debug_Symbols.zip ./iOS\ Debug\ Symbols/*
           zip -r Windows_x64_Debug_Symbols.zip ./Windows\ x64\ Debug\ Symbols/*
+          mv *.zip ${{ github.workspace }}
         shell: bash
 
       - name: Checkout Repository
