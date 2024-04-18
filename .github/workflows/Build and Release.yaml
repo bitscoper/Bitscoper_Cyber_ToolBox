@@ -284,6 +284,9 @@ jobs:
     permissions:
       contents: write
     steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
 
@@ -303,11 +306,7 @@ jobs:
           zip -r macOS_Debug_Symbols.zip ./macOS\ Debug\ Symbols/*
           # zip -r iOS_Debug_Symbols.zip ./iOS\ Debug\ Symbols/*
           zip -r Windows_x64_Debug_Symbols.zip ./Windows\ x64\ Debug\ Symbols/*
-          mv *.zip ${{ github.workspace }}
         shell: bash
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
 
       - name: Get Version
         run: echo "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
