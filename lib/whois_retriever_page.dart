@@ -103,6 +103,11 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
 
                     return null;
                   },
+                  onFieldSubmitted: (value) {
+                    if (_formKey.currentState!.validate()) {
+                      retrieveWHOIS();
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 16,

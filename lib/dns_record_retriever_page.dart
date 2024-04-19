@@ -31,8 +31,7 @@ class DNSRecordRetrieverBody extends StatefulWidget {
 }
 
 class DNSRecord {
-  final RecordType type;
-  final String record;
+  final String type, record;
 
   DNSRecord(this.type, this.record);
 }
@@ -46,18 +45,20 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
   bool isRetrieving = false;
   StreamController<String> recordTypeController =
       StreamController<String>.broadcast();
-  List<DNSRecord> results = [];
+  List<DNSRecord> records = [];
 
   Future<void> retrieveDNSRecord() async {
     setState(
       () {
         isRetrieving = true;
-        results = [];
+        records = [];
       },
     );
 
     for (var recordType in RecordType.values) {
-      if (!isRetrieving) break;
+      if (!isRetrieving) {
+        break;
+      }
 
       recordTypeController.add(
           recordType.toString().replaceFirst('RecordType.', '').toUpperCase());
@@ -71,8 +72,11 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
 
       if (response.answer!.records != null) {
         for (final record in response.answer!.records!) {
-          results.add(
-            DNSRecord(recordType, record.toBind),
+          records.add(
+            DNSRecord(
+              recordType.toString().split('.').last.toUpperCase(),
+              record.toBind,
+            ),
           );
         }
       }
@@ -121,6 +125,11 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                       return 'Please enter a host or IP address!';
                     }
                     return null;
+                  },
+                  onFieldSubmitted: (value) {
+                    if (_formKey.currentState!.validate()) {
+                      retrieveDNSRecord();
+                    }
                   },
                 ),
                 const SizedBox(
@@ -198,8 +207,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                           if (snapshot.hasData && snapshot.data != null) {
                             return Text('Retrieving ${snapshot.data} records');
                           } else {
-                            return const Text(
-                                'No record type currently being retrieved');
+                            return const Text('Please Wait');
                           }
                         },
                       ),
@@ -210,7 +218,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                     ],
                   ),
                 )
-              : (results.isEmpty
+              : (records.isEmpty
                   ? const Center(
                       child: Text(
                         'It takes time to retrieve all possible types of forward and reverse records.',
@@ -218,28 +226,22 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                       ),
                     )
                   : Column(
-                      children: results.map(
-                        (result) {
+                      children: records.map(
+                        (record) {
                           return Padding(
                             padding: const EdgeInsets.only(
                               bottom: 8,
                             ),
                             child: Card(
                               child: ListTile(
-                                title: Text(
-                                  result.type
-                                      .toString()
-                                      .split('.')
-                                      .last
-                                      .toUpperCase(),
-                                ),
-                                subtitle: Text(result.record),
+                                title: Text(record.type),
+                                subtitle: Text(record.record),
                                 trailing: IconButton(
                                   icon: const Icon(Icons.copy_rounded),
                                   onPressed: () {
                                     copyToClipBoard(
-                                      'DNS record',
-                                      result.record,
+                                      '${record.type} DNS record',
+                                      record.record,
                                     );
                                   },
                                 ),

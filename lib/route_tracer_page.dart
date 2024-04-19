@@ -101,6 +101,11 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
                     }
                     return null;
                   },
+                  onFieldSubmitted: (value) {
+                    if (_formKey.currentState!.validate()) {
+                      onTrace();
+                    }
+                  },
                 ),
                 const SizedBox(
                   height: 16,

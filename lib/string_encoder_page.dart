@@ -34,7 +34,7 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
   final _formKey = GlobalKey<FormState>();
   late String inputAsBase64 = '';
 
-  final baseSystems = {
+  final encodings = {
     'Binary (Base2)': base2,
     'Ternary (Base3)': base3,
     'Quaternary (Base4)': base4,
@@ -73,8 +73,10 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
               onChanged: (value) {
                 setState(
                   () {
-                    inputAsBase64 =
-                        base64Encode(utf8.encode(value)).replaceAll('=', '');
+                    if (value.isNotEmpty) {
+                      inputAsBase64 =
+                          base64Encode(utf8.encode(value)).replaceAll('=', '');
+                    }
                   },
                 );
               },
@@ -98,9 +100,9 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
                   ),
                 )
               : Column(
-                  children: baseSystems.entries.map(
+                  children: encodings.entries.map(
                     (entry) {
-                      String output = '';
+                      String output;
 
                       try {
                         final converter = BaseConversion(

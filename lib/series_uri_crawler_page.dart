@@ -49,7 +49,9 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
     );
 
     for (var i = lowerLimit; i <= upperLimit; i++) {
-      if (!isCrawling) return;
+      if (!isCrawling) {
+        return;
+      }
 
       var uri = '$uriPrefix$i$uriSuffix';
       var response = await http.get(
@@ -106,6 +108,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
                           return null;
                         },
+                        onFieldSubmitted: (value) {
+                          if (_formKey.currentState!.validate()) {
+                            crawl();
+                          }
+                        },
                       ),
                     ),
                     const SizedBox(
@@ -127,6 +134,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           }
 
                           return null;
+                        },
+                        onFieldSubmitted: (value) {
+                          if (_formKey.currentState!.validate()) {
+                            crawl();
+                          }
                         },
                       ),
                     ),
@@ -158,6 +170,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
 
                           return null;
                         },
+                        onFieldSubmitted: (value) {
+                          if (_formKey.currentState!.validate()) {
+                            crawl();
+                          }
+                        },
                       ),
                     ),
                     const SizedBox(
@@ -186,6 +203,11 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           }
 
                           return null;
+                        },
+                        onFieldSubmitted: (value) {
+                          if (_formKey.currentState!.validate()) {
+                            crawl();
+                          }
                         },
                       ),
                     ),

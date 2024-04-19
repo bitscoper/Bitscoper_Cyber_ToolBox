@@ -8,16 +8,18 @@ void copyToClipBoard(
   String dataType,
   String string,
 ) {
-  Clipboard.setData(
-    ClipboardData(
-      text: string,
-    ),
-  );
+  if (dataType.isNotEmpty && string.isNotEmpty) {
+    Clipboard.setData(
+      ClipboardData(
+        text: string,
+      ),
+    );
 
-  Fluttertoast.showToast(
-    msg: "$dataType copied to clipboard",
-    gravity: ToastGravity.BOTTOM,
-    backgroundColor: Colors.grey,
-    textColor: Colors.white,
-  );
+    Fluttertoast.showToast(
+      msg: "$dataType copied to clipboard",
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.grey,
+      textColor: Colors.white,
+    );
+  }
 }
