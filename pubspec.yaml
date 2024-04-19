@@ -79,7 +79,7 @@ msix_config:
   languages: en-US
   execution_alias: Bitscoper_Cyber_ToolBox
   enable_at_startup: false
-  capabilities: internetClient, wiFiControl
+  capabilities: internetClient, internetClientServer, privateNetworkClientServer, removableStorage, wiFiControl
   architecture: x64
   store: true
   build_windows: true
