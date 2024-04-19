@@ -1,6 +1,7 @@
 /* By Abdullah As-Sadeed */
 
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bitscoper_cyber_toolbox/dns_record_retriever_page.dart';
 import 'package:bitscoper_cyber_toolbox/file_hash_calculator_page.dart';
@@ -68,6 +69,21 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.dark_mode_rounded),
               onTap: () {
                 toggleTheme();
+              },
+            ),
+            ListTile(
+              title: const Text('GitHub Repository'),
+              leading: const Icon(Icons.code_rounded),
+              onTap: () {
+                launchUrl(Uri.parse(
+                    'https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/'));
+              },
+            ),
+            ListTile(
+              title: const Text('Developer'),
+              leading: const Icon(Icons.person_rounded),
+              onTap: () {
+                launchUrl(Uri.parse('https://github.com/bitscoper/'));
               },
             ),
           ],

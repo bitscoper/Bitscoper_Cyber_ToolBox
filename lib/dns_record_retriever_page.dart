@@ -1,5 +1,6 @@
 /* By Abdullah As-Sadeed */
 
+import 'dart:async';
 import 'package:dnsolve/dnsolve.dart';
 import 'package:flutter/material.dart';
 
@@ -43,6 +44,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
   DNSProvider recordProvider = DNSProvider.cloudflare;
 
   bool isRetrieving = false;
+  StreamController<String> recordTypeController = StreamController<String>();
   List<DNSRecord> results = [];
 
   Future<void> retrieveDNSRecord() async {
@@ -54,6 +56,9 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
     );
 
     for (var recordType in RecordType.values) {
+      recordTypeController.add(
+          recordType.toString().replaceFirst('RecordType.', '').toUpperCase());
+
       final response = await DNSolve().lookup(
         host,
         dnsSec: true,
@@ -156,13 +161,34 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
             height: 16,
           ),
           isRetrieving
-              ? const Center(
-                  child: CircularProgressIndicator(),
+              ? Center(
+                  child: Column(
+                    children: [
+                      StreamBuilder<String>(
+                        stream: recordTypeController.stream,
+                        builder: (
+                          context,
+                          snapshot,
+                        ) {
+                          if (snapshot.hasData && snapshot.data != null) {
+                            return Text('Retrieving ${snapshot.data} records');
+                          } else {
+                            return const Text(
+                                'No record type currently being retrieved');
+                          }
+                        },
+                      ),
+                      const SizedBox(
+                        height: 16,
+                      ),
+                      const CircularProgressIndicator(),
+                    ],
+                  ),
                 )
               : (results.isEmpty
                   ? const Center(
                       child: Text(
-                        'It tries to loop through all types of records and retrieve them, which takes time.',
+                        'It takes time to retrieve all possible types of forward and reverse records.',
                         textAlign: TextAlign.center,
                       ),
                     )

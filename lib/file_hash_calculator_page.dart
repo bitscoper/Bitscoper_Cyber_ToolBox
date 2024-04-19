@@ -121,15 +121,19 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                     for (var hashValue in hashValues)
                       Padding(
                         padding: const EdgeInsets.only(
-                          bottom: 8,
+                          bottom: 16,
                         ),
                         child: Card(
                           child: Column(
                             children: <Widget>[
                               ListTile(
-                                title: Text(
-                                  hashValue['File Name'],
-                                  style: Theme.of(context).textTheme.bodyMedium,
+                                title: Center(
+                                  child: Text(
+                                    hashValue['File Name'],
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                    textAlign: TextAlign.center,
+                                  ),
                                 ),
                               ),
                               for (var entry in hashValue.entries)
@@ -145,7 +149,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                                       icon: const Icon(Icons.copy_rounded),
                                       onPressed: () {
                                         copyToClipBoard(
-                                          entry.key,
+                                          "${entry.key} hash",
                                           entry.value,
                                         );
                                       },

@@ -154,7 +154,9 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                             if (_formKey.currentState!.validate()) {
                               stopwatch.reset();
                               scanProgress = 0.0;
-                              setState(() {});
+                              setState(
+                                () {},
+                              );
 
                               await scanTCPPorts();
                             }

@@ -21,7 +21,7 @@ dependencies:
   html: ^0.15.4
   http: ^1.2.1
   tcp_scanner: ^2.0.5
-  url_launcher: ^6.2.5
+  url_launcher: ^6.2.6
   whois: ^1.0.0
 
 dev_dependencies:
