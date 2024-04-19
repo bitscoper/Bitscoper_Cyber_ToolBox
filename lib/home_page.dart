@@ -7,6 +7,7 @@ import 'package:bitscoper_cyber_toolbox/dns_record_retriever_page.dart';
 import 'package:bitscoper_cyber_toolbox/file_hash_calculator_page.dart';
 import 'package:bitscoper_cyber_toolbox/route_tracer_page.dart';
 import 'package:bitscoper_cyber_toolbox/series_uri_crawler_page.dart';
+import 'package:bitscoper_cyber_toolbox/string_encoder_page.dart';
 import 'package:bitscoper_cyber_toolbox/tcp_port_scanner_page.dart';
 import 'package:bitscoper_cyber_toolbox/whois_retriever_page.dart';
 
@@ -111,6 +112,11 @@ class HomePage extends StatelessWidget {
                 'File Hash Calculator',
                 Icons.file_present_rounded,
                 const FileHashCalculatorPage(),
+              ),
+              buildToolCard(
+                'String Encoder',
+                Icons.short_text_rounded,
+                const StringEncoderPage(),
               ),
               buildToolCard(
                 'Series URI Crawler',

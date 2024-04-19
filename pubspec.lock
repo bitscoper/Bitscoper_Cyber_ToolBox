@@ -33,6 +33,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.0"
+  b:
+    dependency: "direct main"
+    description:
+      name: b
+      sha256: "3a380295efd771e43be9d0b1060ef611ae09b8aec609e2fd161b583f5938e6cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -264,6 +272,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.7"
+  invertible:
+    dependency: transitive
+    description:
+      name: invertible
+      sha256: "2e88300b67085adf5e766839a49e3a8da7db85d8826a9068bba24e015b79381a"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
   js:
     dependency: transitive
     description:
