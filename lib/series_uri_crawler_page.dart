@@ -74,14 +74,6 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
     );
   }
 
-  void stop() {
-    setState(
-      () {
-        isCrawling = false;
-      },
-    );
-  }
-
   @override
   Widget build(
     BuildContext context,
@@ -216,7 +208,15 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                       child: const Text('Crawl'),
                     ),
                     ElevatedButton(
-                      onPressed: isCrawling ? stop : null,
+                      onPressed: isCrawling
+                          ? () {
+                              setState(
+                                () {
+                                  isCrawling = false;
+                                },
+                              );
+                            }
+                          : null,
                       child: const Text('Stop'),
                     ),
                   ],

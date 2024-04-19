@@ -44,7 +44,8 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
   DNSProvider recordProvider = DNSProvider.cloudflare;
 
   bool isRetrieving = false;
-  StreamController<String> recordTypeController = StreamController<String>();
+  StreamController<String> recordTypeController =
+      StreamController<String>.broadcast();
   List<DNSRecord> results = [];
 
   Future<void> retrieveDNSRecord() async {
@@ -56,6 +57,8 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
     );
 
     for (var recordType in RecordType.values) {
+      if (!isRetrieving) break;
+
       recordTypeController.add(
           recordType.toString().replaceFirst('RecordType.', '').toUpperCase());
 
@@ -75,6 +78,11 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
       }
     }
 
+    if (!isRetrieving) {
+      recordTypeController.close();
+      recordTypeController = StreamController<String>();
+    }
+
     setState(
       () {
         isRetrieving = false;
@@ -82,7 +90,9 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
     );
   }
 
-  String capitalize(String s) => s[0].toUpperCase() + s.substring(1);
+  String capitalize(String string) {
+    return string[0].toUpperCase() + string.substring(1);
+  }
 
   @override
   Widget build(
@@ -143,15 +153,30 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                   height: 16,
                 ),
                 Center(
-                  child: ElevatedButton(
-                    onPressed: isRetrieving
-                        ? null
-                        : () {
-                            if (_formKey.currentState!.validate()) {
-                              retrieveDNSRecord();
-                            }
-                          },
-                    child: const Text('Lookup'),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      ElevatedButton(
+                        onPressed: isRetrieving
+                            ? null
+                            : () {
+                                if (_formKey.currentState!.validate()) {
+                                  retrieveDNSRecord();
+                                }
+                              },
+                        child: const Text('Lookup'),
+                      ),
+                      ElevatedButton(
+                        onPressed: isRetrieving
+                            ? () {
+                                setState(() {
+                                  isRetrieving = false;
+                                });
+                              }
+                            : null,
+                        child: const Text('Stop'),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -193,36 +218,36 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                       ),
                     )
                   : Column(
-                      children: results
-                          .map(
-                            (result) => Padding(
-                              padding: const EdgeInsets.only(
-                                bottom: 8,
-                              ),
-                              child: Card(
-                                child: ListTile(
-                                  title: Text(
-                                    result.type
-                                        .toString()
-                                        .split('.')
-                                        .last
-                                        .toUpperCase(),
-                                  ),
-                                  subtitle: Text(result.record),
-                                  trailing: IconButton(
-                                    icon: const Icon(Icons.copy_rounded),
-                                    onPressed: () {
-                                      copyToClipBoard(
-                                        'DNS record',
-                                        result.record,
-                                      );
-                                    },
-                                  ),
+                      children: results.map(
+                        (result) {
+                          return Padding(
+                            padding: const EdgeInsets.only(
+                              bottom: 8,
+                            ),
+                            child: Card(
+                              child: ListTile(
+                                title: Text(
+                                  result.type
+                                      .toString()
+                                      .split('.')
+                                      .last
+                                      .toUpperCase(),
+                                ),
+                                subtitle: Text(result.record),
+                                trailing: IconButton(
+                                  icon: const Icon(Icons.copy_rounded),
+                                  onPressed: () {
+                                    copyToClipBoard(
+                                      'DNS record',
+                                      result.record,
+                                    );
+                                  },
                                 ),
                               ),
                             ),
-                          )
-                          .toList(),
+                          );
+                        },
+                      ).toList(),
                     ))
         ],
       ),
