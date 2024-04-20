@@ -166,6 +166,10 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           }
                           if (int.tryParse(value) == null) {
                             return 'Please enter an integer!';
+                          } else if (int.tryParse(value)! < 1) {
+                            return 'Please enter a positive integer!';
+                          } else if (int.tryParse(value)! > upperLimit) {
+                            return 'Lower limit must be less than upper limit!';
                           }
 
                           return null;
@@ -200,6 +204,10 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           }
                           if (int.tryParse(value) == null) {
                             return 'Please enter an integer!';
+                          } else if (int.tryParse(value)! < 1) {
+                            return 'Please enter a positive integer!';
+                          } else if (int.tryParse(value)! < lowerLimit) {
+                            return 'Upper limit must be greater than lower limit!';
                           }
 
                           return null;
