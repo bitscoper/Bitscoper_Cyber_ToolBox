@@ -1,6 +1,28 @@
-# Bitscoper Cyber ToolBox
+<p align="center">
+  <img src="assets/icon/icon.png" height="128" />
+</p>
+<h1 align="center">Bitscoper Cyber ToolBox</h1>
+<p align="center">
+  <img
+    src="https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/actions/workflows/Build%20and%20Release.yaml/badge.svg"
+  />
+</p>
 
 A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
+
+<p align="center">
+  <a href="https://apps.microsoft.com/detail/9n6r5lxczxl6">
+    <img src="https://get.microsoft.com/images/en-us%20dark.svg" height="64" />
+  </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
+    ><img
+      src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
+      height="80"
+  /></a>
+</p>
+
+# Tools
 
 ### TCP Port Scanner
 
