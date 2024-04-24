@@ -93,11 +93,8 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
             height: 16,
           ),
           inputAsBase64.isEmpty
-              ? const Center(
-                  child: Text(
-                    'Start typing a string to encode.',
-                    textAlign: TextAlign.center,
-                  ),
+              ? const Text(
+                  'Start typing a string to encode it into\nbinary (Base2),\nternary (Base3),\nquaternary (Base4),\nquinary (Base5),\nsenary (Base6),\noctal (Base8),\ndecimal (Base10),\nduodecimal (Base12),\nhexadecimal (Base16),\nBase32, Base32Hex,\nBase36,\nBase58,\nBase62,\nBase64, and Base64 URL.',
                 )
               : Column(
                   children: encodings.entries.map(

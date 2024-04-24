@@ -3,7 +3,7 @@
 name: bitscoper_cyber_toolbox
 description: Bitscoper Cyber ToolBox
 publish_to: none
-version: 8.0.1+9
+version: 8.0.2+10
 
 environment:
   sdk: ">=3.3.1 <4.0.0"
@@ -85,5 +85,5 @@ msix_config:
   build_windows: true
   windows_build_args: --release --obfuscate --split-debug-info=./build/Debug_Symbols/Windows/
   debug: false
-  msix_version: 8.0.0.0
+  msix_version: 8.0.1.0
   output_name: Bitscoper_Cyber_ToolBox
