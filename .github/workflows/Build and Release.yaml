@@ -50,8 +50,33 @@ jobs:
           name: Linux x64 Debug Symbols
           path: build/Debug_Symbols/Linux_x64/*
 
-      - name: Clear CMake Cache
-        run: sudo rm -rf /root/parts/bitscoper-cyber-toolbox/build/build/linux/x64/release/CMakeCache.txt
+  build-for-linux-2:
+    name: Build for Linux 2
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Install Dependencies
+        run: |
+          sudo apt update -y
+          sudo apt install -y ninja-build libgtk-3-dev
+        shell: bash
+
+      - name: Run flutter doctor
+        run: flutter doctor -v
+        shell: bash
+
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Get Dependencies
+        run: flutter pub get
+        shell: bash
 
       - name: Build Snap
         uses: snapcore/action-build@v1
