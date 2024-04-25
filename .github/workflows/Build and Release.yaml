@@ -168,7 +168,7 @@ jobs:
       - name: Upload Debug Symbols (APKs)
         uses: actions/upload-artifact@v4
         with:
-          name: Android_APK_Debug_Symbols
+          name: APK_Debug_Symbols
           path: build/Debug_Symbols/Android/APKs/*
 
   build-for-macos:
@@ -357,7 +357,7 @@ jobs:
           zip -r Windows_x64_MSIX_Package.zip ./Windows_x64_MSIX_Package/*
           zip -r Linux_x64_Debug_Symbols.zip ./Linux_x64_Debug_Symbols/*
           zip -r Android_appbundle_Debug_Symbols.zip ./Android_appbundle_Debug_Symbols/*
-          zip -r Android_APK_Debug_Symbols.zip ./Android_APK_Debug_Symbols/*
+          zip -r APK_Debug_Symbols.zip ./APK_Debug_Symbols/*
           zip -r macOS_Debug_Symbols.zip ./macOS_Debug_Symbols/*
           # zip -r iOS_Debug_Symbols.zip ./iOS_Debug_Symbols/*
           zip -r Windows_x64_Debug_Symbols.zip ./Windows_x64_Debug_Symbols/*

@@ -23,3 +23,7 @@
 `keytool -genkey -v -keystore ~/Software\ Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks -keyalg RSA -keysize 4096 -validity 10000 -alias Bitscoper_Cyber_ToolBox`
 
 `base64 ~/Software\ Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks > ~/Software\ Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.b64`
+
+## AUR .SRCINFO
+
+`makepkg --printsrcinfo > .SRCINFO`
