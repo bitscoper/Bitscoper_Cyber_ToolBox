@@ -13,7 +13,7 @@ issues: https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/issues/
 donation: https://github.com/bitscoper/
 type: app
 confinement: strict
-compression: xz
+# compression: xz
 grade: stable
 base: core22
 version: 8.0.2

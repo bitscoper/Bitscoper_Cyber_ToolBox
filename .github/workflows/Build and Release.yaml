@@ -81,6 +81,8 @@ jobs:
       - name: Build Snap
         uses: snapcore/action-build@v1
         id: build
+        env:
+          SNAPCRAFT_BUILD_ENVIRONMENT: debug
 
       # - name: Publish Snap
       #   uses: snapcore/action-publish@v1
