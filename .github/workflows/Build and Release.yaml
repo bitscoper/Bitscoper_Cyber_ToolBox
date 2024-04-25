@@ -41,13 +41,13 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Linux x64 Executable
+          name: Linux_x64_Executable
           path: build/linux/x64/release/bundle/*
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
         with:
-          name: Linux x64 Debug Symbols
+          name: Linux_x64_Debug_Symbols
           path: build/Debug_Symbols/Linux_x64/*
 
   build-for-linux-2:
@@ -138,25 +138,37 @@ jobs:
       - name: Upload Build Artifacts (appbundle)
         uses: actions/upload-artifact@v4
         with:
-          name: Android appbundle
+          name: Android_appbundle
           path: build/app/outputs/bundle/release/*
 
-      - name: Upload Build Artifacts (APKs)
+      - name: Upload Build Artifacts (x86_64 APK)
         uses: actions/upload-artifact@v4
         with:
-          name: Android APKs
-          path: build/app/outputs/flutter-apk/*
+          name: x86_64_APK
+          path: build/app/outputs/flutter-apk/app-x86_64-release*
+
+      - name: Upload Build Artifacts (ARM64 V8A APK)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ARM64_V8A_APK
+          path: build/app/outputs/flutter-apk/app-arm64-v8a-release*
+
+      - name: Upload Build Artifacts (ARMEABI V7A APK)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ARMEABI_V7A_APK
+          path: build/app/outputs/flutter-apk/app-armeabi-v7a-release*
 
       - name: Upload Debug Symbols (appbundle)
         uses: actions/upload-artifact@v4
         with:
-          name: Android appbundle Debug Symbols
+          name: Android_appbundle_Debug_Symbols
           path: build/Debug_Symbols/Android/appbundle/*
 
       - name: Upload Debug Symbols (APKs)
         uses: actions/upload-artifact@v4
         with:
-          name: Android APK Debug Symbols
+          name: Android_APK_Debug_Symbols
           path: build/Debug_Symbols/Android/APKs/*
 
   build-for-macos:
@@ -185,13 +197,13 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: macOS Executable
+          name: macOS_Executable
           path: build/macos/Build/Products/Release/*.app
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
         with:
-          name: macOS Debug Symbols
+          name: macOS_Debug_Symbols
           path: build/Debug_Symbols/macOS/*
 
   # build-for-ios:
@@ -224,13 +236,13 @@ jobs:
   #     - name: Upload Build Artifacts
   #       uses: actions/upload-artifact@v4
   #       with:
-  #         name: iOS Application
+  #         name: iOS_Application
   #         path: build/ios/iphoneos/*
 
   #     - name: Upload Debug Symbols
   #       uses: actions/upload-artifact@v4
   #       with:
-  #         name: iOS Debug Symbols
+  #         name: iOS_Debug_Symbols
   #         path: build/Debug_Symbols/iOS/*
 
   build-for-windows:
@@ -265,19 +277,19 @@ jobs:
       - name: Upload Build Artifacts (Executable)
         uses: actions/upload-artifact@v4
         with:
-          name: Windows x64 Executable
+          name: Windows_x64_Executable
           path: build\windows\x64\runner\Release\*
 
       - name: Upload Build Artifacts (MSIX Package)
         uses: actions/upload-artifact@v4
         with:
-          name: Windows x64 MSIX Package
+          name: Windows_x64_MSIX_Package
           path: build\windows\x64\runner\Release_MSIX\*.msix
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
         with:
-          name: Windows x64 Debug Symbols
+          name: Windows_x64_Debug_Symbols
           path: build\Debug_Symbols\Windows\*
 
   build-for-web:
@@ -309,7 +321,7 @@ jobs:
       - name: Upload Build Artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: Web Application
+          name: Web_Application
           path: build/web/*
 
   upload-release:
@@ -334,20 +346,22 @@ jobs:
 
       - name: Archive Artifacts
         run: |
-          zip -r Linux_x64_Executable.zip ./Linux\ x64\ Executable/*
-          zip -r Android_appbundle.zip ./Android\ appbundle/*
-          zip -r Android_APKs.zip ./Android\ APKs/*
-          zip -r macOS_Executable.zip ./macOS\ Executable/*
-          # zip -r iOS_Application.zip ./iOS\ Application/*
-          zip -r Windows_x64_Executable.zip ./Windows\ x64\ Executable/*
-          zip -r Windows_x64_MSIX_Package.zip ./Windows\ x64\ MSIX\ Package/*
-          zip -r Web_Application.zip ./Web\ Application/*
-          zip -r Linux_x64_Debug_Symbols.zip ./Linux\ x64\ Debug\ Symbols/*
-          zip -r Android_appbundle_Debug_Symbols.zip ./Android\ appbundle\ Debug\ Symbols/*
-          zip -r Android_APK_Debug_Symbols.zip ./Android\ APK\ Debug\ Symbols/*
-          zip -r macOS_Debug_Symbols.zip ./macOS\ Debug\ Symbols/*
-          # zip -r iOS_Debug_Symbols.zip ./iOS\ Debug\ Symbols/*
-          zip -r Windows_x64_Debug_Symbols.zip ./Windows\ x64\ Debug\ Symbols/*
+          zip -r Linux_x64_Executable.zip ./Linux_x64_Executable/*
+          zip -r Android_appbundle.zip ./Android_appbundle/*
+          zip -r x86_64_APK.zip ./x86_64_APK/*
+          zip -r ARM64_V8A_APK.zip ./ARM64_V8A_APK/*
+          zip -r ARMEABI_V7A_APK.zip ./ARMEABI_V7A_APK/*
+          zip -r macOS_Executable.zip ./macOS_Executable/*
+          # zip -r iOS_Application.zip ./iOS_Application/*
+          zip -r Windows_x64_Executable.zip ./Windows_x64_Executable/*
+          zip -r Windows_x64_MSIX_Package.zip ./Windows_x64_MSIX_Package/*
+          zip -r Linux_x64_Debug_Symbols.zip ./Linux_64_Debug_Symbols/*
+          zip -r Android_appbundle_Debug_Symbols.zip ./Android_appbundle_Debug_Symbols/*
+          zip -r Android_APK_Debug_Symbols.zip ./Android_APK_Debug_Symbols/*
+          zip -r macOS_Debug_Symbols.zip ./macOS_Debug_Symbols/*
+          # zip -r iOS_Debug_Symbols.zip ./iOS_Debug_Symbols/*
+          zip -r Windows_x64_Debug_Symbols.zip ./Windows_x64_Debug_Symbols/*
+          zip -r Web_Application.zip ./Web_Application/*
         shell: bash
 
       - name: Get Version
