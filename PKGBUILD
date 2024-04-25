@@ -9,7 +9,7 @@ url="https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/"
 license=('GPL3')
 depends=('gtk3')
 makedepends=('jq' 'unzip')
-source=("Linux_x64_Executable.zip::$(curl -s https://api.github.com/repos/bitscoper/Bitscoper_Cyber_ToolBox/releases/latest | jq -r '.assets[] | select(.name | contains("Linux_x64_Executable.zip")) | .browser_download_url')")
+source=("Linux_x64_Executable.zip::$(curl -s https://api.github.com/repos/bitscoper/Bitscoper_Cyber_ToolBox/releases/latest | jq -r '.assets[] | select(.name | contains("Linux_x64_Executable.zip")) | .browser_download_url' || echo 'File not found!')")
 sha256sums=('SKIP')
 
 package() {
