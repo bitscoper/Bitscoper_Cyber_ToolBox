@@ -50,6 +50,18 @@ jobs:
           name: Linux x64 Debug Symbols
           path: build/Debug_Symbols/Linux_x64/*
 
+      - name: Build Snap
+        uses: snapcore/action-build@v1
+        id: build
+
+      # - name: Publish Snap
+      #   uses: snapcore/action-publish@v1
+      #   env:
+      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_LOGIN }}
+      #   with:
+      #     snap: ${{ steps.build.outputs.snap }}
+      #     release: edge
+
   build-for-android:
     name: Build for Android
     runs-on: ubuntu-latest
@@ -74,15 +86,15 @@ jobs:
 
       - name: Create key.properties
         run: |
-          echo "storePassword=${{ secrets.STORE_PASSWORD }}" >> ./android/key.properties
-          echo "keyPassword=${{ secrets.KEY_PASSWORD }}" >> ./android/key.properties
+          echo "storePassword=${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" >> ./android/key.properties
+          echo "keyPassword=${{ secrets.ANDROID_KEY_PASSWORD }}" >> ./android/key.properties
           echo "keyAlias=Bitscoper_Cyber_ToolBox" >> ./android/key.properties
           echo "storeFile=./KeyStore.jks" >> ./android/key.properties
         shell: bash
 
       - name: Create keystore
         run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ./android/app/KeyStore.jks
+          echo "${{ secrets.ANDROID_KEYSTORE }}" | base64 --decode > ./android/app/KeyStore.jks
         shell: bash
 
       - name: Build appbundle
