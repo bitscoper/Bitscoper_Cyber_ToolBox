@@ -51,7 +51,7 @@ jobs:
           path: build/Debug_Symbols/Linux_x64/*
 
       - name: Clear CMake Cache
-        run: rm -rf /root/parts/bitscoper-cyber-toolbox/build/build/linux/x64/release/CMakeCache.txt
+        run: sudo rm -rf /root/parts/bitscoper-cyber-toolbox/build/build/linux/x64/release/CMakeCache.txt
 
       - name: Build Snap
         uses: snapcore/action-build@v1
