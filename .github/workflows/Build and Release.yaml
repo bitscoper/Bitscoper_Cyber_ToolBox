@@ -90,48 +90,6 @@ jobs:
           name: Linux_x64_Debug_Symbols
           path: build/Debug_Symbols/Linux_x64/*
 
-  build-for-linux-2:
-    name: Build for Linux 2
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-    steps:
-      - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-
-      - name: Install Dependencies
-        run: |
-          sudo apt update -y
-          sudo apt install -y ninja-build libgtk-3-dev
-        shell: bash
-
-      - name: Run flutter doctor
-        run: flutter doctor -v
-        shell: bash
-
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Get Dependencies
-        run: flutter pub get
-        shell: bash
-
-      - name: Build Snap
-        uses: snapcore/action-build@v1
-        id: build
-        env:
-          SNAPCRAFT_BUILD_ENVIRONMENT: debug
-
-      # - name: Publish Snap
-      #   uses: snapcore/action-publish@v1
-      #   env:
-      #     SNAPCRAFT_STORE_CREDENTIALS: ${{ secrets.SNAPCRAFT_STORE_LOGIN }}
-      #   with:
-      #     snap: ${{ steps.build.outputs.snap }}
-      #     release: edge
-
   build-for-android:
     name: Build for Android
     runs-on: ubuntu-latest
