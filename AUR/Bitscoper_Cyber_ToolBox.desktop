@@ -1,8 +1,8 @@
 [Desktop Entry]
 Type=Application
-Name=Bitscoper Cyber ToolBox
+Name=Bitscoper Cyber Toolbox
 Comment=A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
-Icon=${SNAP}/meta/gui/bitscoper-cyber-toolbox.png
-Exec=bitscoper_cyber_toolbox
+Icon=Bitscoper_Cyber_ToolBox
+Exec=/opt/Bitscoper_Cyber_ToolBox/Bitscoper_Cyber_ToolBox
 Terminal=false
-Categories=Network;Utility;
+Categories=Utility;Network;
