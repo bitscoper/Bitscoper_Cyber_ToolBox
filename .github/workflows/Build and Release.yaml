@@ -71,18 +71,18 @@ jobs:
         shell: bash
 
       - name: Create AppImage
-        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox.AppImage
+        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox-x86_64.AppImage
         shell: bash
 
       - name: Make AppImage Executable
-        run: chmod +x ./Bitscoper_Cyber_ToolBox.AppImage
+        run: chmod +x ./Bitscoper_Cyber_ToolBox-x86_64.AppImage
         shell: bash
 
       - name: Upload Build Artifacts (AppImage)
         uses: actions/upload-artifact@v4
         with:
-          name: Linux_x64_AppImage
-          path: Bitscoper_Cyber_ToolBox.AppImage
+          name: Linux_x86_64_AppImage
+          path: Bitscoper_Cyber_ToolBox-x86_64.AppImage
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
@@ -384,29 +384,32 @@ jobs:
       - name: Download All Artifacts
         uses: actions/download-artifact@v4
 
-      - name: Archive Artifacts
+      - name: Archive Build Artifacts and Debug Symbols
         run: |
-          zip -r Linux_x64_Executable.zip ./Linux_x64_Executable/*
-          zip -r Linux_x64_AppImage.zip ./Linux_x64_AppImage/*
-          zip -r Android_appbundle.zip ./Android_appbundle/*
-          zip -r APK_x86_64.zip ./APK_x86_64/*
-          zip -r APK_ARM64_V8A.zip ./APK_ARM64_V8A/*
-          zip -r APK_ARMEABI_V7A.zip ./APK_ARMEABI_V7A/*
-          zip -r macOS_Executable.zip ./macOS_Executable/*
-          # zip -r iOS_Application.zip ./iOS_Application/*
-          zip -r Windows_x64_Executable.zip ./Windows_x64_Executable/*
-          zip -r Windows_x64_MSIX_Package.zip ./Windows_x64_MSIX_Package/*
-          zip -r Linux_x64_Debug_Symbols.zip ./Linux_x64_Debug_Symbols/*
-          zip -r Android_appbundle_Debug_Symbols.zip ./Android_appbundle_Debug_Symbols/*
-          zip -r APK_Debug_Symbols.zip ./APK_Debug_Symbols/*
-          zip -r macOS_Debug_Symbols.zip ./macOS_Debug_Symbols/*
-          # zip -r iOS_Debug_Symbols.zip ./iOS_Debug_Symbols/*
-          zip -r Windows_x64_Debug_Symbols.zip ./Windows_x64_Debug_Symbols/*
-          zip -r Web_Application.zip ./Web_Application/*
+          zip -r ./Linux_x64_Executable.zip ./Linux_x64_Executable/*
+          zip -r ./Android_appbundle.zip ./Android_appbundle/*
+          zip -r ./APK_x86_64.zip ./APK_x86_64/*
+          zip -r ./APK_ARM64_V8A.zip ./APK_ARM64_V8A/*
+          zip -r ./APK_ARMEABI_V7A.zip ./APK_ARMEABI_V7A/*
+          zip -r ./macOS_Executable.zip ./macOS_Executable/*
+          # zip -r ./iOS_Application.zip ./iOS_Application/*
+          zip -r ./Windows_x64_Executable.zip ./Windows_x64_Executable/*
+          zip -r ./Windows_x64_MSIX_Package.zip ./Windows_x64_MSIX_Package/*
+          zip -r ./Linux_x64_Debug_Symbols.zip ./Linux_x64_Debug_Symbols/*
+          zip -r ./Android_appbundle_Debug_Symbols.zip ./Android_appbundle_Debug_Symbols/*
+          zip -r ./APK_Debug_Symbols.zip ./APK_Debug_Symbols/*
+          zip -r ./macOS_Debug_Symbols.zip ./macOS_Debug_Symbols/*
+          # zip -r ./iOS_Debug_Symbols.zip ./iOS_Debug_Symbols/*
+          zip -r ./Windows_x64_Debug_Symbols.zip ./Windows_x64_Debug_Symbols/*
+          zip -r ./Web_Application.zip ./Web_Application/*
         shell: bash
 
       - name: Get Version
         run: echo "VERSION=$(grep '^version:' ./pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Rename AppImage
+        run: mv ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-x86_64.AppImage ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox_v${{ env.VERSION }}-x86_64.AppImage
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
@@ -422,6 +425,8 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.14.0
         with:
-          artifacts: "./*.zip"
+          artifacts: |
+            ./*.zip
+            ./Linux_x86_64_AppImage/*.AppImage
           tag: v${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
