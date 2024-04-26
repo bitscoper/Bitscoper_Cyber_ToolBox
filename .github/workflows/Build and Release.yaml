@@ -409,7 +409,10 @@ jobs:
         shell: bash
 
       - name: Rename AppImage
-        run: mv ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-x86_64.AppImage ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox_v${{ env.VERSION }}-x86_64.AppImage
+        run: |
+          VERSION=${{ env.VERSION }}
+          VERSION=${VERSION%%+*}
+          mv ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-x86_64.AppImage ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-$VERSION-x86_64.AppImage
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
