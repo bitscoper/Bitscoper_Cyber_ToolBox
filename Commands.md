@@ -27,3 +27,7 @@
 ## AUR .SRCINFO
 
 `makepkg --printsrcinfo > .SRCINFO`
+
+## Push to AUR
+
+`git push --set-upstream bitscoper-cyber-workbench-bin master`

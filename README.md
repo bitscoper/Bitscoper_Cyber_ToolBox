@@ -11,30 +11,33 @@
 
 A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
 
-<table align="center">
-  <tr>
-    <td align="center" valign="middle">
-      <a href="https://apps.microsoft.com/detail/9n6r5lxczxl6">
-        <img
-          src="https://get.microsoft.com/images/en-us%20dark.svg"
-          height="64"
-          alt="Microsoft Store"
-        />
-      </a>
-    </td>
-    <td align="center" valign="middle">
-      <a
-        href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
-      >
-        <img
-          src="https://play.google.com/intl/en_us/badges/static/images/badges/en_badge_web_generic.png"
-          height="88"
-          alt="Google Play Store"
-        />
-      </a>
-    </td>
-  </tr>
-</table>
+<p align="center">
+  <a href="https://apps.microsoft.com/detail/9n6r5lxczxl6">
+    <img
+      src="https://get.microsoft.com/images/en-us%20dark.svg"
+      height="40"
+      alt="Microsoft Store"
+    />
+  </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
+  >
+    <img
+      src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/Google_Play.png"
+      height="40"
+      alt="Google Play"
+    />
+  </a>
+  <a
+    href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
+  >
+    <img
+      src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/AUR.png"
+      height="40"
+      alt="AUR"
+    />
+  </a>
+</p>
 
 # Tools
 

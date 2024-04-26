@@ -144,19 +144,19 @@ jobs:
       - name: Upload Build Artifacts (x86_64 APK)
         uses: actions/upload-artifact@v4
         with:
-          name: x86_64_APK
+          name: APK_x86_64
           path: build/app/outputs/flutter-apk/app-x86_64-release*
 
       - name: Upload Build Artifacts (ARM64 V8A APK)
         uses: actions/upload-artifact@v4
         with:
-          name: ARM64_V8A_APK
+          name: APK_ARM64_V8A
           path: build/app/outputs/flutter-apk/app-arm64-v8a-release*
 
       - name: Upload Build Artifacts (ARMEABI V7A APK)
         uses: actions/upload-artifact@v4
         with:
-          name: ARMEABI_V7A_APK
+          name: APK_ARMEABI_V7A
           path: build/app/outputs/flutter-apk/app-armeabi-v7a-release*
 
       - name: Upload Debug Symbols (appbundle)
@@ -348,9 +348,9 @@ jobs:
         run: |
           zip -r Linux_x64_Executable.zip ./Linux_x64_Executable/*
           zip -r Android_appbundle.zip ./Android_appbundle/*
-          zip -r x86_64_APK.zip ./x86_64_APK/*
-          zip -r ARM64_V8A_APK.zip ./ARM64_V8A_APK/*
-          zip -r ARMEABI_V7A_APK.zip ./ARMEABI_V7A_APK/*
+          zip -r APK_x86_64.zip ./APK_x86_64/*
+          zip -r APK_ARM64_V8A.zip ./APK_ARM64_V8A/*
+          zip -r APK_ARMEABI_V7A.zip ./APK_ARMEABI_V7A/*
           zip -r macOS_Executable.zip ./macOS_Executable/*
           # zip -r iOS_Application.zip ./iOS_Application/*
           zip -r Windows_x64_Executable.zip ./Windows_x64_Executable/*
