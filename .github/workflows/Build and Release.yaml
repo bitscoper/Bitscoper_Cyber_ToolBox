@@ -58,7 +58,7 @@ jobs:
 
       - name: Copy Build Artifacts, Icon, Desktop Entry, AppRun into AppDir
         run: |
-          cp -r ./build/linux/release/bundle/ ./Bitscoper_Cyber_ToolBox.AppDir/
+          cp -r .build/linux/x64/release/bundle/ ./Bitscoper_Cyber_ToolBox.AppDir/
           cp ./assets/icon/maskable_icon_x512.png ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.png
           cp ./Linux_Extras/Bitscoper_Cyber_ToolBox.desktop ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.desktop
           cp ./Linux_Extras/AppRun ./Bitscoper_Cyber_ToolBox.AppDir/AppRun
