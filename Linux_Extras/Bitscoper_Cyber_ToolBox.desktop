@@ -3,6 +3,6 @@ Type=Application
 Name=Bitscoper Cyber Toolbox
 Comment=A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
 Icon=Bitscoper_Cyber_ToolBox
-Exec=/opt/Bitscoper_Cyber_ToolBox/Bitscoper_Cyber_ToolBox
+Exec=Bitscoper_Cyber_ToolBox %u
 Terminal=false
 Categories=Utility;Network;

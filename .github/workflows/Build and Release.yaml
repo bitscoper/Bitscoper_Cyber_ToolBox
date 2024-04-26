@@ -38,11 +38,47 @@ jobs:
         run: flutter build linux --release --obfuscate --split-debug-info=./build/Debug_Symbols/Linux_x64/
         shell: bash
 
-      - name: Upload Build Artifacts
+      - name: Upload Build Artifacts (Executable)
         uses: actions/upload-artifact@v4
         with:
           name: Linux_x64_Executable
           path: build/linux/x64/release/bundle/*
+
+      - name: Download appimagetool (x86_64)
+        run: wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+        shell: bash
+
+      - name: Make appimagetool Executable
+        run: chmod +x ./appimagetool-x86_64.AppImage
+        shell: bash
+
+      - name: Create AppDir
+        run: mkdir ./Bitscoper_Cyber_ToolBox.AppDir/
+        shell: bash
+
+      - name: Copy Build Artifacts, Icon, Desktop Entry, AppRun into AppDir
+        run: |
+          cp -r ./build/linux/release/bundle/ ./Bitscoper_Cyber_ToolBox.AppDir/
+          cp ./assets/icon/maskable_icon_x512.png ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.png
+          cp ./Linux_Extras/Bitscoper_Cyber_ToolBox.desktop ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.desktop
+          cp ./Linux_Extras/AppRun ./Bitscoper_Cyber_ToolBox.AppDir/AppRun
+        shell: bash
+
+      - name: Permit Execution
+        run: |
+          chmod +x ./Bitscoper_Cyber_ToolBox.AppDir/AppRun
+          chmod +x ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox
+        shell: bash
+
+      - name: Create AppImage
+        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox.AppImage
+        shell: bash
+
+      - name: Upload Build Artifacts (AppImage)
+        uses: actions/upload-artifact@v4
+        with:
+          name: Linux_x64_AppImage
+          path: Bitscoper_Cyber_ToolBox.AppImage
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
@@ -347,6 +383,7 @@ jobs:
       - name: Archive Artifacts
         run: |
           zip -r Linux_x64_Executable.zip ./Linux_x64_Executable/*
+          zip -r Linux_x64_AppImage.zip ./Linux_x64_AppImage/*
           zip -r Android_appbundle.zip ./Android_appbundle/*
           zip -r APK_x86_64.zip ./APK_x86_64/*
           zip -r APK_ARM64_V8A.zip ./APK_ARM64_V8A/*
@@ -365,7 +402,7 @@ jobs:
         shell: bash
 
       - name: Get Version
-        run: echo "VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
+        run: echo "VERSION=$(grep '^version:' ./pubspec.yaml | awk '{print $2}')" >> $GITHUB_ENV
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
