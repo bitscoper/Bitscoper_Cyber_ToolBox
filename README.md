@@ -12,31 +12,26 @@
 A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
 
 <p align="center">
-  <a href="https://apps.microsoft.com/detail/9n6r5lxczxl6">
-    <img
+  <a href="https://apps.microsoft.com/detail/9n6r5lxczxl6"><img
       src="https://get.microsoft.com/images/en-us%20dark.svg"
-      height="40"
+      height="48"
       alt="Microsoft Store"
-    />
-  </a>
+    /></a>
   <a
     href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
-  >
-    <img
+  ><img
       src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/Google_Play.png"
-      height="40"
+      height="48"
       alt="Google Play"
-    />
-  </a>
+    /></a>
+  <br />
   <a
     href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
-  >
-    <img
+  ><img
       src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/AUR.png"
       height="40"
       alt="AUR"
-    />
-  </a>
+    /></a>
 </p>
 
 # Tools
