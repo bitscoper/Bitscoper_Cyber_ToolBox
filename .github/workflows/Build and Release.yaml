@@ -115,9 +115,12 @@ jobs:
         run: |
           if [ "${{ env.CHANGES_DETECTED }}" = "1" ]; then
             cd ../bitscoper-cyber-toolbox-bin
+            git config user.email "bitscoper@gmail.com"
+            git config user.name "bitscoper"
+            ssh-agent bash -c 'ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}");
             git add .
             git commit -m "$(date)"
-            ssh-agent bash -c 'ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}"); git push origin master'
+            git push origin master'
           fi
         shell: bash
 
