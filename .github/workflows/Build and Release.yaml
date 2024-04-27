@@ -92,6 +92,8 @@ jobs:
       - name: Change Directory and Clone AUR Repository
         run: |
           cd ..
+          eval "$(ssh-agent -s)"
+          ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}")
           GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone ssh://aur@aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
         shell: bash
 
