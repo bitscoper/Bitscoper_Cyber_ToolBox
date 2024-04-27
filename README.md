@@ -47,11 +47,11 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
 - **Windows**
   - x64 Executable (+ Debug Symbols)
   - x64 MSIX Package
-- **Web** (Not Recommended)
+- **Web** *(Not Recommended)*
 
 For **iOS**, it's coming soon.
 
-# Tools
+# Seven Tools
 
 ### TCP Port Scanner
 
