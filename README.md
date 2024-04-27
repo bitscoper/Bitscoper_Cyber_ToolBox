@@ -24,15 +24,32 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
       height="48"
       alt="Google Play"
     /></a>
-  <br />
   <a
     href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
   ><img
       src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/AUR.png"
-      height="40"
+      height="48"
       alt="AUR"
     /></a>
 </p>
+
+### On the [Releases](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/releases/) page:
+- **Linux**
+  - x64 Executable (+ Debug Symbols)
+  - x64 AppImage
+- **Android**
+  - appbundle (+ Debug Symbols)
+  - x86_64 APK (+ Debug Symbols)
+  - ARM64 V8A APK (+ Debug Symbols)
+  - ARMEABI V7A APK (+ Debug Symbols)
+- **macOS**
+  - Executable (+ Debug Symbols)
+- **Windows**
+  - x64 Executable (+ Debug Symbols)
+  - x64 MSIX Package
+- **Web** (Not Recommended)
+
+For **iOS**, it's coming soon.
 
 # Tools
 

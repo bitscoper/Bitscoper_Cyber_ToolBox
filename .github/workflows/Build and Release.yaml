@@ -71,18 +71,18 @@ jobs:
         shell: bash
 
       - name: Create AppImage
-        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox-x86_64.AppImage
+        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox-x64.AppImage
         shell: bash
 
       - name: Make AppImage Executable
-        run: chmod +x ./Bitscoper_Cyber_ToolBox-x86_64.AppImage
+        run: chmod +x ./Bitscoper_Cyber_ToolBox-x64.AppImage
         shell: bash
 
       - name: Upload Build Artifacts (AppImage)
         uses: actions/upload-artifact@v4
         with:
-          name: Linux_x86_64_AppImage
-          path: Bitscoper_Cyber_ToolBox-x86_64.AppImage
+          name: Linux_x64_AppImage
+          path: Bitscoper_Cyber_ToolBox-x64.AppImage
 
       - name: Upload Debug Symbols
         uses: actions/upload-artifact@v4
@@ -370,7 +370,7 @@ jobs:
         run: |
           VERSION=${{ env.VERSION }}
           VERSION=${VERSION%%+*}
-          mv ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-x86_64.AppImage ./Linux_x86_64_AppImage/Bitscoper_Cyber_ToolBox-$VERSION-x86_64.AppImage
+          mv ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-x64.AppImage ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-$VERSION-x64.AppImage
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
@@ -388,6 +388,6 @@ jobs:
         with:
           artifacts: |
             ./*.zip
-            ./Linux_x86_64_AppImage/*.AppImage
+            ./Linux_x64_AppImage/*.AppImage
           tag: v${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
