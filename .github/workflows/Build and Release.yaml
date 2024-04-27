@@ -92,7 +92,7 @@ jobs:
       - name: Change Directory and Clone AUR Repository
         run: |
           cd ..
-          git clone https://aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
+          git clone ssh://aur@aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
         shell: bash
 
       - name: Compare and Replace PKGBUILD and .SRCINFO If Needed
