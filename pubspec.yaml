@@ -39,9 +39,9 @@ flutter:
 flutter_launcher_icons:
   image_path: assets/icon/maskable_icon_x512.png
   android: true
-  min_sdk_android: 21
-  # adaptive_icon_background: "#F0F8FF"
-  # adaptive_icon_foreground: assets/icon/maskable_icon_x512.png
+  min_sdk_android: 30
+  adaptive_icon_background: "#FFFFFF"
+  adaptive_icon_foreground: assets/icon/maskable_icon_x512.png
   macos:
     generate: true
     image_path: assets/icon/maskable_icon_x512.png
