@@ -26,7 +26,7 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
       alt="Google Play"
     /></a>
   <a
-    href="https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox"
+    href="https://aur.archlinux.org/packages/bitscoper-cyber-toolbox-bin"
   ><img
       src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/AUR.png"
       height="48"

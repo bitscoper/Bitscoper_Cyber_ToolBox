@@ -44,38 +44,28 @@ jobs:
           name: Linux_x64_Executable
           path: build/linux/x64/release/bundle/*
 
-      - name: Download appimagetool (x86_64)
-        run: wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
-        shell: bash
-
-      - name: Make appimagetool Executable
-        run: chmod +x ./appimagetool-x86_64.AppImage
-        shell: bash
-
-      - name: Create AppDir
-        run: mkdir ./Bitscoper_Cyber_ToolBox.AppDir/
-        shell: bash
-
-      - name: Copy Build Artifacts, Icon, Desktop Entry, AppRun into AppDir
+      - name: Download appimagetool (x86_64) and Make It Executable
         run: |
-          cp -r ./build/linux/x64/release/bundle/* ./Bitscoper_Cyber_ToolBox.AppDir/
-          cp ./assets/icon/maskable_icon_x512.png ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.png
-          cp ./Linux_Extras/Bitscoper_Cyber_ToolBox.desktop ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.desktop
-          cp ./Linux_Extras/AppRun ./Bitscoper_Cyber_ToolBox.AppDir/AppRun
+          wget https://github.com/AppImage/AppImageKit/releases/download/continuous/appimagetool-x86_64.AppImage
+          chmod +x ./appimagetool-x86_64.AppImage
         shell: bash
 
-      - name: Permit Execution
+      - name: Copy Build Artifacts, and Icon into AppDir
         run: |
-          chmod +x ./Bitscoper_Cyber_ToolBox.AppDir/AppRun
-          chmod +x ./Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox
+          cp -r ./build/linux/x64/release/bundle/* ./Linux_Extras/Bitscoper_Cyber_ToolBox.AppDir/
+          cp ./assets/icon/maskable_icon_x512.png ./Linux_Extras/Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox.png
         shell: bash
 
-      - name: Create AppImage
-        run: ./appimagetool-x86_64.AppImage ./Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox-x64.AppImage
+      - name: Permit Execution of AppRun and Binary
+        run: |
+          chmod +x ./Linux_Extras/Bitscoper_Cyber_ToolBox.AppDir/AppRun
+          chmod +x ./Linux_Extras/Bitscoper_Cyber_ToolBox.AppDir/Bitscoper_Cyber_ToolBox
         shell: bash
 
-      - name: Make AppImage Executable
-        run: chmod +x ./Bitscoper_Cyber_ToolBox-x64.AppImage
+      - name: Create AppImage and Make It Executable
+        run: |
+          ./appimagetool-x86_64.AppImage ./Linux_Extras/Bitscoper_Cyber_ToolBox.AppDir ./Bitscoper_Cyber_ToolBox-x64.AppImage
+          chmod +x ./Bitscoper_Cyber_ToolBox-x64.AppImage
         shell: bash
 
       - name: Upload Build Artifacts (AppImage)
@@ -89,6 +79,47 @@ jobs:
         with:
           name: Linux_x64_Debug_Symbols
           path: build/Debug_Symbols/Linux_x64/*
+
+  synchronize-aur:
+    name: Synchronize AUR
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Change Directory and Clone AUR Repository
+        run: |
+          cd ..
+          git clone https://aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
+        shell: bash
+
+      - name: Compare and Replace PKGBUILD and .SRCINFO If Needed
+        run: |
+          if cmp -s ../bitscoper-cyber-toolbox-bin/PKGBUILD ${{ github.workspace }}/Linux_Extras/AUR/PKGBUILD; then
+            echo "PKGBUILD files are identical."
+          else
+            cp ${{ github.workspace }}/Linux_Extras/AUR/PKGBUILD ../bitscoper-cyber-toolbox-bin/PKGBUILD
+            echo "CHANGES_DETECTED=1" >> $GITHUB_ENV
+          fi
+          if cmp -s ../bitscoper-cyber-toolbox-bin/.SRCINFO ${{ github.workspace }}/Linux_Extras/AUR/.SRCINFO; then
+            echo ".SRCINFO files are identical."
+          else
+            cp ${{ github.workspace }}/Linux_Extras/AUR/.SRCINFO ../bitscoper-cyber-toolbox-bin/.SRCINFO
+            echo "CHANGES_DETECTED=1" >> $GITHUB_ENV
+          fi
+        shell: bash
+
+      - name: Commit and Push Changes
+        run: |
+          if [ "${{ env.CHANGES_DETECTED }}" = "1" ]; then
+            cd ../bitscoper-cyber-toolbox-bin
+            git add .
+            git commit -m "$(date)"
+            ssh-agent bash -c 'ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}"); git push origin master'
+          fi
+        shell: bash
 
   build-for-android:
     name: Build for Android
