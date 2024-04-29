@@ -4,8 +4,9 @@
 <div align="center">
 
 # Bitscoper Cyber ToolBox
-A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.  
-  
+
+A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
+
 [![Build and Release](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/actions/workflows/Build%20and%20Release.yaml/badge.svg)](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/actions/workflows/Build%20and%20Release.yaml)
 
 </div>
@@ -34,7 +35,14 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
     /></a>
 </div>
 
+### Arch Linux
+
+`yay -S --needed bitscoper-cyber-toolbox-bin`  
+or  
+`paru -S --needed bitscoper-cyber-toolbox-bin`
+
 ## [Releases](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/releases/)
+
 - **Linux**
   - x64 Executable (+ Debug Symbols)
   - x64 AppImage
@@ -48,7 +56,7 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
 - **Windows**
   - x64 Executable (+ Debug Symbols)
   - x64 MSIX Package
-- **Web** *(Not Recommended)*
+- **Web** _(Not Recommended)_
 
 For **iOS**, it's coming soon.
 
