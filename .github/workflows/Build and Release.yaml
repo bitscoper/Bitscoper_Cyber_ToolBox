@@ -124,8 +124,6 @@ jobs:
             git config user.name "bitscoper"
             git add .
             git commit -m "$(date)"
-            eval "$(ssh-agent -s)"
-            ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}")
             git push origin master
           fi
         shell: bash
