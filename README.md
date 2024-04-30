@@ -37,28 +37,53 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, File Hash Ca
 
 ### Arch Linux
 
-`yay -S --needed bitscoper-cyber-toolbox-bin`  
-or  
-`paru -S --needed bitscoper-cyber-toolbox-bin`
+`yay -S --needed bitscoper-cyber-toolbox-bin`
 
 ## [Releases](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/releases/)
 
-- **Linux**
-  - x64 Executable (+ Debug Symbols)
-  - x64 AppImage
-- **Android**
-  - appbundle (+ Debug Symbols)
-  - x86_64 APK (+ Debug Symbols)
-  - ARM64 V8A APK (+ Debug Symbols)
-  - ARMEABI V7A APK (+ Debug Symbols)
-- **macOS**
-  - Executable (+ Debug Symbols)
-- **Windows**
-  - x64 Executable (+ Debug Symbols)
-  - x64 MSIX Package
-- **Web** _(Not Recommended)_
+<div align="center">
 
-For **iOS**, it's coming soon.
+```mermaid
+flowchart LR
+
+Code[Code] --> Linux{Linux}
+Linux --> Linux_x64_Executable(x64 Executable)
+Linux_x64_Executable --> Linux_x64_AppImage(x64 AppImage)
+
+Code --> Android{Android}
+Android --> |Signing| Android_appbundle(appbundle)
+Android --> |Signing| Android_x86_64_APK(x86_64 APK)
+Android --> |Signing| Android_ARM64_V8A_APK(ARM64 V8A APK)
+Android --> |Signing| Android_ARMEABI_V7A_APK(ARMEABI V7A APK)
+
+Code --> macOS{macOS}
+macOS --> macOS_Executable(Executable)
+
+Code --> |Coming Soon| iOS{iOS}
+
+Code --> Windows{Windows}
+Windows --> Windows_x64_Executable(x64 Executable)
+Windows_x64_Executable --> |Signing| Windows_x64_MSIX_Package(MSIX Package)
+
+Code --> |Not Recommended| Web{Web}
+
+Linux_x64_Executable --> Release[Release]
+Linux_x64_AppImage --> Release[Release]
+Android_appbundle --> Release[Release]
+Android_x86_64_APK --> Release[Release]
+Android_ARM64_V8A_APK --> Release[Release]
+Android_ARMEABI_V7A_APK --> Release[Release]
+macOS_Executable --> Release[Release]
+Windows_x64_Executable --> Release[Release]
+Windows_x64_MSIX_Package --> Release[Release]
+Web --> Release[Release]
+
+Linux --> AUR[Arch User Repository]
+```
+
+Respective debug symbols are also uploaded for release.
+
+</div>
 
 ## Tools
 
