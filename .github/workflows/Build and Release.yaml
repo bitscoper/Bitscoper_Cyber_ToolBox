@@ -94,7 +94,8 @@ jobs:
           cd ..
           eval "$(ssh-agent -s)"
           ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}")
-          GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone ssh://aur@aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
+          ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
+          git clone ssh://aur@aur.archlinux.org/bitscoper-cyber-toolbox-bin.git
         shell: bash
 
       - name: Compare and Replace PKGBUILD and .SRCINFO If Needed
@@ -121,7 +122,10 @@ jobs:
             git config user.name "bitscoper"
             git add .
             git commit -m "$(date)"
-            ssh-agent bash -c 'ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}"); GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git push origin master'
+            eval "$(ssh-agent -s)"
+            ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}")
+            ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
+            git push origin master
           fi
         shell: bash
 
@@ -403,18 +407,16 @@ jobs:
 
       - name: Rename AppImage
         run: |
-          VERSION=${{ env.VERSION }}
-          VERSION=${VERSION%%+*}
-          mv ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-x64.AppImage ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-$VERSION-x64.AppImage
+          APPIMAGE_VERSION=${VERSION%%+*}
+          mv ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-x64.AppImage ./Linux_x64_AppImage/Bitscoper_Cyber_ToolBox-$APPIMAGE_VERSION-x64.AppImage
         shell: bash
 
       - name: Delete Existing Tag and Release (If Any)
         run: |
-          TAG_NAME=v${{ env.VERSION }}
-          RELEASE_ID=$(curl --silent --show-error --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases/tags/$TAG_NAME | jq '.id')
+          RELEASE_ID=$(curl --silent --show-error --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' https://api.github.com/repos/${{ github.repository }}/releases/tags/v$VERSION | jq '.id')
           if [ "$RELEASE_ID" != "null" ]; then
             curl --silent --show-error --header 'Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}' --request DELETE https://api.github.com/repos/${{ github.repository }}/releases/$RELEASE_ID
-            git push --delete origin $TAG_NAME
+            git push --delete origin v$VERSION
           fi
         shell: bash
 
