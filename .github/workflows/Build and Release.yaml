@@ -126,9 +126,6 @@ jobs:
             git commit -m "$(date)"
             eval "$(ssh-agent -s)"
             ssh-add <(echo "${{ secrets.AUR_SSH_PRIVATE_KEY }}")
-            mkdir -p ~/.ssh
-            touch ~/.ssh/known_hosts
-            ssh-keyscan -H aur.archlinux.org >> ~/.ssh/known_hosts
             git push origin master
           fi
         shell: bash
