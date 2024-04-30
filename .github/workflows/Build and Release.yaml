@@ -115,7 +115,7 @@ jobs:
 
       - name: Commit and Push Changes
         run: |
-          if [ "${{ env.CHANGES_DETECTED }}" = "1" ]; then
+          if [ "$CHANGES_DETECTED" = "1" ]; then
             cd ../bitscoper-cyber-toolbox-bin
             git config user.email "bitscoper@gmail.com"
             git config user.name "bitscoper"
