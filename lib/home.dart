@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import 'package:bitscoper_cyber_toolbox/dns_record_retriever_page.dart';
-import 'package:bitscoper_cyber_toolbox/file_hash_calculator_page.dart';
-import 'package:bitscoper_cyber_toolbox/route_tracer_page.dart';
-import 'package:bitscoper_cyber_toolbox/series_uri_crawler_page.dart';
-import 'package:bitscoper_cyber_toolbox/string_encoder_page.dart';
-import 'package:bitscoper_cyber_toolbox/tcp_port_scanner_page.dart';
-import 'package:bitscoper_cyber_toolbox/whois_retriever_page.dart';
+import 'package:bitscoper_cyber_toolbox/dns_record_retriever.dart';
+import 'package:bitscoper_cyber_toolbox/file_hash_calculator.dart';
+import 'package:bitscoper_cyber_toolbox/pinger.dart';
+import 'package:bitscoper_cyber_toolbox/route_tracer.dart';
+import 'package:bitscoper_cyber_toolbox/series_uri_crawler.dart';
+import 'package:bitscoper_cyber_toolbox/string_encoder.dart';
+import 'package:bitscoper_cyber_toolbox/tcp_port_scanner.dart';
+import 'package:bitscoper_cyber_toolbox/whois_retriever.dart';
 
 class HomePage extends StatelessWidget {
   final Function toggleTheme;
@@ -107,6 +108,11 @@ class HomePage extends StatelessWidget {
                 'Route Tracer',
                 Icons.track_changes_rounded,
                 const RouteTracerPage(),
+              ),
+              buildToolCard(
+                'Pinger',
+                Icons.network_ping_rounded,
+                const PingerPage(),
               ),
               buildToolCard(
                 'File Hash Calculator',

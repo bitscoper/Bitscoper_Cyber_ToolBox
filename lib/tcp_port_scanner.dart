@@ -145,9 +145,11 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                     onFieldSubmitted: (value) async {
                       if (_formKey.currentState!.validate()) {
                         stopwatch.reset();
-                        scanProgress = 0.0;
+
                         setState(
-                          () {},
+                          () {
+                            scanProgress = 0.0;
+                          },
                         );
 
                         await scanTCPPorts();
@@ -163,9 +165,11 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               stopwatch.reset();
-                              scanProgress = 0.0;
+
                               setState(
-                                () {},
+                                () {
+                                  scanProgress = 0.0;
+                                },
                               );
 
                               await scanTCPPorts();

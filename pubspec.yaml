@@ -12,6 +12,8 @@ dependencies:
   async: any
   b: ^0.2.0
   crypto: ^3.0.3
+  dart_ping: ^9.0.1
+  dart_ping_ios: ^4.0.2
   dnsolve: ^1.0.0
   file_picker: ^8.0.0+1
   flutter:
@@ -79,7 +81,8 @@ msix_config:
   languages: en-US
   execution_alias: Bitscoper_Cyber_ToolBox
   enable_at_startup: false
-  capabilities: internetClient, internetClientServer, privateNetworkClientServer, removableStorage, wiFiControl
+  capabilities: internetClient, internetClientServer, privateNetworkClientServer,
+    removableStorage, wiFiControl
   architecture: x64
   store: true
   build_windows: true
