@@ -33,7 +33,10 @@ class DNSRecordRetrieverBody extends StatefulWidget {
 class DNSRecord {
   final String type, record;
 
-  DNSRecord(this.type, this.record);
+  DNSRecord(
+    this.type,
+    this.record,
+  );
 }
 
 class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
@@ -178,9 +181,11 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                       ElevatedButton(
                         onPressed: isRetrieving
                             ? () {
-                                setState(() {
-                                  isRetrieving = false;
-                                });
+                                setState(
+                                  () {
+                                    isRetrieving = false;
+                                  },
+                                );
                               }
                             : null,
                         child: const Text('Stop'),

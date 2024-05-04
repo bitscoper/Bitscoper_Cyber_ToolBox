@@ -31,25 +31,39 @@ class PingerBodyState extends State<PingerBody> {
   final _formKey = GlobalKey<FormState>();
   late String host;
 
-  bool isRetrieving = false;
-  String result = '';
+  bool isPinging = false;
+  String response = '', ipAddress = '', ttl = '', time = '';
 
   Future<void> ping() async {
     if (_formKey.currentState!.validate()) {
-      isRetrieving = true;
-
-      result = (
-        await Ping(
-          host,
-          count: 1,
-        ).stream.first,
-      ).toString();
-
       setState(
         () {
-          isRetrieving = false;
+          isPinging = true;
         },
       );
+
+      while (isPinging) {
+        response = (
+          await Ping(
+            host,
+            count: 1,
+          ).stream.first,
+        ).toString();
+
+        setState(
+          () {
+            RegExp expression = RegExp(r'ip:(.*?), ttl:(.*?), time:(.*?) ms');
+
+            RegExpMatch? match = expression.firstMatch(response);
+
+            if (match != null) {
+              ipAddress = match.group(1)?.trim() ?? '';
+              ttl = match.group(2)?.trim() ?? '';
+              time = match.group(3)?.trim() ?? '';
+            }
+          },
+        );
+      }
     }
   }
 
@@ -89,15 +103,41 @@ class PingerBodyState extends State<PingerBody> {
                 const SizedBox(
                   height: 16,
                 ),
-                Center(
-                  child: ElevatedButton(
-                    onPressed: isRetrieving
-                        ? null
-                        : () async {
-                            await ping();
-                          },
-                    child: const Text('Ping'),
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    ElevatedButton(
+                      onPressed: isPinging
+                          ? null
+                          : () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(
+                                  () {
+                                    isPinging = true;
+                                  },
+                                );
+
+                                await ping();
+                              }
+                            },
+                      child: const Text('Ping'),
+                    ),
+                    ElevatedButton(
+                      onPressed: isPinging
+                          ? () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(
+                                  () {
+                                    isPinging = false;
+                                    response = '';
+                                  },
+                                );
+                              }
+                            }
+                          : null,
+                      child: const Text('Stop'),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -105,7 +145,12 @@ class PingerBodyState extends State<PingerBody> {
           const SizedBox(
             height: 16,
           ),
-          Text(result),
+          Center(
+            child: Text(
+              "IP Address: $ipAddress,\nTTL: $ttl, Time: $time",
+              textAlign: TextAlign.center,
+            ),
+          ),
         ],
       ),
     );
