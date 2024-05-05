@@ -127,34 +127,35 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
             child: Column(
               children: [
                 TextFormField(
-                    decoration: const InputDecoration(
-                      border: OutlineInputBorder(),
-                      labelText: 'Enter a Host or IP Address',
-                      hintText: 'bitscoper.live',
-                    ),
-                    onChanged: (value) {
-                      host = value.trim();
-                    },
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter a host or IP address!';
-                      }
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Enter a Host or IP Address',
+                    hintText: 'bitscoper.live',
+                  ),
+                  onChanged: (value) {
+                    host = value.trim();
+                  },
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Please enter a host or IP address!';
+                    }
 
-                      return null;
-                    },
-                    onFieldSubmitted: (value) async {
-                      if (_formKey.currentState!.validate()) {
-                        stopwatch.reset();
+                    return null;
+                  },
+                  onFieldSubmitted: (value) async {
+                    if (_formKey.currentState!.validate()) {
+                      stopwatch.reset();
 
-                        setState(
-                          () {
-                            scanProgress = 0.0;
-                          },
-                        );
+                      setState(
+                        () {
+                          scanProgress = 0.0;
+                        },
+                      );
 
-                        await scanTCPPorts();
-                      }
-                    }),
+                      await scanTCPPorts();
+                    }
+                  },
+                ),
                 const SizedBox(
                   height: 16,
                 ),

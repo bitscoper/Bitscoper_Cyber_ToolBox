@@ -77,15 +77,19 @@ class HomePage extends StatelessWidget {
               title: const Text('GitHub Repository'),
               leading: const Icon(Icons.code_rounded),
               onTap: () {
-                launchUrl(Uri.parse(
-                    'https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/'));
+                launchUrl(
+                  Uri.parse(
+                      'https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/'),
+                );
               },
             ),
             ListTile(
               title: const Text('Developer'),
               leading: const Icon(Icons.person_rounded),
               onTap: () {
-                launchUrl(Uri.parse('https://github.com/bitscoper/'));
+                launchUrl(
+                  Uri.parse('https://github.com/bitscoper/'),
+                );
               },
             ),
           ],

@@ -32,7 +32,7 @@ class PingerBodyState extends State<PingerBody> {
   late String host;
 
   bool isPinging = false;
-  String response = '', ipAddress = '', ttl = '', time = '';
+  String response = '', ipAddress = '', ttl = '', time = '', result = '';
 
   Future<void> ping() async {
     if (_formKey.currentState!.validate()) {
@@ -50,17 +50,19 @@ class PingerBodyState extends State<PingerBody> {
           ).stream.first,
         ).toString();
 
+        RegExp expression = RegExp(r'ip:(.*?), ttl:(.*?), time:(.*?) ms');
+
+        RegExpMatch? match = expression.firstMatch(response);
+
+        if (match != null) {
+          ipAddress = match.group(1)?.trim() ?? '';
+          ttl = match.group(2)?.trim() ?? '';
+          time = match.group(3)?.trim() ?? '';
+        }
+
         setState(
           () {
-            RegExp expression = RegExp(r'ip:(.*?), ttl:(.*?), time:(.*?) ms');
-
-            RegExpMatch? match = expression.firstMatch(response);
-
-            if (match != null) {
-              ipAddress = match.group(1)?.trim() ?? '';
-              ttl = match.group(2)?.trim() ?? '';
-              time = match.group(3)?.trim() ?? '';
-            }
+            result = '$ipAddress TTL: $ttl Time: $time ms\n$result';
           },
         );
       }
@@ -129,7 +131,7 @@ class PingerBodyState extends State<PingerBody> {
                                 setState(
                                   () {
                                     isPinging = false;
-                                    response = '';
+                                    result = '';
                                   },
                                 );
                               }
@@ -146,9 +148,19 @@ class PingerBodyState extends State<PingerBody> {
             height: 16,
           ),
           Center(
-            child: Text(
-              "IP Address: $ipAddress,\nTTL: $ttl, Time: $time",
-              textAlign: TextAlign.center,
+            child: Column(
+              children: [
+                if (isPinging) ...[
+                  const CircularProgressIndicator(),
+                  const SizedBox(
+                    height: 16,
+                  ),
+                ],
+                Text(
+                  result,
+                  textAlign: TextAlign.center,
+                ),
+              ],
             ),
           ),
         ],

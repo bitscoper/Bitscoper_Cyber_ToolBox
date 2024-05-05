@@ -74,8 +74,9 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
                 setState(
                   () {
                     if (value.isNotEmpty) {
-                      inputAsBase64 =
-                          base64Encode(utf8.encode(value)).replaceAll('=', '');
+                      inputAsBase64 = base64Encode(
+                        utf8.encode(value),
+                      ).replaceAll('=', '');
                     }
                   },
                 );
