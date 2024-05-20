@@ -79,6 +79,9 @@ Windows_x64_MSIX_Package --> Release[Release]
 Web --> Release[Release]
 
 Linux --> AUR[Arch User Repository]
+
+Android_appbundle --> |Manual Submission| Google_Play[Google Play]
+Windows_x64_MSIX_Package --> |Manual Submission| Microsoft_Store[Microsoft Store]
 ```
 
 Respective debug symbols are also uploaded for release.
