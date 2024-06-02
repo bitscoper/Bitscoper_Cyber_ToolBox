@@ -53,7 +53,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
 
-        minSdkVersion 30
+        minSdkVersion 28
     }
 
 signingConfigs {
