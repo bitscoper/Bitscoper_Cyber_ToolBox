@@ -12,6 +12,18 @@ import 'package:bitscoper_cyber_toolbox/string_encoder.dart';
 import 'package:bitscoper_cyber_toolbox/tcp_port_scanner.dart';
 import 'package:bitscoper_cyber_toolbox/whois_retriever.dart';
 
+class ToolCard {
+  final String title;
+  final IconData icon;
+  final Widget page;
+
+  ToolCard(
+    this.title,
+    this.icon,
+    this.page,
+  );
+}
+
 class HomePage extends StatelessWidget {
   final Function toggleTheme;
 
@@ -95,56 +107,73 @@ class HomePage extends StatelessWidget {
           ],
         ),
       ),
-      body: SingleChildScrollView(
+      body: Padding(
         padding: const EdgeInsets.all(16),
-        child: Center(
-          child: Wrap(
-            alignment: WrapAlignment.center,
-            spacing: 16,
-            runSpacing: 16,
-            children: <Widget>[
-              buildToolCard(
+        child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: MediaQuery.of(context).size.width > 1200
+                ? (MediaQuery.of(context).orientation == Orientation.portrait
+                    ? 6
+                    : 8)
+                : MediaQuery.of(context).size.width > 600
+                    ? 4
+                    : 2,
+            crossAxisSpacing: 16,
+            mainAxisSpacing: 16,
+            childAspectRatio: 3 / 2,
+          ),
+          itemCount: 8,
+          itemBuilder: (BuildContext context, int index) {
+            final tools = [
+              ToolCard(
                 'TCP Port Scanner',
                 Icons.network_ping_rounded,
                 const TCPPortScannerPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'Route Tracer',
                 Icons.track_changes_rounded,
                 const RouteTracerPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'Pinger',
                 Icons.network_ping_rounded,
                 const PingerPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'File Hash Calculator',
                 Icons.file_present_rounded,
                 const FileHashCalculatorPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'String Encoder',
                 Icons.short_text_rounded,
                 const StringEncoderPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'Series URI Crawler',
                 Icons.web_rounded,
                 const SeriesURICrawlerPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'DNS Record Retriever',
                 Icons.dns_rounded,
                 const DNSRecordRetrieverPage(),
               ),
-              buildToolCard(
+              ToolCard(
                 'WHOIS Retriever',
                 Icons.domain_rounded,
                 const WHOISRetrieverPage(),
               ),
-            ],
-          ),
+            ];
+
+            final ToolCard tool = tools[index];
+            return buildToolCard(
+              tool.title, // title
+              tool.icon, // icon
+              tool.page, // page widget
+            );
+          },
         ),
       ),
     );
