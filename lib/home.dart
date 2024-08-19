@@ -76,7 +76,7 @@ class HomePage extends StatelessWidget {
         child: ListView(
           children: <Widget>[
             const DrawerHeader(
-              child: Text('Bitscoper Cyber WorkBench'),
+              child: Text('Bitscoper Cyber ToolBox'),
             ),
             ListTile(
               title: const Text('Toggle Dark Theme'),

@@ -30,4 +30,4 @@
 
 ## Push to AUR
 
-`git push --set-upstream bitscoper-cyber-workbench-bin master`
+`git push --set-upstream bitscoper-cyber-toolbox-bin master`
