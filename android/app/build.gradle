@@ -29,7 +29,7 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace "com.example.bitscoper_cyber_toolbox"
+    namespace "bitscoper.bitscoper_cyber_toolbox"
     compileSdk flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
