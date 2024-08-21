@@ -41,7 +41,7 @@ class MainAppState extends State<MainApp> {
         const ShortcutItem(
             type: 'source_code',
             localizedTitle: 'Source Code',
-            icon: 'ic_launcher'),
+            icon: 'ic_launcher'), /* Android only */
       ],
     );
   }
