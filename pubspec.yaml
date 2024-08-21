@@ -23,6 +23,7 @@ dependencies:
   fluttertoast: ^8.2.4
   html: ^0.15.4
   http: ^1.2.1
+  quick_actions: ^1.0.7
   tcp_scanner: ^2.0.5
   url_launcher: ^6.2.6
   whois: ^1.0.0

@@ -2,6 +2,8 @@
 
 import 'package:bitscoper_cyber_toolbox/home.dart';
 import 'package:flutter/material.dart';
+import 'package:quick_actions/quick_actions.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 void main() {
   runApp(
@@ -19,6 +21,30 @@ class MainApp extends StatefulWidget {
 class MainAppState extends State<MainApp> {
   ValueNotifier<bool> isDarkTheme = ValueNotifier<bool>(false);
   bool userToggledTheme = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    const QuickActions quickActions = QuickActions();
+    quickActions.initialize(
+      (shortcutType) {
+        if (shortcutType == 'source_code') {
+          launchUrl(
+            Uri.parse('https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/'),
+          );
+        }
+      },
+    );
+    quickActions.setShortcutItems(
+      <ShortcutItem>[
+        const ShortcutItem(
+            type: 'source_code',
+            localizedTitle: 'Source Code',
+            icon: 'ic_launcher'),
+      ],
+    );
+  }
 
   void toggleTheme() {
     setState(

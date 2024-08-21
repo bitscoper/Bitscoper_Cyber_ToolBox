@@ -86,7 +86,7 @@ class HomePage extends StatelessWidget {
               },
             ),
             ListTile(
-              title: const Text('GitHub Repository'),
+              title: const Text('Source Code'),
               leading: const Icon(Icons.code_rounded),
               onTap: () {
                 launchUrl(
