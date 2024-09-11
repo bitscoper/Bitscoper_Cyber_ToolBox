@@ -9,6 +9,7 @@ import 'package:bitscoper_cyber_toolbox/pinger.dart';
 import 'package:bitscoper_cyber_toolbox/route_tracer.dart';
 import 'package:bitscoper_cyber_toolbox/series_uri_crawler.dart';
 import 'package:bitscoper_cyber_toolbox/string_encoder.dart';
+import 'package:bitscoper_cyber_toolbox/string_hash_calculator.dart';
 import 'package:bitscoper_cyber_toolbox/tcp_port_scanner.dart';
 import 'package:bitscoper_cyber_toolbox/whois_retriever.dart';
 
@@ -122,7 +123,7 @@ class HomePage extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 3 / 2,
           ),
-          itemCount: 8,
+          itemCount: 9,
           itemBuilder: (BuildContext context, int index) {
             final tools = [
               ToolCard(
@@ -144,6 +145,11 @@ class HomePage extends StatelessWidget {
                 'File Hash Calculator',
                 Icons.file_present_rounded,
                 const FileHashCalculatorPage(),
+              ),
+              ToolCard(
+                'String Hash Calculator',
+                Icons.short_text_rounded,
+                const StringHashCalculatorPage(),
               ),
               ToolCard(
                 'String Encoder',

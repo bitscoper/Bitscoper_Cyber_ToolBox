@@ -21,11 +21,3 @@
 `keytool -genkey -v -keystore ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks -keyalg RSA -keysize 4096 -validity 10000 -alias Bitscoper_Cyber_ToolBox`
 
 `base64 ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks > ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.b64`
-
-## AUR .SRCINFO
-
-`makepkg --printsrcinfo > .SRCINFO`
-
-## Push to AUR
-
-`git push --set-upstream bitscoper-cyber-toolbox-bin master`

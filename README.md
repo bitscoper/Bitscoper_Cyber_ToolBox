@@ -26,18 +26,7 @@ A Flutter application consisting of TCP Port Scanner, Route Tracer, Pinger, File
       height="48"
       alt="Google Play"
     /></a>
-  <a
-    href="https://aur.archlinux.org/packages/bitscoper-cyber-toolbox-bin"
-  ><img
-      src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/AUR.png"
-      height="48"
-      alt="AUR"
-    /></a>
 </div>
-
-### Arch Linux
-
-`yay -S --needed bitscoper-cyber-toolbox-bin`
 
 ## [Releases](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/releases/)
 
@@ -77,8 +66,6 @@ macOS_Executable --> Release[Release]
 Windows_x64_Executable --> Release[Release]
 Windows_x64_MSIX_Package --> Release[Release]
 Web --> Release[Release]
-
-Linux --> AUR[Arch User Repository]
 
 Android_appbundle --> |Manual Submission| Google_Play[Google Play]
 Windows_x64_MSIX_Package --> |Manual Submission| Microsoft_Store[Microsoft Store]

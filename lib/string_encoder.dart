@@ -67,9 +67,10 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
             child: TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'String',
+                labelText: 'Multiline String',
                 hintText: 'Abdullah As-Sadeed',
               ),
+              maxLines: null,
               onChanged: (value) {
                 setState(
                   () {
@@ -87,6 +88,19 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
                 }
 
                 return null;
+              },
+              onFieldSubmitted: (value) {
+                if (_formKey.currentState!.validate()) {
+                  setState(
+                    () {
+                      if (value.isNotEmpty) {
+                        inputAsBase64 = base64Encode(
+                          utf8.encode(value),
+                        ).replaceAll('=', '');
+                      }
+                    },
+                  );
+                }
               },
             ),
           ),

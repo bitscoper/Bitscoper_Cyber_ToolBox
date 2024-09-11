@@ -93,6 +93,7 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
                     labelText: 'Enter a Domain Name',
                     hintText: 'bitscoper.live',
                   ),
+                  maxLines: 1,
                   onChanged: (value) {
                     domainName = value.trim();
                   },

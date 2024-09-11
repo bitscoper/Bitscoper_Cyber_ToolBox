@@ -88,6 +88,7 @@ class PingerBodyState extends State<PingerBody> {
                     labelText: 'Enter a Host or IP Address',
                     hintText: 'bitscoper.live',
                   ),
+                  maxLines: 1,
                   onChanged: (value) {
                     host = value.trim();
                   },
