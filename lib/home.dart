@@ -5,6 +5,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'package:bitscoper_cyber_toolbox/dns_record_retriever.dart';
 import 'package:bitscoper_cyber_toolbox/file_hash_calculator.dart';
+import 'package:bitscoper_cyber_toolbox/open_graph_protocol_data_extractor.dart';
 import 'package:bitscoper_cyber_toolbox/pinger.dart';
 import 'package:bitscoper_cyber_toolbox/route_tracer.dart';
 import 'package:bitscoper_cyber_toolbox/series_uri_crawler.dart';
@@ -123,7 +124,7 @@ class HomePage extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 3 / 2,
           ),
-          itemCount: 9,
+          itemCount: 10,
           itemBuilder: (BuildContext context, int index) {
             final tools = [
               ToolCard(
@@ -155,6 +156,11 @@ class HomePage extends StatelessWidget {
                 'String Encoder',
                 Icons.short_text_rounded,
                 const StringEncoderPage(),
+              ),
+              ToolCard(
+                'Open Graph Protocol Data Extractor',
+                Icons.share_rounded,
+                const OGPDataExtractorPage(),
               ),
               ToolCard(
                 'Series URI Crawler',

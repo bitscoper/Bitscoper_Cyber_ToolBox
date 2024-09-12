@@ -90,7 +90,7 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter a Domain Name',
+                    labelText: 'A Domain Name',
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,

@@ -2,9 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
 void copyToClipBoard(
+  BuildContext context,
   String dataType,
   String string,
 ) {
@@ -15,11 +15,10 @@ void copyToClipBoard(
       ),
     );
 
-    Fluttertoast.showToast(
-      msg: "$dataType copied to clipboard",
-      gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.grey,
-      textColor: Colors.white,
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text('$dataType copied to clipboard!'),
+      ),
     );
   }
 }

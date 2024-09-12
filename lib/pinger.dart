@@ -85,7 +85,7 @@ class PingerBodyState extends State<PingerBody> {
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter a Host or IP Address',
+                    labelText: 'A Host or IP Address',
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,

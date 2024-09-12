@@ -149,6 +149,7 @@ class FileHashCalculatorBodyState extends State<FileHashCalculatorBody> {
                                       icon: const Icon(Icons.copy_rounded),
                                       onPressed: () {
                                         copyToClipBoard(
+                                          context,
                                           "${entry.key} hash",
                                           entry.value,
                                         );

@@ -279,6 +279,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                         icon: const Icon(Icons.copy_rounded),
                         onPressed: () {
                           copyToClipBoard(
+                            context,
                             'URI',
                             entry.key,
                           );

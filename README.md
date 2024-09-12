@@ -5,7 +5,7 @@
 
 # Bitscoper Cyber ToolBox
 
-A Flutter application consisting of TCP Port Scanner, Route Tracer, Pinger, File Hash Calculator, String Hash Calculator, String Encoder, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
+A Flutter application consisting of TCP Port Scanner, Route Tracer, Pinger, File Hash Calculator, String Hash Calculator, String Encoder, Open Graph Protocol Data Extractor, Series URI Crawler, DNS Record Retriever, and WHOIS Retriever.
 
 [![Build and Release](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/actions/workflows/Build%20and%20Release.yaml/badge.svg)](https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/actions/workflows/Build%20and%20Release.yaml)
 
@@ -101,14 +101,18 @@ Calculates MD5, SHA1, SHA224, SHA256, SHA384, and SHA512 hashes of a string.
 
 Encodes a string into binary (Base2), ternary (Base3), quaternary (Base4), quinary (Base5), senary (Base6), octal (Base8), decimal (Base10), duodecimal (Base12), hexadecimal (Base16), Base32, Base32Hex, Base36, Base58, Base62, Base64, and Base64 URL.
 
-### 7. Series URI Crawler
+### 7. Open Graph Protocol Data Extractor
+
+Extracts Open Graph Protocol (OGP) data of an webpage.
+
+### 8. Series URI Crawler
 
 Crawls the available webpages in series by number and lists the available ones.
 
-### 8. DNS Record Retriever
+### 9. DNS Record Retriever
 
 Retrieves A, AAAA, ANY, CAA, CDS, CERT, CNAME, DNAME, DNSKEY, DS, HINFO, IPSECKEY, NSEC, NSEC3PARAM, NAPTR, PTR, RP, RRSIG, SOA, SPF, SRV, SSHFP, TLSA, WKS, TXT, NS, and MX records of a domain name (forward) or an IP address (reverse).
 
-### 9. WHOIS Retriever
+### 10. WHOIS Retriever
 
 Retrieves WHOIS information about a domain name.

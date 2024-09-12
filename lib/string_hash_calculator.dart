@@ -73,7 +73,7 @@ class StringHashCalculatorBodyState extends State<StringHashCalculatorBody> {
             child: TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Multiline String',
+                labelText: 'A Multiline String',
                 hintText: 'Abdullah As-Sadeed',
               ),
               maxLines: null,
@@ -127,6 +127,7 @@ class StringHashCalculatorBodyState extends State<StringHashCalculatorBody> {
                               icon: const Icon(Icons.copy_rounded),
                               onPressed: () {
                                 copyToClipBoard(
+                                  context,
                                   entry.key,
                                   entry.value,
                                 );

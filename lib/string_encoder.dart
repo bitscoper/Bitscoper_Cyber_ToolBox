@@ -67,7 +67,7 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
             child: TextFormField(
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
-                labelText: 'Multiline String',
+                labelText: 'A Multiline String',
                 hintText: 'Abdullah As-Sadeed',
               ),
               maxLines: null,
@@ -139,6 +139,7 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
                               icon: const Icon(Icons.copy_rounded),
                               onPressed: () {
                                 copyToClipBoard(
+                                  context,
                                   entry.key,
                                   output,
                                 );

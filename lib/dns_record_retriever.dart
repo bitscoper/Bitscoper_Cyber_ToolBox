@@ -117,7 +117,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                 TextFormField(
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Enter a Host or IP Address',
+                    labelText: 'A Host or IP Address',
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
@@ -246,6 +246,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                                   icon: const Icon(Icons.copy_rounded),
                                   onPressed: () {
                                     copyToClipBoard(
+                                      context,
                                       '${record.type} DNS record',
                                       record.record,
                                     );
