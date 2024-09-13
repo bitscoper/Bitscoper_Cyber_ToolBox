@@ -6,8 +6,8 @@ import 'package:flutter/material.dart';
 
 import 'package:bitscoper_cyber_toolbox/copy_to_clipboard.dart';
 
-class StringEncoderPage extends StatelessWidget {
-  const StringEncoderPage({super.key});
+class BaseEncoderPage extends StatelessWidget {
+  const BaseEncoderPage({super.key});
 
   @override
   Widget build(
@@ -15,22 +15,22 @@ class StringEncoderPage extends StatelessWidget {
   ) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('String Encoder'),
+        title: const Text('Base Encoder'),
         centerTitle: true,
       ),
-      body: const StringEncoderBody(),
+      body: const BaseEncoderBody(),
     );
   }
 }
 
-class StringEncoderBody extends StatefulWidget {
-  const StringEncoderBody({super.key});
+class BaseEncoderBody extends StatefulWidget {
+  const BaseEncoderBody({super.key});
 
   @override
-  StringEncoderBodyState createState() => StringEncoderBodyState();
+  BaseEncoderBodyState createState() => BaseEncoderBodyState();
 }
 
-class StringEncoderBodyState extends State<StringEncoderBody> {
+class BaseEncoderBodyState extends State<BaseEncoderBody> {
   final _formKey = GlobalKey<FormState>();
   late String inputAsBase64 = '';
 
@@ -71,6 +71,7 @@ class StringEncoderBodyState extends State<StringEncoderBody> {
                 hintText: 'Abdullah As-Sadeed',
               ),
               maxLines: null,
+              showCursor: true,
               onChanged: (value) {
                 setState(
                   () {

@@ -93,6 +93,7 @@ class RouteTracerBodyState extends State<RouteTracerBody> {
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
+                  showCursor: true,
                   onChanged: (value) {
                     host = value.trim();
                   },

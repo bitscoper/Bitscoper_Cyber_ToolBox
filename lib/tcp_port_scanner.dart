@@ -133,6 +133,7 @@ class TCPPortScannerBodyState extends State<TCPPortScannerBody> {
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
+                  showCursor: true,
                   onChanged: (value) {
                     host = value.trim();
                   },

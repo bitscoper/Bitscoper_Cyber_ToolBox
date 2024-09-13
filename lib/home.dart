@@ -3,13 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'package:bitscoper_cyber_toolbox/base_encoder.dart';
 import 'package:bitscoper_cyber_toolbox/dns_record_retriever.dart';
 import 'package:bitscoper_cyber_toolbox/file_hash_calculator.dart';
+import 'package:bitscoper_cyber_toolbox/morse_code_translator.dart';
 import 'package:bitscoper_cyber_toolbox/open_graph_protocol_data_extractor.dart';
 import 'package:bitscoper_cyber_toolbox/pinger.dart';
 import 'package:bitscoper_cyber_toolbox/route_tracer.dart';
 import 'package:bitscoper_cyber_toolbox/series_uri_crawler.dart';
-import 'package:bitscoper_cyber_toolbox/string_encoder.dart';
 import 'package:bitscoper_cyber_toolbox/string_hash_calculator.dart';
 import 'package:bitscoper_cyber_toolbox/tcp_port_scanner.dart';
 import 'package:bitscoper_cyber_toolbox/whois_retriever.dart';
@@ -81,7 +82,7 @@ class HomePage extends StatelessWidget {
               child: Text('Bitscoper Cyber ToolBox'),
             ),
             ListTile(
-              title: const Text('Toggle Dark Theme'),
+              title: const Text('Toggle Theme'),
               leading: const Icon(Icons.dark_mode_rounded),
               onTap: () {
                 toggleTheme();
@@ -94,6 +95,25 @@ class HomePage extends StatelessWidget {
                 launchUrl(
                   Uri.parse(
                       'https://github.com/bitscoper/Bitscoper_Cyber_ToolBox/'),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Microsoft Store'),
+              leading: const Icon(Icons.shop_2_rounded),
+              onTap: () {
+                launchUrl(
+                  Uri.parse('https://apps.microsoft.com/detail/9n6r5lxczxl6'),
+                );
+              },
+            ),
+            ListTile(
+              title: const Text('Google Play Store'),
+              leading: const Icon(Icons.shop_rounded),
+              onTap: () {
+                launchUrl(
+                  Uri.parse(
+                      'https://play.google.com/store/apps/details?id=bitscoper.bitscoper_cyber_toolbox'),
                 );
               },
             ),
@@ -124,7 +144,7 @@ class HomePage extends StatelessWidget {
             mainAxisSpacing: 16,
             childAspectRatio: 3 / 2,
           ),
-          itemCount: 10,
+          itemCount: 11,
           itemBuilder: (BuildContext context, int index) {
             final tools = [
               ToolCard(
@@ -153,9 +173,14 @@ class HomePage extends StatelessWidget {
                 const StringHashCalculatorPage(),
               ),
               ToolCard(
-                'String Encoder',
+                'Base Encoder',
                 Icons.short_text_rounded,
-                const StringEncoderPage(),
+                const BaseEncoderPage(),
+              ),
+              ToolCard(
+                'Morse Code Translator',
+                Icons.short_text_rounded,
+                const MorseCodeTranslatorPage(),
               ),
               ToolCard(
                 'Open Graph Protocol Data Extractor',

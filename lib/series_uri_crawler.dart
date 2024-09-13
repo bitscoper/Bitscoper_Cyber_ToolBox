@@ -99,6 +99,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           hintText: 'https://dlhd.sx/stream/stream-',
                         ),
                         maxLines: 1,
+                        showCursor: true,
                         onChanged: (value) {
                           uriPrefix = value.trim();
                         },
@@ -127,6 +128,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           hintText: '.php',
                         ),
                         maxLines: 1,
+                        showCursor: true,
                         onChanged: (value) {
                           uriSuffix = value.trim();
                         },
@@ -155,6 +157,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           hintText: '1',
                         ),
                         maxLines: 1,
+                        showCursor: true,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           var parsedValue = int.tryParse(value);
@@ -194,6 +197,7 @@ class SeriesURICrawlerBodyState extends State<SeriesURICrawlerBody> {
                           hintText: '100',
                         ),
                         maxLines: 1,
+                        showCursor: true,
                         keyboardType: TextInputType.number,
                         onChanged: (value) {
                           var parsedValue = int.tryParse(value);

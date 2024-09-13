@@ -3,37 +3,38 @@
 name: bitscoper_cyber_toolbox
 description: Bitscoper Cyber ToolBox
 publish_to: none
-version: 10.0.0+17
+version: 11.0.0+18
 
 environment:
-  sdk: ">=3.3.1 <4.0.0"
+  sdk: ">=3.5.1 <4.0.0"
 
 dependencies:
   async: any
   b: ^0.2.0
-  crypto: ^3.0.3
+  crypto: ^3.0.5
   dart_ping: ^9.0.1
   dart_ping_ios: ^4.0.2
   dnsolve: ^1.0.0
-  file_picker: ^8.0.0+1
+  file_picker: ^8.1.2
   flutter:
     sdk: flutter
-  flutter_native_splash: ^2.4.0
+  flutter_native_splash: ^2.4.1
   flutter_traceroute: ^0.0.1+2
   html: ^0.15.4
-  http: ^1.2.1
+  http: ^1.2.2
+  morse_code_translator: ^0.0.1
   ogp_data_extract: ^0.1.4
   quick_actions: ^1.0.7
   tcp_scanner: ^2.0.5
-  url_launcher: ^6.2.6
+  url_launcher: ^6.3.0
   whois: ^1.0.0
 
 dev_dependencies:
   flutter_launcher_icons: ^0.13.1
-  flutter_lints: ^3.0.0
+  flutter_lints: ^4.0.0
   flutter_test:
     sdk: flutter
-  msix: ^3.16.7
+  msix: ^3.16.8
   rename: ^3.0.2
 
 flutter:
@@ -89,5 +90,5 @@ msix_config:
   build_windows: true
   windows_build_args: --release --obfuscate --split-debug-info=./build/Debug_Symbols/Windows/
   debug: false
-  msix_version: 10.0.0.0
+  msix_version: 11.0.0.0
   output_name: Bitscoper_Cyber_ToolBox

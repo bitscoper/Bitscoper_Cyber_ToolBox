@@ -77,6 +77,7 @@ class StringHashCalculatorBodyState extends State<StringHashCalculatorBody> {
                 hintText: 'Abdullah As-Sadeed',
               ),
               maxLines: null,
+              showCursor: true,
               onChanged: (value) {
                 setState(
                   () {

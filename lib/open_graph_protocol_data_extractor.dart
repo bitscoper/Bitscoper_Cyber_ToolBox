@@ -82,6 +82,7 @@ class OGPDataExtractorBodyState extends State<OGPDataExtractorBody> {
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
+                  showCursor: true,
                   onChanged: (value) {
                     host = value.trim();
                   },

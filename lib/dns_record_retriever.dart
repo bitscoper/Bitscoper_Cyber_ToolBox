@@ -121,6 +121,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
+                  showCursor: true,
                   onChanged: (value) {
                     host = value.trim();
                   },

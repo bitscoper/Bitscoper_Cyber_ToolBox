@@ -89,6 +89,7 @@ class PingerBodyState extends State<PingerBody> {
                     hintText: 'bitscoper.live',
                   ),
                   maxLines: 1,
+                  showCursor: true,
                   onChanged: (value) {
                     host = value.trim();
                   },
