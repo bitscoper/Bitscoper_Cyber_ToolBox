@@ -118,7 +118,7 @@ class DNSRecordRetrieverBodyState extends State<DNSRecordRetrieverBody> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'A Host or IP Address',
-                    hintText: 'bitscoper.live',
+                    hintText: 'bitscoper.dev',
                   ),
                   maxLines: 1,
                   showCursor: true,

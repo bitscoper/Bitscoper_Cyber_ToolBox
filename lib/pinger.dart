@@ -86,7 +86,7 @@ class PingerBodyState extends State<PingerBody> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'A Host or IP Address',
-                    hintText: 'bitscoper.live',
+                    hintText: 'bitscoper.dev',
                   ),
                   maxLines: 1,
                   showCursor: true,

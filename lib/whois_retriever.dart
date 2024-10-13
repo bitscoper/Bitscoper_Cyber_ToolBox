@@ -91,7 +91,7 @@ class WHOISRetrieverBodyState extends State<WHOISRetrieverBody> {
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'A Domain Name',
-                    hintText: 'bitscoper.live',
+                    hintText: 'bitscoper.dev',
                   ),
                   maxLines: 1,
                   showCursor: true,
