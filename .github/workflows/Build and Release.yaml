@@ -390,3 +390,18 @@ jobs:
             ./Linux_x64_AppImage/*.AppImage
           tag: v${{ env.VERSION }}
           token: ${{ secrets.GITHUB_TOKEN }}
+
+  update-docker-image:
+    name: Update Docker Image
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      - name: Build and Push Docker Image
+        run: |
+          docker login --username bitscoper --password ${{secrets.GITHUB_TOKEN}} ghcr.io
+          docker build . --tag ghcr.io/bitscoper/bitscoper_cyber_toolbox:latest
+          docker push ghcr.io/bitscoper/bitscoper_cyber_toolbox:latest
+        shell: bash
