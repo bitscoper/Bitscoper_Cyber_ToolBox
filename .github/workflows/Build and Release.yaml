@@ -393,9 +393,11 @@ jobs:
 
   update-docker-image:
     name: Update Docker Image
+    needs: [upload-release]
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
+      packages: write
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
