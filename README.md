@@ -67,8 +67,8 @@ Windows_x64_Executable --> Release[Release]
 Windows_x64_MSIX_Package --> Release[Release]
 Web --> Release[Release]
 
-Android_appbundle --> |Manual Update| Google_Play[<img src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/Google_Play_Logo.png" alt="Google Play" width="32" height="32" />]
-Windows_x64_MSIX_Package --> |Manual Update| Microsoft_Store[<img src="https://raw.githubusercontent.com/bitscoper/bitscoper/main/External_Files/Microsoft_Store_Logo.png" alt="Microsoft Store" width="32" height="32" />]
+Android_appbundle --> |Manual Update| Google_Play[Google Play]
+Windows_x64_MSIX_Package --> |Manual Update| Microsoft_Store[Microsoft Store]
 
 Linux_x64_Executable --> Docker_Image(Docker Image) --> GHCR[GHCR]
 ```
@@ -123,7 +123,7 @@ Retrieves A, AAAA, ANY, CAA, CDS, CERT, CNAME, DNAME, DNSKEY, DS, HINFO, IPSECKE
 
 Retrieves WHOIS information about a domain name.
 
-## Commands Used to Set Identity
+## Commands Used
 
 ### Name
 
