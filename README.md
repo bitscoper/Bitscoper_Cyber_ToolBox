@@ -67,8 +67,10 @@ Windows_x64_Executable --> Release[Release]
 Windows_x64_MSIX_Package --> Release[Release]
 Web --> Release[Release]
 
-Android_appbundle --> |Manual Submission| Google_Play[Google Play]
-Windows_x64_MSIX_Package --> |Manual Submission| Microsoft_Store[Microsoft Store]
+Android_appbundle --> |Manual Update| Google_Play[Google Play]
+Windows_x64_MSIX_Package --> |Manual Update| Microsoft_Store[Microsoft Store]
+
+Linux_x64_Executable --> Docker_Image(Docker Image) --> GHCR[GHCR]
 ```
 
 Respective debug symbols are also uploaded for release.
@@ -120,3 +122,29 @@ Retrieves A, AAAA, ANY, CAA, CDS, CERT, CNAME, DNAME, DNSKEY, DS, HINFO, IPSECKE
 ### 11. WHOIS Retriever
 
 Retrieves WHOIS information about a domain name.
+
+## Commands Used
+
+### Name
+
+`dart run rename setAppName --targets linux --value "Bitscoper_Cyber_ToolBox"`
+
+`dart run rename setAppName --targets android,macos,ios,windows,web --value "Bitscoper Cyber ToolBox"`
+
+### ID
+
+`dart run rename setBundleId --targets linux,android,macos,ios,windows,web --value "bitscoper.bitscoper_cyber_toolbox"`
+
+### Icon
+
+`dart run flutter_launcher_icons`
+
+### Splash Screen
+
+`dart run flutter_native_splash:create`
+
+### Android Keystore
+
+`keytool -genkey -v -keystore ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks -keyalg RSA -keysize 4096 -validity 10000 -alias Bitscoper_Cyber_ToolBox`
+
+`base64 ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.jks > ~/Laboratory/Bitscoper\ Cyber\ ToolBox/KeyStore.b64`
