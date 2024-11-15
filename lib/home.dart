@@ -122,7 +122,7 @@ class HomePage extends StatelessWidget {
               leading: const Icon(Icons.person_rounded),
               onTap: () {
                 launchUrl(
-                  Uri.parse('https://github.com/bitscoper/'),
+                  Uri.parse('https://bitscoper.dev/'),
                 );
               },
             ),
